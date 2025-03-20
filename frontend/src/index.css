@@ -1,4 +1,10 @@
 @import "tailwindcss";
 @theme {
     --color-mayormoto-blue: #403a67;   
+    --text-big: 10rem;
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
 }

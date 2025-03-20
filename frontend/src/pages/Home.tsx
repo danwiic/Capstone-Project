@@ -4,7 +4,7 @@ function Home() {
     return (
         <div>
            <Navbar>
-            <p>lorem*100</p>
+            <p>tolomerks</p>
            </Navbar>
         </div>
     );
