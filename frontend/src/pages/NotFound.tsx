@@ -2,7 +2,6 @@ import { ImSad } from "react-icons/im";
 import Button from "../ui/Button";
 import { Link } from "react-router-dom";
 
-
 export default function NotFound() {
   return (
     <div className="p-20">
@@ -14,9 +13,13 @@ export default function NotFound() {
           <div className="text-mayormoto-blue text-2xl">Page not found</div>
         </div>
 
-        <p className="text-mayormoto-blue">The Page you are looking for doesn't exist or an other error occured.</p>
+        <p className="text-mayormoto-blue">
+          The Page you are looking for doesn't exist or an other error occured.
+        </p>
 
-        <Link to="/"><Button>HOME</Button></Link>
+        <Link to="/">
+          <Button>HOME</Button>
+        </Link>
       </div>
     </div>
   );
