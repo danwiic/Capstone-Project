@@ -1,7 +1,15 @@
 @import "tailwindcss";
 @theme {
+    /* colors */
     --color-mayormoto-blue: #403a67;   
+    --color-body:#f5f5f5;
+    --color-white: #ffffff;
+
+    /*text sizes  */
     --text-big: 10rem;
+
+    /* breakpoints */
+    --breakpoint-1400: 87.5rem;
 }
 
 *{
