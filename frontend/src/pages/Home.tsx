@@ -1,8 +1,16 @@
+
 import Navbar from "../components/Navbar";
 import bg from "../images/home_bg1.jpg";
 import CategoriesCard from "../ui/CategoriesCard";
+import Search from "../ui/Search";
 
 function Home() {
+
+
+
+
+  
+
   return (
     <div>
       <Navbar>
@@ -29,7 +37,7 @@ function Home() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <span className="text-2xl">Categories</span>
+            <span className="text-2xl">New Items</span>
             <div className="grid gap-1 grid-cols-6 w-max justify-center">
               {Array.from({ length: 12 }).map((_, i) => (
                 <CategoriesCard
@@ -39,6 +47,10 @@ function Home() {
                 />
               ))}
             </div>
+          </div>
+
+          <div>
+              <Search/>
           </div>
         </div>
       </Navbar>
