@@ -1,16 +1,8 @@
-
 import Navbar from "../components/Navbar";
 import bg from "../images/home_bg1.jpg";
 import CategoriesCard from "../ui/CategoriesCard";
-import Search from "../ui/Search";
 
 function Home() {
-
-
-
-
-  
-
   return (
     <div>
       <Navbar>
@@ -48,10 +40,9 @@ function Home() {
               ))}
             </div>
           </div>
-
-          <div>
-              <Search/>
-          </div>
+              <div>
+                <span className="">cart</span>
+              </div>
         </div>
       </Navbar>
     </div>
