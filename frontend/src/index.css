@@ -12,10 +12,12 @@
 
     /* breakpoints */
     --breakpoint-1400: 87.5rem;
+
+    
 }
 
 *{
     box-sizing: border-box;
     margin: 0;
-    font-family: inter, arial;
+    font-family: Inter, sans-serif;
 }

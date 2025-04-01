@@ -50,7 +50,7 @@ function NavItems() {
           <li key={i}>
             <NavLink
               to={item.path}
-              className={`text-gray-800 p- text-lg relative before:absolute 
+              className={`text-gray-800 p-2 text-lg relative before:absolute 
                 before:left-0 before:bottom-0 before:h-1 before:w-0 before:rounded-lg
                 before:bg-mayormoto-blue before:transition-all 
                 before:duration-500 hover:before:w-full before:ease-in-out 

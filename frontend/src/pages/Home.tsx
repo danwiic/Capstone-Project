@@ -15,9 +15,9 @@ function Home() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 ">
             <span className="text-2xl">Categories</span>
-            <div className="grid gap-1 grid-cols-6 w-max justify-center">
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
               {Array.from({ length: 6 }).map((_, i) => (
                 <CategoriesCard
                   key={i}
@@ -30,7 +30,7 @@ function Home() {
 
           <div className="flex flex-col gap-4">
             <span className="text-2xl">New Items</span>
-            <div className="grid gap-1 grid-cols-6 w-max justify-center">
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
               {Array.from({ length: 12 }).map((_, i) => (
                 <CategoriesCard
                   key={i}
@@ -40,9 +40,17 @@ function Home() {
               ))}
             </div>
           </div>
-              <div>
-                <span className="">cart</span>
-              </div>
+
+
+              {/*  */}
+          {/* <div className="bg-gray-200 w-full p-2 flex flex-row gap-1 rounded-lg shadow-lg">
+            {Array.from({length : 6}).map((_, i) => (
+              <button className="cursor-pointer py-2 px-4 hover:bg-white rounded-lg text-gray-500 hover:shadow:xl hover:text-gray-800 transition-all duration-300">
+              1asdasd{i}
+            </button>
+            ))}
+           
+          </div> */}
         </div>
       </Navbar>
     </div>

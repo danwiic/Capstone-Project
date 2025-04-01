@@ -10,12 +10,17 @@ export default function Login() {
           <img src={logo} alt="" className="w-70 h-26 object-cover " />
         </figcaption>
       </Link>
-      
-      <form action="" className="w-98 px-8 shadow-2xl py-6 rounded-sm">
-        <div className="flex flex-col gap-3 w-full">
-          <div className="text-3xl mb-4 pb-6 font-semibold">Login</div>
 
-          <label htmlFor="username" className="font-semibold">
+      <form action="" className="w-1/4 px-8 py-8 rounded-sm shadow-lg">
+        <div className="flex flex-col gap-3 w-full">
+          <div className="text-2xl m-0 p-0 font-bold text-center text-gray-800">
+            Login to your account
+          </div>
+          <div className="text-gray-500 text-center mb-2 text-sm">
+            Enter your username or email below to login to your account
+          </div>
+
+          <label htmlFor="username" className="font-medium text-sm mb-20">
             Username / Email
             <InputBox
               type="text"
@@ -26,7 +31,7 @@ export default function Login() {
             />
           </label>
 
-          <label htmlFor="password" className="font-semibold">
+          <label htmlFor="password" className="font-medium text-sm">
             Password
             <InputBox
               type="password"
@@ -37,20 +42,25 @@ export default function Login() {
             />
           </label>
 
-          <Link to="">
-            <span className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer text-end">
+          <Link to="" className="w-full">
+            <div className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer text-end">
               Forgot Password?
-            </span>
+            </div>
           </Link>
 
-          <button className="w-full bg-mayormoto-blue cursor-pointer text-white 
-          py-3 rounded-lg hover:bg-mayormoto-blue-hover">
-            LOGIN
+          <button
+            className="w-full bg-mayormoto-blue cursor-pointer text-white 
+          py-3 rounded-lg hover:bg-mayormoto-blue-hover font-medium"
+          >
+            Login
           </button>
 
-          <div className="text-center text-sm text-gray-500 pt-2">
-            <span>
-              Already have an account? <Link to="" className="text-blue-600 hover:underline">Sign up</Link>
+          <div className="text-center  text-gray-500 pt-2">
+            <span className="text-sm">
+              Don't have an account?{" "}
+              <Link to="" className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
+                Sign up
+              </Link>
             </span>
           </div>
         </div>
