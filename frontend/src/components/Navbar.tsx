@@ -1,69 +1,45 @@
 import logo from "../images/mayormoto-logo-removebg-preview.png";
-import Button from "../ui/Button.tsx";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import Button from "./ui/Button.tsx";
+import { Link } from "react-router-dom";
 import { MdShoppingCart } from "react-icons/md";
+import Search from "./ui/Search.tsx";
 
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
     <>
       <div
-        className="bg-white p-1 px-10 shadow-md 
+        className="bg-white p-1 px-20 shadow-md py-2
         flex justify-between items-center sticky top-0 z-50
         "
       >
         <div>
-          <img src={logo} alt="" className="w-56" />
+          <img src={logo} alt="" className="w-52" />
         </div>
 
-        <div>
-          <NavItems />
+        <div className="w-1/2">
+          <Search />
         </div>
 
-        <div className="flex gap-4 items-center">
-          <div>
-            <MdShoppingCart className="text-4xl cursor-pointer" />
-          </div>
+        <div className="flex gap-6 items-center">
           <Link to={"/login"}>
             <Button>Login</Button>
           </Link>
+          <div className="flex relative">
+            <MdShoppingCart 
+              className="text-4xl cursor-pointer text-mayormoto-blue" 
+            />
+            <span
+              className="bg-mayormoto-pink text-white absolute h-5 w-5 p-1 
+              text-center rounded-2xl flex items-center justify-center
+            -right-2 top-0 text-sm hover:h-6 hover:w-6 hover:text-lg 
+            duration-300 ease-in-out transition-all cursor-pointer font-medium"
+            >
+              0
+            </span>
+          </div>
         </div>
       </div>
       {children}
     </>
-  );
-}
-
-function NavItems() {
-  const location = useLocation();
-
-  const items = [
-    { name: "Home", path: "/" },
-    { name: "Track Order", path: "/about" },
-    { name: "Contact", path: "/contact" },
-  ];
-
-  return (
-    <ul className="flex justify-between items-center gap-8 ">
-      {items.map((item, i) => {
-        const isActive = location.pathname === item.path;
-        return (
-          <li key={i}>
-            <NavLink
-              to={item.path}
-              className={`text-gray-800 p-2 text-lg relative before:absolute 
-                before:left-0 before:bottom-0 before:h-1 before:w-0 before:rounded-lg
-                before:bg-mayormoto-blue before:transition-all 
-                before:duration-500 hover:before:w-full before:ease-in-out 
-                hover:text-mayormoto-blue
-                ${
-                  isActive && "before:w-full text-mayormoto-blue"
-                } lg:text-base 1400:text-lg `}
-            >
-              {item.name}
-            </NavLink>
-          </li>
-        );
-      })}
-    </ul>
   );
 }

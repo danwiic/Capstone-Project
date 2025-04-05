@@ -1,20 +1,19 @@
-
-import Home from "./pages/Home"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import UserProvider from "./context/userContext"; 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
-import NotFound from "./pages/NotFound"
-import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NotFound from "./pages/NotFound";
 
 export default function App() {
-  return(
-    <>
-       <Router>
+  return (
+    <UserProvider>
+      <Router>
         <Routes>
-          <Route path="*" element={<NotFound/>} />
-          <Route path="/" element={<Home/>} />
-          <Route path="/login" element={<Login/>} />
-          
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </>
-  )
+    </UserProvider>
+  );
 }

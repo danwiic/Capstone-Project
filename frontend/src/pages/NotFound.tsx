@@ -1,5 +1,5 @@
 import { ImSad } from "react-icons/im";
-import Button from "../ui/Button";
+import Button from "../components/ui/Button";
 import { Link } from "react-router-dom";
 
 export default function NotFound() {

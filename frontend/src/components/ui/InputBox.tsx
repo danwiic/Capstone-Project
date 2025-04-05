@@ -10,7 +10,7 @@ type InputBoxProps = {
   
   export default function InputBox({
     type = "text",
-    placeholder,
+    placeholder = "Placeholder here",
     value,
     onChange,
     required,
