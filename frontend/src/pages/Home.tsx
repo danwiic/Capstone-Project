@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import bg from "../images/gille-astral.png";
 import CategoriesCard from "../components/ui/CategoriesCard";
 import gille from "../images/logo/gille_logo.png";
+import Footer from "../components/footer/Footer";
 
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
@@ -63,6 +64,7 @@ function Home() {
           </div> */}
         </div>
       </Navbar>
+      <Footer/>
     </div>
   );
 }
