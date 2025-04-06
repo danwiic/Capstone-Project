@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import bg from "../images/gille-astral.png";
 import CategoriesCard from "../components/ui/CategoriesCard";
 import gille from "../images/logo/gille_logo.png";
+import CardSkeleton from "../components/ui/CardSkeleton";
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
 function Home() {
@@ -47,6 +48,8 @@ function Home() {
                 ))}
               </div>
             </div>
+
+            
           </div>
 
           {/*  */}
