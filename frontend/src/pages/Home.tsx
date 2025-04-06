@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import bg from "../images/gille-astral.png";
 import CategoriesCard from "../components/ui/CategoriesCard";
 import gille from "../images/logo/gille_logo.png";
-import CardSkeleton from "../components/ui/CardSkeleton";
+
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
 function Home() {
@@ -21,7 +21,7 @@ function Home() {
   return (
     <div>
       <Navbar>
-        <div className="flex flex-col gap-10 justify-center ">
+        <div className="flex flex-col gap-10 justify-center pb-10">
           <div className="relative h-auto w-full">
             <img
               src={bg}
@@ -35,7 +35,7 @@ function Home() {
               <span className="text-2xl font-medium">Featured Brands</span>
               <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <CategoriesCard key={i} image={gille} />
+                  <CategoriesCard key={i} image={gille} label="Gille" />
                 ))}
               </div>
             </div>
@@ -44,7 +44,7 @@ function Home() {
               <span className="text-2xl font-medium">Featured Brands</span>
               <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
                 {Array.from({ length: 12 }).map((_, i) => (
-                  <CategoriesCard key={i} label="Waha" />
+                  <CategoriesCard key={i} label="Gille" />
                 ))}
               </div>
             </div>

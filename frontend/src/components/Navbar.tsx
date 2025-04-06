@@ -3,6 +3,7 @@ import Button from "./ui/Button.tsx";
 import { Link } from "react-router-dom";
 import { MdShoppingCart } from "react-icons/md";
 import Search from "./ui/Search.tsx";
+// import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
@@ -13,7 +14,9 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
         "
       >
         <div>
-          <img src={logo} alt="" className="w-52" />
+          {/* <RxHamburgerMenu className="text-2xl font-medium cursor-pointer" /> */}
+
+          <img src={logo} alt="" className="w-52 cursor-pointer" />
         </div>
 
         <div className="w-1/2">
@@ -25,9 +28,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             <Button>Login</Button>
           </Link>
           <div className="flex relative">
-            <MdShoppingCart 
-              className="text-4xl cursor-pointer text-mayormoto-blue" 
-            />
+            <MdShoppingCart className="text-4xl cursor-pointer text-mayormoto-blue" />
             <span
               className="bg-mayormoto-pink text-white absolute h-5 w-5 p-1 
               text-center rounded-2xl flex items-center justify-center
@@ -39,7 +40,8 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           </div>
         </div>
       </div>
-      {children}
+      <main>{children}</main>
+      
     </>
   );
 }
