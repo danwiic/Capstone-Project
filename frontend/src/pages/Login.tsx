@@ -34,8 +34,19 @@ export default function Login() {
               />
             </label>
 
-            <label htmlFor="password" className="font-medium text-sm">
-              Password
+            <div>
+              <div className="flex justify-between items-center p-0 m--0">
+                <label htmlFor="password" className="font-medium text-sm">
+                  Password
+                </label>
+
+                <Link to="" className="w-auto">
+                  <div className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer text-end">
+                    Forgot Password?
+                  </div>
+                </Link>
+              </div>
+
               <InputBox
                 type="password"
                 name="password"
@@ -43,13 +54,7 @@ export default function Login() {
                 classname="w-full "
                 required
               />
-            </label>
-
-            <Link to="" className="w-full">
-              <div className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer text-end">
-                Forgot Password?
-              </div>
-            </Link>
+            </div>
 
             <Button>Login</Button>
 
@@ -66,9 +71,6 @@ export default function Login() {
             </div>
           </div>
         </form>
-        <p className="text-sm text-blue-600 hover:cursor-pointer">
-          Terms of Service and Privacy Policy
-        </p>
       </div>
       <Footer />
     </>

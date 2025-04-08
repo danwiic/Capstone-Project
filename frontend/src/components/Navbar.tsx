@@ -5,9 +5,9 @@ import Search from "./ui/Search.tsx";
 import { useContext, useEffect, useState } from "react";
 import Cart from "./Cart/index.tsx";
 import { CartContext } from "../context/cartContext.tsx";
-import logo1 from "../images/logo/Evo.png"
-import logo2 from "../images/logo/LS2.png"
-import logo3 from "../images/logo/Spyder.png"
+import logo1 from "../images/logo/Zebra_H320_M-Blue_-_2_100.png"
+import logo2 from "../images/logo/Zebra_Ritzy__Grey_-_2_399.png"
+import logo3 from "../images/logo/Zebra_Ritzy__White_-_2_399.png"
 
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   const [viewCart, setViewCart] = useState(false);
@@ -22,20 +22,20 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
     setCart([
       {
         image: logo1,
-        name: "Product 1",
-        price: "100",
+        name: "Zebra H320 M-Blue",
+        price: "2100",
         quantity: 1,
       },
       {
         image: logo3,
-        name: "Product 2",
-        price: "200",
+        name: "Zebra Ritzy Grey",
+        price: "2399",
         quantity: 2,
       },
       {
         image: logo2,
-        name: "Product 3",
-        price: "300",
+        name: "Zebra Ritzy White",
+        price: "2399",
         quantity: 1,
       },
     ]);

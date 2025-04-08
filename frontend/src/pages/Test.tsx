@@ -1,5 +1,8 @@
 import { CartModal } from "../components/Cart/Cart";
 import CartItems from "../components/Cart/CartItems";
+import CardSkeleton from "../components/ui/CardSkeleton";
+
+// this component is for testing or editing a component
 
 export default function Test() {
   return (
@@ -10,6 +13,8 @@ export default function Test() {
         <CartItems />
         <CartItems />
       </CartModal>
+
+      <CardSkeleton/>
     </div>
   );
 }
