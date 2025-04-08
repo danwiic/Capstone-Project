@@ -8,7 +8,7 @@ type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({ onClick, children, className }) => {
   return (
     <button onClick={onClick} className={`p-3 px-8  border-3 rounded-xl font-medium
-    bg-white border-mayormoto-blue text-mayormoto-blue hover:bg-mayormoto-blue 
+    bg-transparent border-mayormoto-blue text-mayormoto-blue hover:bg-mayormoto-blue 
     hover:text-white cursor-pointer transition-all duration-300 ease-in-out ${className}`}>
       {children}
     </button>

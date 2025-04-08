@@ -1,9 +1,9 @@
 import { MdShoppingCart } from "react-icons/md";
-import { useState } from "react";
-useState;
-
+import { useContext } from "react";
+import { CartContext } from "../../context/cartContext";
 export default function CartIcon() {
-  
+  const { cart } = useContext(CartContext);
+
   return (
     <div className="flex relative">
       <MdShoppingCart className="text-4xl cursor-pointer text-mayormoto-blue" />
@@ -13,7 +13,7 @@ export default function CartIcon() {
             -right-2 -top-0.5 text-sm hover:h-6 hover:w-6 hover:text-lg 
             duration-300 ease-in-out transition-all cursor-pointer font-medium"
       >
-        0
+        {cart.length ?? 0}
       </span>
     </div>
   );

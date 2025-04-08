@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { MdShoppingCart } from "react-icons/md";
 import Button from "../ui/button/Button";
+import { CartContext } from "../../context/cartContext";
+import React from "react";
 
-useState;
+
 interface CartProps {
   children?: React.ReactNode; // Optional children prop
   setter?: boolean | false; // Optional setter for visibility state
@@ -16,11 +18,26 @@ export function CartModal({
   cartPosition,
 }: CartProps) {
   const [visible] = useState(setter);
+  const { cart } = useContext(CartContext);
+
+ console.log(cart);
+ 
+
+  const calculateTotal = useMemo(() => {
+      let total = 0;
+      cart.forEach((item: any) => {
+        total += parseFloat(item.price.replace(/₱|,/g, "")) * item.quantity;
+      });
+      return total.toFixed(2);
+  }, [cart])
+
+  
+
   return (
     <div className={`${cartPosition} absolute right-10 z-50 shadow-2xl`}>
       <div
         className={`rounded shadow-md h-auto
-          max-h-[350px] w-[450px] ${!visible && "hidden"}
+          max-h-[400px] w-[450px] ${!visible && "hidden"}
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
           after:w-0 after:h-0 
@@ -32,7 +49,7 @@ export function CartModal({
       >
         {children ? (
           <div className="h-auto relative flex flex-col">
-            <div className="max-h-[300px] overflow-auto pb-34 flex flex-col gap-3 p-6">
+            <div className="max-h-[350px] overflow-auto pb-34 flex flex-col gap-3 p-6">
               {children}
             </div>
 
@@ -42,16 +59,14 @@ export function CartModal({
             >
               <div className="flex justify-between items-center">
                 <div className="font-medium">Total</div>
-                <div className="font-medium">₱1,300.00</div>
+                <div className="font-medium">₱{calculateTotal}</div>
               </div>
 
               <div className="flex justify-between items-center gap-2">
-                <button className="bg-mayormoto-blue font-medium text-white rounded px-2 py-4 w-full">
-                  View Cart
-                </button>
-                <button className="bg-red-500 font-medium text-white rounded px-2 py-4 w-full">
+                <Button>View Cart</Button>
+                <Button className="bg-red-500 hover:bg-red-400">
                   Checkout
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -71,4 +86,10 @@ export function CartModal({
       </div>
     </div>
   );
+}
+
+React.memo(CartModal);
+
+export default function CartComponent() {
+  return <></>;
 }

@@ -1,4 +1,5 @@
 import Footer from "../components/footer/Footer";
+import Button from "../components/ui/button/Button";
 import InputBox from "../components/ui/InputBox";
 // import logo from "../images/mayormoto-logo-removebg-preview.png";
 import { Link } from "react-router-dom";
@@ -50,12 +51,7 @@ export default function Login() {
               </div>
             </Link>
 
-            <button
-              className="w-full bg-mayormoto-blue cursor-pointer text-white 
-          py-3 rounded-lg hover:bg-mayormoto-blue-hover font-medium"
-            >
-              Login
-            </button>
+            <Button>Login</Button>
 
             <div className="text-center  text-gray-500 pt-2">
               <span className="text-sm">
