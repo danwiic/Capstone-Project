@@ -1,21 +1,26 @@
 import logo from "../images/mayormoto-logo-removebg-preview.png";
-import Button from "./ui/Button.tsx";
+import Button from "./ui/button/HoverButton.tsx";
 import { Link } from "react-router-dom";
-import { MdShoppingCart } from "react-icons/md";
 import Search from "./ui/Search.tsx";
-// import { RxHamburgerMenu } from "react-icons/rx";
+import CartIcon from "./Cart/CartIcon.tsx";
+import { useState } from "react";
+import { CartModal } from "./Cart/Cart.tsx";
 
 export default function Navbar({ children }: { children?: React.ReactNode }) {
+  const [viewCart, setViewCart] = useState(true);
+
+  function handleViewCart() {
+    setViewCart((prev) => !prev);
+  }
   return (
     <>
       <div
-        className="bg-white p-1 px-20 shadow-md py-2
+        className="bg-body p-1 px-20 shadow-md py-2
         flex justify-between items-center sticky top-0 z-50
         "
       >
         <div>
           {/* <RxHamburgerMenu className="text-2xl font-medium cursor-pointer" /> */}
-
           <img src={logo} alt="" className="w-52 cursor-pointer" />
         </div>
 
@@ -27,21 +32,20 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <Link to={"/login"}>
             <Button>Login</Button>
           </Link>
-          <div className="flex relative">
-            <MdShoppingCart className="text-4xl cursor-pointer text-mayormoto-blue" />
-            <span
-              className="bg-mayormoto-pink text-white absolute h-5 w-5 p-1 
-              text-center rounded-2xl flex items-center justify-center
-            -right-2 -top-0.5 text-sm hover:h-6 hover:w-6 hover:text-lg 
-            duration-300 ease-in-out transition-all cursor-pointer font-medium"
-            >
-              0
-            </span>
+
+          <div onClick={() => handleViewCart()}>
+            <CartIcon />
           </div>
         </div>
       </div>
-      <main>{children}</main>
-      
+      <main>
+        {viewCart && (
+          <div className="z-50 sticky top-20">
+            <CartModal setter={viewCart} className="after:right-12 bg-white after:bg-red-2 z-50" />
+          </div>
+        )}
+        {children}
+      </main>
     </>
   );
 }
