@@ -38,9 +38,9 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             <Button>Login</Button>
           </Link>
 
-          <div onClick={() => handleViewCart()}>
-            <Cart.Icon />
-          </div>
+          <button onClick={() => handleViewCart()} className="cursor-pointer">
+              <Cart.Icon />
+          </button>
         </div>
       </div>
       <main>
@@ -50,7 +50,8 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
               setter={viewCart}
               className="after:right-12 bg-white after:bg-red-2 z-50"
             >
-              {cart && cart.length > 0 &&
+              {cart &&
+                cart.length > 0 &&
                 cart.map((ct, i) => (
                   <Cart.Items
                     key={i}

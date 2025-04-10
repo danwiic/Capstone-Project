@@ -12,30 +12,30 @@ export default function CartItems({
   quantity,
 }: CartItemsProps) {
   return (
-    <div className="flex justify-between items-center h-auto gap-4 border-b-gray-300 last:border-0 border-b pb-3">
+    <div className="flex items-center justify-between h-auto gap-4 pb-3 border-b border-b-gray-300 last:border-0">
       <div className="max-w-23 w-23 h-23">
         <img src={image} alt="Product Item" className="w-full h-full " />
       </div>
       <div className="flex flex-col gap-4">
-        <div className="text-sm text-gray-500 p-0 m-0">{itemName}</div>
-        <span className="text-sm text-mayormoto-blue font-medium">{price}</span>
+        <div className="p-0 m-0 text-sm text-gray-500">{itemName}</div>
+        <span className="text-sm font-medium text-mayormoto-blue">{price}</span>
       </div>
 
-      <div className="w-auto items-center flex flex-col gap-1">
-        <div className="flex justify-around border border-gray-300 rounded items-center w-24">
-          <button className="flex justify-center items-center w-6 h-8 text-gray-400 text-2xl font-medium">
+      <div className="flex flex-col items-center w-auto gap-1">
+        <div className="flex items-center justify-around w-24 border border-gray-300 rounded">
+          <button className="flex items-center justify-center w-6 h-8 text-2xl font-medium text-gray-400">
             -
           </button>
           <input
             type="text"
             defaultValue={quantity ?? 1}
-            className="w-5 outline-0 text-center text-gray-600"
+            className="w-5 text-center text-gray-600 outline-0"
           />
-          <button className="flex justify-center items-center w-6 h-8 text-gray-400 text-2xl font-medium">
+          <button className="flex items-center justify-center w-6 h-8 text-2xl font-medium text-gray-400">
             +
           </button>
         </div>
-        <p className="text-gray-500 text-sm hover:text-red-500 cursor-pointer">
+        <p className="text-sm text-gray-500 cursor-pointer hover:text-red-500">
           Remove
         </p>
       </div>
