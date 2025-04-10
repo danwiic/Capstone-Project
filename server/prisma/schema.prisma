@@ -4,6 +4,10 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// This is your Prisma schema file
+
+// This is your Prisma schema file
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,19 +18,169 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String?  @unique
-  password  String?
+  id       String  @id @default(cuid())
+  name     String?
+  email    String  @unique
+  password String
+  role     String? @default("user")
+  address  String?
+  phone    String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Order           Order[]
+  CartItem        CartItem[]
+  productsAdded   Product[]  @relation("ProductsAdded")
+  productsUpdated Product[]  @relation("ProductsUpdated")
 
   @@map("users")
 }
 
-model Products {
-  id   Int     @id @default(autoincrement())
-  name String?
+model Product {
+  id          String  @id @default(cuid())
+  name        String?
+  categoryId  String?
+  price       Decimal @db.Decimal(10, 2)
+  stock       Int     @default(0)
+  imageUrl    String?
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  addedById   String?
+  updatedById String?
+
+  addedBy      User?          @relation("ProductsAdded", fields: [addedById], references: [id])
+  updatedBy    User?          @relation("ProductsUpdated", fields: [updatedById], references: [id])
+  Category     Category?      @relation(fields: [categoryId], references: [id])
+  ProductImage ProductImage[]
+
+  OrderItem OrderItem[]
+  Inventory Inventory[]
+  CartItem  CartItem[]
 
   @@map("products")
+}
+
+model ProductImage {
+  id        String @id @default(cuid())
+  productId String
+  url       String
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  customerId  String
+  employeeId  String?
+  totalAmount Float
+  status      OrderStatus
+  paymentId   String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  source      OrderSource // Added OrderSource enum here
+
+  customer   User        @relation(fields: [customerId], references: [id])
+  employee   Employee?   @relation(fields: [employeeId], references: [id])
+  payment    Payment     @relation(fields: [paymentId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Employee {
+  id        String       @id @default(cuid())
+  name      String
+  email     String       @unique
+  password  String // Secure hash for password
+  role      EmployeeRole
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  orders Order[]
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String
+  amount        Float
+  paymentDate   DateTime      @default(now())
+  paymentMethod PaymentMethod
+  status        PaymentStatus
+
+  Order Order[]
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model CartItem {
+  id        String @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+// Enums for various statuses and roles
+
+enum EmployeeRole {
+  ADMIN
+  CASHIER
+  STOCKER
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  CASH
+  ONLINE
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderSource {
+  ONLINE
+  POS
 }

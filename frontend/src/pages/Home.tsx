@@ -25,6 +25,7 @@ function Home() {
         <div className="flex flex-col gap-10 justify-center pb-10">
           <div className="relative h-auto w-full">
             <img
+            title="Background Image"
               src={bg}
               alt=""
               className="h-full w-full object-cover cursor-pointer"
@@ -45,7 +46,7 @@ function Home() {
               <span className="text-2xl font-medium">Featured Brands</span>
               <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
                 {Array.from({ length: 12 }).map((_, i) => (
-                  <CategoriesCard key={i} label="Gille" />
+                  <CategoriesCard key={i} label="Gille" image={"https://i.postimg.cc/bvV8St8p/FTR-Premium-45-L-Plastic-3-800.png"} />
                 ))}
               </div>
             </div>

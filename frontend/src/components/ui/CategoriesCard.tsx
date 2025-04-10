@@ -10,7 +10,7 @@ export default function CategoriesCard({ image, label }: CategoryProps) {
         bg-white cursor-pointer shadow:sm hover:shadow-md flex flex-col gap-4 min-w-45 h-46 justify-center items-center p-4">
       {image && (
         <img
-          src={image} 
+          src={`${image}`} 
           alt="Category"
           className=" max-w-30 max-h-30 object-cover rounded-md hover:scale-110 duration-300 ease-in-out"
         />

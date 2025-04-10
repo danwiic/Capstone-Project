@@ -14,17 +14,20 @@ export default function Login() {
           </figcaption>
         </Link> */}
 
-        <form action="" className="w-1/4 px-8 py-8 rounded-sm shadow-lg">
+        <form
+          action=""
+          className="w-1/4 px-8 py-8 rounded-sm shadow-lg bg-white"
+        >
           <div className="flex flex-col gap-3 w-full">
             <div className="text-2xl m-0 p-0 font-bold text-center text-gray-800">
               Sign in to your account
             </div>
             <div className="text-gray-500 text-center mb-2 text-sm">
-              Enter your username or email below to login to your account
+              Enter your email below to login to your account
             </div>
 
             <label htmlFor="username" className="font-medium text-sm mb-20">
-              Username / Email
+              Email
               <InputBox
                 type="text"
                 name="username"

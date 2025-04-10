@@ -5,9 +5,9 @@ import Search from "./ui/Search.tsx";
 import { useContext, useEffect, useState } from "react";
 import Cart from "./Cart/index.tsx";
 import { CartContext } from "../context/cartContext.tsx";
-import logo1 from "../images/logo/Zebra_H320_M-Blue_-_2_100.png"
-import logo2 from "../images/logo/Zebra_Ritzy__Grey_-_2_399.png"
-import logo3 from "../images/logo/Zebra_Ritzy__White_-_2_399.png"
+import logo1 from "../images/logo/Zebra_H320_M-Blue_-_2_100.png";
+import logo2 from "../images/logo/Zebra_Ritzy__Grey_-_2_399.png";
+import logo3 from "../images/logo/Zebra_Ritzy__White_-_2_399.png";
 
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   const [viewCart, setViewCart] = useState(false);
@@ -18,29 +18,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
 
   const { cart, setCart } = useContext(CartContext);
 
-  useEffect(() => {
-    setCart([
-      {
-        image: logo1,
-        name: "Zebra H320 M-Blue",
-        price: "2100",
-        quantity: 1,
-      },
-      {
-        image: logo3,
-        name: "Zebra Ritzy Grey",
-        price: "2399",
-        quantity: 2,
-      },
-      {
-        image: logo2,
-        name: "Zebra Ritzy White",
-        price: "2399",
-        quantity: 1,
-      },
-    ]);
-    console.log("Rendered");
-  }, [setCart]);
   return (
     <>
       <div
@@ -73,15 +50,16 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
               setter={viewCart}
               className="after:right-12 bg-white after:bg-red-2 z-50"
             >
-              {cart.map((ct, i) => (
-                <Cart.Items
-                  key={i}
-                  image={ct.image}
-                  itemName={ct.name}
-                  price={`₱${ct.price}.00`}
-                  quantity={ct.quantity}
-                />
-              ))}
+              {cart && cart.length > 0 &&
+                cart.map((ct, i) => (
+                  <Cart.Items
+                    key={i}
+                    image={ct.image}
+                    itemName={ct.name}
+                    price={`₱${ct.price}.00`}
+                    quantity={ct.quantity}
+                  />
+                ))}
             </Cart.Modal>
           </div>
         )}
