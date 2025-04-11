@@ -1,12 +1,13 @@
 import CardSkeleton from "../components/ui/CardSkeleton";
-import ProductCard from "../components/Card/ProductCard";
+import DisplayProductCard from "../components/Card/DisplayProductCard";
 // this component is for testing or editing a component
 
 export default function Test() {
   return (
     <div className="p-10">
-      <ProductCard/>
-      
+      <DisplayProductCard name="" imageUrl="" stock={1} price={2}/>
+
+  
 
       <CardSkeleton/>
     </div>

@@ -1,14 +1,14 @@
-import { useContext, useMemo, useState } from "react";
-import { MdShoppingCart } from "react-icons/md";
+import { BsCart2 } from "react-icons/bs";
+import { useContext, useMemo, useRef, useState } from "react";
 import Button from "../ui/button/Button";
 import { CartContext } from "../../context/cartContext";
 import React from "react";
-
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 interface CartProps {
-  children?: React.ReactNode; // Optional children prop
-  setter?: boolean | false; // Optional setter for visibility state
-  className?: string; // Optional prop to move the cart modal after a specific element
+  children?: React.ReactNode;
+  setter: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string; 
   cartPosition?: string;
 }
 export function CartModal({
@@ -17,27 +17,26 @@ export function CartModal({
   className,
   cartPosition,
 }: CartProps) {
-  const [visible] = useState(setter);
   const { cart } = useContext(CartContext);
 
- console.log(cart);
- 
+  console.log(cart);
 
   const calculateTotal = useMemo(() => {
-      let total = 0;
-      cart.forEach((item: any) => {
-        total += parseFloat(item.price.replace(/₱|,/g, "")) * item.quantity;
-      });
-      return total.toFixed(2);
-  }, [cart])
+    let total = 0;
+    cart.forEach((item: any) => {
+      total += parseFloat(item.price.replace(/₱|,/g, "")) * item.quantity;
+    });
+    return total.toFixed(2);
+  }, [cart]);
 
-  
+  const ref = useRef<HTMLDivElement | null>(null)
+  useClickOutside(ref, () => setter(false))
 
   return (
-    <div className={`${cartPosition} absolute right-10 z-50 shadow-2xl`}>
+    <div ref={ref} className={`${cartPosition} absolute right-10 z-50 shadow-2xl`}>
       <div
         className={`rounded shadow-md h-auto
-          max-h-[400px] w-[450px] ${!visible && "hidden"}
+          max-h-[400px] w-[450px] 
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
           after:w-0 after:h-0 
@@ -74,7 +73,7 @@ export function CartModal({
           <>
             <div className="flex flex-col items-center justify-between h-full p-6 gap-4">
               <div className="justify-center flex flex-col items-center h-full gap-6">
-                <MdShoppingCart className="text-7xl text-mayormoto-blue" />
+                <BsCart2 className="text-7xl text-mayormoto-blue" />
                 <h2 className="font-medium text-2xl text-mayormoto-blue">
                   Your cart is empty
                 </h2>

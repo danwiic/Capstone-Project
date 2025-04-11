@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Nav/Navbar";
 import bg from "../images/gille-astral.png";
 import CategoriesCard from "../components/ui/CategoriesCard";
 import gille from "../images/logo/gille_logo.png";

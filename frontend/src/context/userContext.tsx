@@ -2,19 +2,19 @@ import React, { createContext, useContext, useState } from "react";
 
 type SingleUser = {
   id: string;
-  username: string;
-  password: string;
+  email: string;
+  name?: String;
 };
 
 type UserContextType = {
-  user: SingleUser[];
-  setUser: React.Dispatch<React.SetStateAction<SingleUser[]>>;
+  user: SingleUser | null;
+  setUser: React.Dispatch<React.SetStateAction<SingleUser | null>>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<SingleUser[]>([]);
+  const [user, setUser] = useState<SingleUser | null>(null);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

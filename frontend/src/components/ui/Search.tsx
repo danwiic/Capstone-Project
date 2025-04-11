@@ -7,9 +7,9 @@ export default function Search() {
         <input 
           type="text" 
           placeholder="Search..."
-          className="w-full  px-5 py-3 rounded-l-sm focus:outline-0 text-sm" 
+          className="w-full  px-5 py-3 rounded-l-xs focus:outline-0 text-sm" 
           />
-        <button className="rounded-r-sm bg-mayormoto-blue 
+        <button className="rounded-r-xs bg-mayormoto-blue 
         px-5 py-3 cursor-pointer hover:bg-mayormoto-blue-hover">
           <IoIosSearch className="text-2xl font-bold text-white" />
         </button>
