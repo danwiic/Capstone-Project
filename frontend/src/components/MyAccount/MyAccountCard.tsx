@@ -13,16 +13,16 @@ export default function MyAccountCard({
   className,
   cartPosition,
 }: Props) {
-  const ref = useRef<HTMLDivElement | null>(null)
-  useClickOutside(ref, () => setter(false))
+  const ref = useRef<HTMLDivElement | null>(null);
+  useClickOutside(ref, () => setter(false));
 
   return (
     <div
-      className={`${cartPosition} top-2 absolute -left-12.5 z-55 shadow-2xl `}
+      className={`${cartPosition} top-4 absolute -left-4.5 z-55 shadow-2xl `}
     >
       <div
         className={`rounded shadow-md h-auto bg-white
-                  max-h-[400px] w-[12rem]
+                  w-[10rem]
                   relative
                   after:content-[''] after:absolute after:-top-2 ${className} 
                   after:w-0 after:h-0 

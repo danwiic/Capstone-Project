@@ -15,7 +15,7 @@ export default function LoginNav() {
 
   const ref = useRef<HTMLDivElement | null>(null);
   useClickOutside(ref, () => setViewSettings(false));
-  
+
   return (
     <div ref={ref}>
       {user ? (
@@ -23,13 +23,13 @@ export default function LoginNav() {
           <span className="text-sm text-gray-600">
             Hello, {user ? `${user.name}` : "User"}
           </span>
-          <div
+          <button
             onClick={() => handleViewAccountSettings()}
             className="flex items-center gap-1 text-lg 
              text-mayormoto-blue cursor-pointer"
           >
             My Account <IoIosArrowDown />
-          </div>
+          </button>
         </div>
       ) : (
         <Link
@@ -41,7 +41,10 @@ export default function LoginNav() {
       )}
 
       {viewSettings && (
-        <div className="z-50 sticky -bottom-10 bg-white w-full">
+        <div
+          className="z-50 sticky -bottom-10 bg-white w-full 
+        animate-fade animate-once animate-duration-[300ms] animate-ease"
+        >
           <AccountModal.Body
             cartPosition="right-30"
             setter={setViewSettings}

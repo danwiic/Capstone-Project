@@ -16,8 +16,7 @@ export default function CartIcon() {
   useClickOutside(ref, () => setViewCart(false));
   return (
     <div ref={ref}>
-      {cart && (
-        <div onClick={() => handleViewCart()} className="relative flex">
+        <button onClick={() => handleViewCart()} className="relative flex">
           <BsCart2 className="text-4xl cursor-pointer text-mayormoto-blue" />
           <span
             className="font-medium bg-mayormoto-blue text-white absolute h-6 w-6 p-1 
@@ -27,8 +26,7 @@ export default function CartIcon() {
           >
             {cart.length ?? 0}
           </span>
-        </div>
-      )}
+        </button>
 
       {viewCart && (
         <div className="z-50 sticky top-20">

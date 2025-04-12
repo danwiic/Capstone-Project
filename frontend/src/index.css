@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwindcss-animated";
 @theme {
     /* colors */
     --color-mayormoto-blue: #403a67;   

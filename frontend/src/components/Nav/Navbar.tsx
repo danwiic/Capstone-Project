@@ -1,6 +1,6 @@
 import logo from "../../images/mayormoto-logo-removebg-preview.png";
 import Search from "../ui/Search.tsx";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import Cart from "../Cart/index.tsx";
 import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
@@ -30,15 +30,11 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <Search />
         </div>
 
-        <div className="flex gap-6 ">
-          <button className="cursor-pointer">
+        <div className="flex gap-6 items-center"> 
             <LoginNav />
-          </button>
-
-          <button className="cursor-pointer">
             <Cart.Icon />
-          </button>
         </div>
+
       </div>
       <main>{children}</main>
     </>

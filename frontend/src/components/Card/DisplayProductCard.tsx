@@ -1,3 +1,4 @@
+import { formatMoney } from "../../utils/formatMoney";
 
 type ProductCardProps = {
   imageUrl: string;
@@ -13,23 +14,27 @@ export default function ProductCard({
 }: ProductCardProps) {
   return (
     <>
-      <div className="rounded shadow-md flex flex-col w-[300px] p-4 justify-center gap-5 bg-white hover:shadow-lg">
-        <div className="flex justify-center">
-          <img
-            src={imageUrl}
-            alt="/"
-            className="w-40 transition-transform duration-200 
-                  cursor-pointer h-45 hover:scale-120"
-          />
-        </div>
-        <div className="flex flex-col justify-between">
-          <div className="text-2xl font-medium">{name}</div>
-          <div className="text-sm font-medium text-gray-700">
-            Stocks: {stock}
+      <div
+        className="rounded shadow-xs flex flex-col w-56 
+      p-6 justify-center gap-2 bg-white hover:shadow-md"
+      >
+        <div className="flex flex-col gap-5">
+          <div className="flex justify-center w-full  h-32">
+            <img
+              src={imageUrl}
+              alt="/"
+              className="w-28 h-full transition-transform duration-200 
+                  cursor-pointer scale-130 hover:scale-140"
+            />
+          </div>
+          <div className="text-md font-bold cursor-pointer hover:text-mayormoto-blue">
+            {name}
           </div>
         </div>
 
-        <div className="text-lg font-medium text-red-500 ">₱{price}</div>
+        <div className="text-lg font-medium text-red-500 ">
+          {formatMoney(price)}
+        </div>
       </div>
     </>
   );

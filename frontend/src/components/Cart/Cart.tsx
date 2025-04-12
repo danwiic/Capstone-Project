@@ -7,7 +7,7 @@ import React from "react";
 interface CartProps {
   children?: React.ReactNode;
   setter: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string; 
+  className?: string;
   cartPosition?: string;
 }
 export function CartModal({
@@ -28,13 +28,14 @@ export function CartModal({
     return total.toFixed(2);
   }, [cart]);
 
-
-
   return (
-    <div className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-2xl`}>
+    <div
+      className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-2xl 
+    animate-fade animate-once animate-duration-[300ms] animate-ease`}
+    >
       <div
         className={`rounded shadow-md h-auto
-          max-h-[400px] w-[450px] 
+          max-h-[400px] w-[30rem] 
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
           after:w-0 after:h-0 
