@@ -1,5 +1,5 @@
 import Footer from "../components/footer/Footer";
-import CardSkeleton from "../components/ui/CardSkeleton";
+import CardSkeleton from "../components/loader/CardSkeleton";
 
 export default function Signup() {
   return (

@@ -1,6 +1,6 @@
 import Navbar from "../components/Nav/Navbar";
 import bg from "../images/gille-astral.png";
-import CategoriesCard from "../components/ui/CategoriesCard";
+import CategoriesCard from "../components/loader/CategoriesCard";
 import gille from "../images/logo/gille_logo.png";
 import Footer from "../components/footer/Footer";
 
@@ -65,7 +65,6 @@ function Home() {
           </div> */}
         </div>
       </Navbar>
-      <Footer/>
     </div>
   );
 }

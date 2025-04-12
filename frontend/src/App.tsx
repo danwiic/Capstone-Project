@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Signup from './pages/Signup';
 import Test from './pages/Test';
+import ProductDetails from './pages/ProductDetails';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

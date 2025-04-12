@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Cart from "../Cart/index.tsx";
 import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
+import Footer from "../footer/Footer.tsx";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   const { setUser } = useUserContext();
 
@@ -18,7 +19,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
     <>
       <div
-        className="bg-body p-1 px-20 shadow-md py-2
+        className="bg-body p-1 px-20 shadow-sm py-2
         flex justify-between items-center sticky top-0 z-50
         "
       >
@@ -37,6 +38,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
 
       </div>
       <main>{children}</main>
+      <Footer/>
     </>
   );
 }
