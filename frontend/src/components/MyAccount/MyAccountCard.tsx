@@ -18,11 +18,10 @@ export default function MyAccountCard({
 
   return (
     <div
-      ref={ref}
-      className={`${cartPosition} absolute right-20 z-55 shadow-2xl bg-white`}
+      className={`${cartPosition} top-2 absolute -left-12.5 z-55 shadow-2xl `}
     >
       <div
-        className={`rounded shadow-md h-auto
+        className={`rounded shadow-md h-auto bg-white
                   max-h-[400px] w-[12rem]
                   relative
                   after:content-[''] after:absolute after:-top-2 ${className} 

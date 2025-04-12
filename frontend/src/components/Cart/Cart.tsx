@@ -3,7 +3,6 @@ import { useContext, useMemo, useRef, useState } from "react";
 import Button from "../ui/button/Button";
 import { CartContext } from "../../context/cartContext";
 import React from "react";
-import { useClickOutside } from "../../hooks/useClickOutside";
 
 interface CartProps {
   children?: React.ReactNode;
@@ -29,11 +28,10 @@ export function CartModal({
     return total.toFixed(2);
   }, [cart]);
 
-  const ref = useRef<HTMLDivElement | null>(null)
-  useClickOutside(ref, () => setter(false))
+
 
   return (
-    <div ref={ref} className={`${cartPosition} absolute right-10 z-50 shadow-2xl`}>
+    <div className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-2xl`}>
       <div
         className={`rounded shadow-md h-auto
           max-h-[400px] w-[450px] 
