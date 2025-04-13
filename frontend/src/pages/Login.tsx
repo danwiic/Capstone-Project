@@ -16,7 +16,7 @@ export default function Login() {
 
         <form
           action=""
-          className="w-1/4 px-8 py-8 rounded-sm shadow-lg bg-white"
+          className="w-1/4 px-8 py-8 rounded-sm shadow-1 bg-white"
         >
           <div className="flex flex-col gap-3 w-full">
             <div className="text-2xl m-0 p-0 font-bold text-center text-gray-800">

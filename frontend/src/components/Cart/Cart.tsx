@@ -3,6 +3,7 @@ import { useContext, useMemo, useRef, useState } from "react";
 import Button from "../ui/button/Button";
 import { CartContext } from "../../context/cartContext";
 import React from "react";
+import { formatMoney } from "../../utils/formatMoney";
 
 interface CartProps {
   children?: React.ReactNode;
@@ -34,8 +35,8 @@ export function CartModal({
     animate-fade animate-once animate-duration-[300ms] animate-ease`}
     >
       <div
-        className={`rounded shadow-md h-auto
-          max-h-[400px] w-[30rem] 
+        className={`rounded shadow-md h-[18rem]
+          max-h-[22rem] w-[30rem] 
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
           after:w-0 after:h-0 
@@ -57,12 +58,12 @@ export function CartModal({
             >
               <div className="flex justify-between items-center">
                 <div className="font-medium">Total</div>
-                <div className="font-medium">₱{calculateTotal}</div>
+                <div className="font-medium">{formatMoney(calculateTotal)}</div>
               </div>
 
               <div className="flex justify-between items-center gap-2">
-                <Button>View Cart</Button>
-                <Button className="bg-red-500 hover:bg-red-400">
+                <Button className="rounded-xs">View Cart</Button>
+                <Button className="bg-red-500 hover:bg-red-400 rounded-xs">
                   Checkout
                 </Button>
               </div>
@@ -73,7 +74,7 @@ export function CartModal({
             <div className="flex flex-col items-center justify-between h-full p-6 gap-4">
               <div className="justify-center flex flex-col items-center h-full gap-6">
                 <BsCart2 className="text-7xl text-mayormoto-blue" />
-                <h2 className="font-medium text-2xl text-mayormoto-blue">
+                <h2 className="font-medium text-xl text-mayormoto-blue">
                   Your cart is empty
                 </h2>
               </div>

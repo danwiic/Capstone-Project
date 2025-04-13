@@ -6,13 +6,15 @@ export default function Footer({ children }: { children?: React.ReactNode }) {
     <>
       {children}
       <footer className="bg-white py-6 px-20 relative bottom-0 w-full h-1/4">
-        <div className="grid grid-cols-3  items-center text-gray-500">
-          <div className="text-sm font-medium flex flex-col justify-center gap-6 p-10">
-            <div>
-              <Link to={"/"}>
-                <img src={logo} alt="/" className="w-56 h-16 cursor-pointer" />
-              </Link>
-            </div>
+        <div className="grid grid-cols-3  text-gray-500">
+          <div className="text-sm font-medium flex flex-col gap-6 p-10">
+            <Link className="flex justify-start" to={"/"}>
+              <img
+                src={logo}
+                alt="/"
+                className="w-auto h-auto scale-70 cursor-pointer"
+              />
+            </Link>
             <p className="text-sm font-medium">
               MayorMoto is your one-stop shop for all your motorcycle needs. We
               offer a wide range of products and services to help you get the

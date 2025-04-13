@@ -3,7 +3,7 @@ import { IoIosSearch } from "react-icons/io";
 export default function Search() {
   return (
     <>
-      <form action="" className="flex w-full border border-mayormoto-blue rounded-sm">
+      <form action="" className="flex w-full border border-b-mayormoto-blue rounded-xs">
         <input 
           type="text" 
           placeholder="Search..."

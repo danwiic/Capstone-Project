@@ -8,13 +8,13 @@ import Footer from "../footer/Footer.tsx";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   const { setUser } = useUserContext();
 
-  useEffect(() => {
-    setUser({
-      id: "123",
-      email: "danbalagbag@gmail.com",
-      name: "Dan",
-    });
-  }, []);
+  // useEffect(() => {
+  //   setUser({
+  //     id: "123",
+  //     email: "danbalagbag@gmail.com",
+  //     name: "Dan",
+  //   });
+  // }, []);
 
   return (
     <>

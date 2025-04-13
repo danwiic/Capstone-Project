@@ -14,7 +14,8 @@
     /* breakpoints */
     --breakpoint-1400: 87.5rem;
 
-    
+    /* shadow */
+    --shadow-1:0px 0px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
 *{
