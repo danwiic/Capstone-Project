@@ -10,8 +10,8 @@ export default function ProductDetails() {
           <div className="grid gap-10 md:grid-cols-1 lg:grid-cols-4 w-full">
             <div
               className=" w-full h-auto md:col-span-1 
-        lg:col-span-2 bg-white shadow-1
-            p-6 rounded flex gap-4 "
+              lg:col-span-2 bg-white shadow-1
+              p-6 rounded flex gap-4 "
             >
               <div className="flex flex-col gap-2">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -90,7 +90,7 @@ export default function ProductDetails() {
 
               <div className="flex gap-3 items-center">
                 <span className="font-medium">Price:</span>
-                <span className="text-2xl text-mayormoto-blue font-medium">
+                <span className="text-2xl text-red-500 font-medium">
                   {formatMoney(10000)}
                 </span>
               </div>
@@ -103,6 +103,7 @@ export default function ProductDetails() {
                   </button>
                   <input
                     type="text"
+                    defaultValue={1}
                     className="w-10 outline-0 text-center text-gray-700 text-sm"
                   />
                   <button className="p-1 border-l-1 px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">

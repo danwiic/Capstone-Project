@@ -1,4 +1,6 @@
+import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
+import Button from "../ui/button/Button";
 
 type ProductCardProps = {
   imageUrl?: string;
@@ -6,19 +8,17 @@ type ProductCardProps = {
   brand?: string;
   price: number;
 };
-export default function ProductCard({
+function DisplayProductCart({
   imageUrl,
   name,
   brand,
   price,
 }: ProductCardProps) {
-  console.log(formatMoney(price));
-
   return (
     <>
       <div
         className="rounded-xs shadow-1 flex flex-col w-56 
-      p-6 justify-center gap-2 bg-white hover:shadow-1-hover"
+      py-6 px-4 justify-center gap-2 bg-white hover:shadow-1-hover"
       >
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full  h-32">
@@ -31,15 +31,29 @@ export default function ProductCard({
           </div>
 
           <div className=" flex flex-col gap-2 cursor-pointer">
-            <span className="font-medium text-sm uppercase text-gray-500 hover:text-mayormoto-blue">{brand}</span>
-            <span className="text-sn font-medium break-words hover:text-mayormoto-blue">{name}</span>
+            <span
+              className="font-medium text-xs uppercase 
+            text-gray-500 hover:text-mayormoto-blue"
+            >
+              {brand}
+            </span>
+            <span
+              className="text-sm font-bold break-words 
+            hover:text-mayormoto-blue"
+            >
+              {name}
+            </span>
           </div>
         </div>
 
         <div className="text-xl font-medium text-red-500 ">
           {formatMoney(price)}
         </div>
+
+        <Button className="rounded-xs ">Add to cart</Button>
       </div>
     </>
   );
 }
+
+export default React.memo(DisplayProductCart);

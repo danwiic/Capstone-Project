@@ -2,6 +2,9 @@ import Navbar from "../components/Nav/Navbar";
 import bg from "../images/gille-astral.png";
 import BrandCard from "../components/loader/BrandCard";
 import gille from "../images/logo/gille_logo.png";
+import ProductCardSkeleton from "../components/loader/ProductCardSkeleton";
+import DisplayProductCard from "../components/Card/ProductCard";
+import { useEffect, useState } from "react";
 
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
@@ -17,6 +20,15 @@ export default function Home() {
   //   console.log(userID, isLoggedIn);
 
   // }, [setUser])
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <div>
@@ -34,7 +46,7 @@ export default function Home() {
           <div className="px-20 flex flex-col gap-10">
             <div className="flex flex-col gap-4 m-20">
               <span className="text-2xl font-medium">Featured Brands</span>
-              <div className="grid md:grid-cols-3 lg:grid-cols-5 auto-cols-auto gap-2 px-6 ">
+              <div className="flex gap-2 justify-center">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <BrandCard key={i} image={gille} />
                 ))}
@@ -42,9 +54,22 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-4 ">
-              <span className="text-2xl font-medium">Featured Brands</span>
-              <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
-                
+              <span className="text-2xl font-medium">Featured Products</span>
+              <div className="flex gap-2">
+                {Array.from({ length: 6 }).map((_, i) =>
+                  isLoading ? (
+                    <ProductCardSkeleton key={i} />
+                  ) : (
+                    <div className="w-screen flex flex-col gap-2" key={i}>
+                      <DisplayProductCard
+                        name="Gille Astral Honda Grey"
+                        price={4800}
+                        brand="gille"
+                        imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+                      />
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>

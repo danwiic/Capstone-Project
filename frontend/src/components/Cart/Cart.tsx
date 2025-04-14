@@ -1,5 +1,5 @@
 import { BsCart2 } from "react-icons/bs";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import Button from "../ui/button/Button";
 import { CartContext } from "../../context/cartContext";
 import React from "react";
@@ -20,6 +20,7 @@ export function CartModal({
   const { cart } = useContext(CartContext);
 
   console.log(cart);
+
 
   const calculateTotal = useMemo(() => {
     let total = 0;
@@ -58,7 +59,7 @@ export function CartModal({
             >
               <div className="flex justify-between items-center">
                 <div className="font-medium">Total</div>
-                <div className="font-medium">{formatMoney(calculateTotal)}</div>
+                <div className="font-medium text-red-500">{formatMoney(calculateTotal)}</div>
               </div>
 
               <div className="flex justify-between items-center gap-2">

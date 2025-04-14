@@ -31,7 +31,7 @@ export default function CartItems({
         <div className="p-0 m-0 text-md text-gray-700 font-medium w-full break-words">
           {itemName}
         </div>
-        <span className="text-sm font-medium text-mayormoto-blue">{price}</span>
+        <span className="text-md font-medium text-red-500">{price}</span>
       </div>
 
       <div className="flex flex-col items-center w-auto gap-1">
