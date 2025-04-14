@@ -1,5 +1,5 @@
 import { BsCart2 } from "react-icons/bs";
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useMemo } from "react";
 import Button from "../ui/button/Button";
 import { CartContext } from "../../context/cartContext";
 import React from "react";

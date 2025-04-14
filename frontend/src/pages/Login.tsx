@@ -5,6 +5,7 @@ import InputBox from "../components/ui/InputBox";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+
   return (
     <>
       <div className="flex flex-col items-center gap-6 h-auto py-20">

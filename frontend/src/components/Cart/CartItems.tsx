@@ -23,7 +23,7 @@ export default function CartItems({
           className="w-full h-full scale-80"
         />
       </div>
-      
+
       <div
         className="flex flex-col gap-4 h-full w-full
     justify-center items-start px-10 overflow-hidden"
@@ -35,16 +35,15 @@ export default function CartItems({
       </div>
 
       <div className="flex flex-col items-center w-auto gap-1">
-        <div className="flex items-center justify-around w-24 border border-gray-300 rounded">
-          <button className="flex items-center justify-center w-6 h-8 text-2xl font-medium text-gray-400">
+        <div className="border-1 border-gray-200 flex">
+          <button className="p-1 border-r-1 px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">
             -
           </button>
           <input
             type="text"
-            defaultValue={quantity ?? 1}
-            className="w-5 text-center text-gray-600 outline-0"
+            className="w-10 outline-0 text-center text-gray-700 text-sm"
           />
-          <button className="flex items-center justify-center w-6 h-8 text-2xl font-medium text-gray-400">
+          <button className="p-1 border-l-1 px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">
             +
           </button>
         </div>

@@ -1,12 +1,11 @@
 import Navbar from "../components/Nav/Navbar";
 import bg from "../images/gille-astral.png";
-import CategoriesCard from "../components/loader/CategoriesCard";
+import BrandCard from "../components/loader/BrandCard";
 import gille from "../images/logo/gille_logo.png";
-import Footer from "../components/footer/Footer";
 
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
-function Home() {
+export default function Home() {
   // const { userID, isLoggedIn, setUser } = useUserContext();
 
   // useEffect(() => {
@@ -25,7 +24,7 @@ function Home() {
         <div className="flex flex-col gap-10 justify-center pb-10">
           <div className="relative h-auto w-full">
             <img
-            title="Background Image"
+              title="Background Image"
               src={bg}
               alt=""
               className="h-full w-full object-cover cursor-pointer"
@@ -35,9 +34,9 @@ function Home() {
           <div className="px-20 flex flex-col gap-10">
             <div className="flex flex-col gap-4 m-20">
               <span className="text-2xl font-medium">Featured Brands</span>
-              <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <CategoriesCard key={i} image={gille} label="Gille" />
+              <div className="grid md:grid-cols-3 lg:grid-cols-5 auto-cols-auto gap-2 px-6 ">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <BrandCard key={i} image={gille} />
                 ))}
               </div>
             </div>
@@ -45,13 +44,9 @@ function Home() {
             <div className="flex flex-col gap-4 ">
               <span className="text-2xl font-medium">Featured Brands</span>
               <div className="grid md:grid-cols-3 lg:grid-cols-6 auto-cols-auto gap-1">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <CategoriesCard key={i} label="Gille" image={"https://i.postimg.cc/bvV8St8p/FTR-Premium-45-L-Plastic-3-800.png"} />
-                ))}
+                
               </div>
             </div>
-
-            
           </div>
 
           {/*  */}
@@ -68,5 +63,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

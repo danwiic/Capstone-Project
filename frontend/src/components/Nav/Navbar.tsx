@@ -1,12 +1,11 @@
 import logo from "../../images/mayormoto-logo-removebg-preview.png";
 import Search from "../ui/Search.tsx";
-import { useEffect } from "react";
 import Cart from "../Cart/index.tsx";
-import { useUserContext } from "../../context/userContext.tsx";
+// import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
 import Footer from "../footer/Footer.tsx";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
-  const { setUser } = useUserContext();
+  // const { setUser } = useUserContext();
 
   // useEffect(() => {
   //   setUser({
@@ -31,14 +30,13 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <Search />
         </div>
 
-        <div className="flex gap-6 items-center"> 
-            <LoginNav />
-            <Cart.Icon />
+        <div className="flex gap-6 items-center">
+          <LoginNav />
+          <Cart.Icon />
         </div>
-
       </div>
       <main>{children}</main>
-      <Footer/>
+      <Footer />
     </>
   );
 }
