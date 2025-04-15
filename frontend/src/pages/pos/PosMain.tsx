@@ -4,7 +4,7 @@ export default function PosMain() {
   return (
     <>
         <Layout>
-            
+            POS MAIN
         </Layout>
     </>
   )

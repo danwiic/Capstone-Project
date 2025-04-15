@@ -27,8 +27,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
 
             <Route path="/pos">
-              <Route path="" element={<PosMain />} />
-              <Route path="login" element={<PosLogin />} />
+              <Route path="main" element={<PosMain />} />
+              <Route path="" element={<PosLogin />} />
             </Route>
           </Routes>
         </Router>
