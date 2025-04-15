@@ -6,18 +6,20 @@ type ProductCardProps = {
   name?: string;
   brand?: string;
   price: number;
+  cardDesign?: string;
 };
 export default function ProductCard({
   imageUrl,
   name,
   brand,
   price,
+  cardDesign,
 }: ProductCardProps) {
   return (
     <>
       <div
-        className="rounded-xs shadow-1 flex flex-col w-56 
-      py-6 px-4 justify-center gap-2 bg-white hover:shadow-1-hover"
+        className={`rounded-xs flex flex-col w-full ${cardDesign}
+      py-6 px-4 justify-center gap-2 bg-white hover:shadow-1-hover`}
       >
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full  h-32">

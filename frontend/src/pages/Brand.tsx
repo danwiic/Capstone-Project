@@ -8,54 +8,15 @@ export default function Brand() {
       <Navbar>
         <div className="px-16 py-10">
           <BrandLayout>
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
-            <ProductCart
-              name="Gille Astral Honda Grey"
-              price={4800}
-              brand="gille"
-              imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-            />
+            {Array.from({ length: 16 }).map((_, i) => (
+              <ProductCart
+                key={i}
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+            ))}
           </BrandLayout>
         </div>
       </Navbar>

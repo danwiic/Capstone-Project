@@ -10,7 +10,7 @@ export default function BrandLayout({ children }: BrandLayout) {
   return (
     <div className="grid lg:grid-cols-1 xl:grid-cols-4 auto-cols-auto bg-white p-10 rounded-xs shadow-1">
       <div className="md:col-span-1 xl:col-span-4 py-10  ">
-        <span className="text-2xl font-bold">BRAND: GILLE</span>
+        <span className="text-2xl font-bold text-mayormoto-blue">GILLE</span>
       </div>
 
       <div
@@ -80,6 +80,22 @@ export default function BrandLayout({ children }: BrandLayout) {
               text-white text-center cursor-pointer"
               >
                 1
+              </span>
+              <span
+                className="text-sm bg-white w-10 h-10 
+              flex items-center justify-center rounded 
+              text-mayormoto-blue text-center cursor-pointer
+              hover:bg-mayormoto-blue hover:text-white"
+              >
+                2
+              </span>
+              <span
+                className="text-sm bg-white w-10 h-10 
+              flex items-center justify-center rounded 
+              text-mayormoto-blue text-center cursor-pointer 
+              hover:bg-mayormoto-blue hover:text-white"
+              >
+                3
               </span>
             </div>
             <button

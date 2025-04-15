@@ -53,70 +53,30 @@ export default function Home() {
               </div>
             </div>
 
-            <ProductTray brand="gille" buttonLink={"/brand/1"}>
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
+            <ProductTray border brand="gille" buttonLink={"/brand/1"}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <DisplayProductCard
+                  key={i}
+                  cardDesign="border-r border-y-0 first:border-l border-gray-200 last:border-r-0 hover:z-1"
+                  name="Gille Astral Honda Grey"
+                  price={4800}
+                  brand="gille"
+                  imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+                />
+              ))}
             </ProductTray>
 
-            <ProductTray brand="gille" buttonLink={"/test"}>
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
-              <DisplayProductCard
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-              />
+            <ProductTray border brand="gille" buttonLink={"/brand/1"}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <DisplayProductCard
+                  key={i}
+                  cardDesign="border-r border-y-0 first:border-l border-gray-200 last:border-r-0 hover:z-1"
+                  name="Gille Astral Honda Grey"
+                  price={4800}
+                  brand="gille"
+                  imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+                />
+              ))}
             </ProductTray>
           </div>
 
