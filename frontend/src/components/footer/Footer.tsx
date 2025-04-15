@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import logo from "../../images/mayormoto_logo.png";
 
 export default function Footer({ children }: { children?: React.ReactNode }) {
+  const date = new Date();
+  const year = date.getFullYear();
   return (
     <>
       {children}
@@ -20,43 +22,70 @@ export default function Footer({ children }: { children?: React.ReactNode }) {
               offer a wide range of products and services to help you get the
               most out of your ride.
             </p>
-            <span>© 2023 MayorMoto</span>
+            <span>©{year} MayorMoto</span>
           </div>
 
           <div className="flex flex-col gap-2 h-full w-full p-10">
             <span className="font-medium text-md text-gray-800">
               CATEGORIES
             </span>
-            <Link
-              to={"/about"}
-              className="text-sm font-medium hover:text-mayormoto-blue"
-            >
-              About Us
-            </Link>
-            <Link
-              to={"/contact"}
-              className="text-sm font-medium hover:text-mayormoto-blue"
-            >
-              Contact Us
-            </Link>
+            <div className="flex flex-col pl-4 gap-2">
+              <Link
+                to={"/about"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Helmet
+              </Link>
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Top Box
+              </Link>
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Riding Jacket
+              </Link>
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Gloves & Arm Sleeve
+              </Link>
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Gears
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2 h-full w-full p-10">
-            <span className="font-medium text-md text-gray-800">
-              CATEGORIES
-            </span>
-            <Link
-              to={"/about"}
-              className="text-sm font-medium hover:text-mayormoto-blue"
-            >
-              About Us
-            </Link>
-            <Link
-              to={"/contact"}
-              className="text-sm font-medium hover:text-mayormoto-blue"
-            >
-              Contact Us
-            </Link>
+            <span className="font-medium text-md text-gray-800">BRANDS</span>
+            <div className="flex flex-col pl-4 gap-2">
+              <Link
+                to={"/about"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Gille
+              </Link>
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Zebra
+              </Link>
+
+              <Link
+                to={"/contact"}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Spyder
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

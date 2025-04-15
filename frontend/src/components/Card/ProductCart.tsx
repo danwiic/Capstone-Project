@@ -1,6 +1,7 @@
 import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Button from "../ui/button/Button";
+import { Link } from "react-router-dom";
 
 type ProductCardProps = {
   imageUrl?: string;
@@ -17,8 +18,9 @@ function DisplayProductCart({
   return (
     <>
       <div
-        className="rounded-xs shadow-1 flex flex-col w-56 
-      py-6 px-4 justify-center gap-2 bg-white hover:shadow-1-hover"
+        className="rounded-xs  flex flex-col w-full
+      py-6 px-4 justify-center gap-2 bg-white border border-gray-200
+      border-l-0 [&:nth-child(4n)]:border-r-0 border-t-0"
       >
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full  h-32">
@@ -37,12 +39,14 @@ function DisplayProductCart({
             >
               {brand}
             </span>
-            <span
-              className="text-sm font-bold break-words 
+            <Link to={`/product/1`}>
+              <span
+                className="text-sm font-bold break-words 
             hover:text-mayormoto-blue"
-            >
-              {name}
-            </span>
+              >
+                {name}
+              </span>
+            </Link>
           </div>
         </div>
 

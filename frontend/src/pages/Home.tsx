@@ -2,9 +2,9 @@ import Navbar from "../components/Nav/Navbar";
 import bg from "../images/gille-astral.png";
 import BrandCard from "../components/loader/BrandCard";
 import gille from "../images/logo/gille_logo.png";
-import ProductCardSkeleton from "../components/loader/ProductCardSkeleton";
 import DisplayProductCard from "../components/Card/ProductCard";
 import { useEffect, useState } from "react";
+import ProductTray from "../components/Layout/ProductTray";
 
 // import { useUserContext } from "../context/UserContext";
 // import { useEffect } from "react";
@@ -20,7 +20,7 @@ export default function Home() {
   //   console.log(userID, isLoggedIn);
 
   // }, [setUser])
-  const [isLoading, setIsLoading] = useState(true);
+  const [_, setIsLoading] = useState(true);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -53,25 +53,71 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 ">
-              <span className="text-2xl font-medium">Featured Products</span>
-              <div className="flex gap-2">
-                {Array.from({ length: 6 }).map((_, i) =>
-                  isLoading ? (
-                    <ProductCardSkeleton key={i} />
-                  ) : (
-                    <div className="w-screen flex flex-col gap-2" key={i}>
-                      <DisplayProductCard
-                        name="Gille Astral Honda Grey"
-                        price={4800}
-                        brand="gille"
-                        imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
-                      />
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
+            <ProductTray brand="gille" buttonLink={"/brand/1"}>
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+            </ProductTray>
+
+            <ProductTray brand="gille" buttonLink={"/test"}>
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+              <DisplayProductCard
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+            </ProductTray>
           </div>
 
           {/*  */}

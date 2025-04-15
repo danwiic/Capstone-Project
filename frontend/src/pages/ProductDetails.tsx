@@ -1,3 +1,4 @@
+import ProductCart from "../components/Card/ProductCart";
 import Navbar from "../components/Nav/Navbar";
 import Button from "../components/ui/button/Button";
 import { formatMoney } from "../utils/formatMoney";
@@ -45,7 +46,7 @@ export default function ProductDetails() {
               "
             >
               <div className="flex flex-col gap-3">
-                <h2 className="text-3xl font-bold">Helmet s72s Zebra</h2>
+                <h2 className="text-3xl font-bold"> Gille Astral Honda Grey</h2>
                 <hr className="text-gray-300" />
               </div>
 
@@ -129,12 +130,21 @@ export default function ProductDetails() {
               </span>
               <div className="flex flex-col gap-3">
                 <h3 className="text-2xl font-bold text-gray-700">
-                  Helmet s72s Zebra
+                  Gille Astral Honda Grey
                 </h3>
                 <p className="text-gray-500 text-sm leading-loose">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, rerum alias. Quae dicta optio repellendus. Ipsa laborum voluptates magnam dolorum eius, unde, autem eligendi nesciunt molestias nobis aliquam, deleniti maiores?
-                  Sequi ipsa, nam recusandae veritatis perspiciatis necessitatibus sint molestiae unde voluptatem ut optio expedita non reprehenderit, possimus minima nihil error nisi quidem. Itaque libero quia quo doloribus pariatur praesentium quae!
-                  Ut mollitia ad iste culpa enim? Illo ab pariatur, necessitatibus nemo blanditiis, voluptas aperiam soluta officiis esse quas corporis? Magni enim alias veritatis autem, corrupti dicta iure quasi! Sequi, cupiditate.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Autem, rerum alias. Quae dicta optio repellendus. Ipsa laborum
+                  voluptates magnam dolorum eius, unde, autem eligendi nesciunt
+                  molestias nobis aliquam, deleniti maiores? Sequi ipsa, nam
+                  recusandae veritatis perspiciatis necessitatibus sint
+                  molestiae unde voluptatem ut optio expedita non reprehenderit,
+                  possimus minima nihil error nisi quidem. Itaque libero quia
+                  quo doloribus pariatur praesentium quae! Ut mollitia ad iste
+                  culpa enim? Illo ab pariatur, necessitatibus nemo blanditiis,
+                  voluptas aperiam soluta officiis esse quas corporis? Magni
+                  enim alias veritatis autem, corrupti dicta iure quasi! Sequi,
+                  cupiditate.
                 </p>
               </div>
             </div>
@@ -144,8 +154,16 @@ export default function ProductDetails() {
         {/* SUGGESTED PRODUCTS */}
         <div className=" w-full px-12 py-10 mb-10 flex flex-col gap-4 h-auto">
           <h2 className="text-xl font-bold text-gray-700">You may also like</h2>
-          <div className="bg-white rounded w-full h-50 shadow-1">
-            Reco products here
+          <div className="flex rounded w-full gap-1 shadow-1">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <ProductCart
+                key={i}
+                name="Gille Astral Honda Grey"
+                price={4800}
+                brand="gille"
+                imageUrl="https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png"
+              />
+            ))}
           </div>
         </div>
       </Navbar>

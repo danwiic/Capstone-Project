@@ -6,10 +6,10 @@ export default function NotFound() {
   return (
     <div className="p-20">
       <div className="text-mayormoto-blue w-full h-full flex flex-col justify-center items-center m-auto gap-8 p-4 text-center">
-        <ImSad className="text-big align-center" />
+        <ImSad className="text-big align-center text-9xl"  />
 
         <div>
-          <h1 className="text-7xl text-mayormoto-blue">404</h1>
+          <h1 className="text-8xl text-mayormoto-blue">404</h1>
           <div className="text-mayormoto-blue text-2xl">Page not found</div>
         </div>
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { formatMoney } from "../../utils/formatMoney";
 
 type ProductCardProps = {
@@ -12,7 +13,6 @@ export default function ProductCard({
   brand,
   price,
 }: ProductCardProps) {
-
   return (
     <>
       <div
@@ -36,12 +36,14 @@ export default function ProductCard({
             >
               {brand}
             </span>
-            <span
-              className="text-sm font-bold break-words 
+            <Link to={`/product/1`}>
+              <span
+                className="text-sm font-bold break-words 
             hover:text-mayormoto-blue"
-            >
-              {name}
-            </span>
+              >
+                {name}
+              </span>
+            </Link>
           </div>
         </div>
 

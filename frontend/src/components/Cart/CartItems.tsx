@@ -42,6 +42,7 @@ export default function CartItems({
           <input
             type="text"
             className="w-10 outline-0 text-center text-gray-700 text-sm"
+            defaultValue={1}
           />
           <button className="p-1 border-l-1 px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">
             +
