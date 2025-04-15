@@ -9,7 +9,7 @@ import {
   MdOutlineReceiptLong,
   MdPeopleOutline,
   MdPointOfSale,
-  MdSettings,
+  MdOnlinePrediction,
 } from "react-icons/md";
 import {
   TbLayoutSidebarLeftCollapse,
@@ -95,13 +95,13 @@ export default function Layout({ children }: LayoutProps) {
               className={`flex items-center px-4 py-2
                rounded-md text-4xl cursor-pointer
               hover:bg-gray-200 transition-colors duration-200 ${
-                collapse && "bg-gray-300 text-mayormoto-blue"
+                collapse && "bg-gray-200 text-mayormoto-blue"
               }`}
             >
               {collapse ? (
                 <TbLayoutSidebarRightCollapse />
               ) : (
-                <TbLayoutSidebarLeftCollapse />
+                <TbLayoutSidebarLeftCollapse className="text-gray-500" />
               )}
             </button>
           </div>
@@ -120,6 +120,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
+    { name: "Sales Forecasting", icon: <MdOnlinePrediction />, path: "/pos/terminal" },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
     {
       name: "Inventory",
