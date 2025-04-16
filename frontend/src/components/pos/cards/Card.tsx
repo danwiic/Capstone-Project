@@ -1,6 +1,5 @@
 import { formatMoney } from "../../../utils/formatMoney";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { FaArrowTrendDown } from "react-icons/fa6";
 import formatNumber from "../../../utils/formatNumber";
 
 type CardProps = {

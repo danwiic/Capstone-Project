@@ -7,7 +7,7 @@ export default function TableRow({ children }: TableRowProps) {
     <tr
       className="border-b text-sm 
   last:border-b-0 border-gray-300 
-    odd:bg-gray-50
+    odd:bg-gray-50 hover:bg-gray-200 cursor-pointer
   "
     >
       {children}

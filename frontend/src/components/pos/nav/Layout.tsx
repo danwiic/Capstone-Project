@@ -125,7 +125,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
-          <div className="px-10 py-6">{children}</div>
+          <div className="p-4">{children}</div>
         </div>
       </div>
     </div>
@@ -156,7 +156,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
     { name: "Orders", icon: <MdOutlineReceiptLong />, path: "/pos/orders" },
     { name: "Transaction History", icon: <MdHistory />, path: "/pos/history" },
     { name: "Employees", icon: <MdPeopleOutline />, path: "/pos/employees" },
-    { name: "Reports", icon: <MdOutlineBarChart />, path: "/pos/reports" },
+    { name: "Analytics", icon: <MdOutlineBarChart />, path: "/pos/analytics" },
   ];
 
   return (
