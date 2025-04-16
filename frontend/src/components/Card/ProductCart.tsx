@@ -26,6 +26,7 @@ function DisplayProductCart({
           <div className="flex justify-center w-full  h-32">
             <img
               src={imageUrl}
+              loading="lazy"
               alt="/"
               className="w-28 h-full transition-transform duration-200 
                   cursor-pointer scale-120 hover:scale-125"

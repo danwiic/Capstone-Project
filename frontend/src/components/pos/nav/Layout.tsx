@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../../../images/mayormoto_logo.png";
 import icon from "../../../images/output-onlinepngtools.png";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { useLocation } from "react-router-dom";
 import {
   MdHistory,
   MdOutlineBarChart,
@@ -44,6 +45,7 @@ export default function Layout({ children }: LayoutProps) {
                 <img
                   src={icon}
                   alt="Icon"
+                  loading="lazy"
                   className="w-10 h-10 transition-all duration-300 ease-in-out"
                 />
               </div>
@@ -52,26 +54,30 @@ export default function Layout({ children }: LayoutProps) {
                 <img
                   src={logo}
                   alt="Logo"
+                  loading="lazy"
                   className="w-auto h-auto transition-all duration-300 ease-in-out"
                 />
               </div>
             )}
 
-            <div className="flex flex-col self-start gap-2 w-full">
+            <div className={`flex flex-col self-start gap-2 w-full`}>
               <SidebarItems collapse={collapse} />
             </div>
           </div>
 
           <Link to="/#">
             <div
-              className="flex gap-1 items-center 
+              className={`flex gap-1 items-center 
                 px-6 py-3  rounded-full
                 cursor-pointer transition-all
                 font-semibold duration-200 ease-in-out text-white
                 bg-mayormoto-blue hover:bg-mayormoto-blue-hover
-                justify-center whitespace-nowrap "
+                justify-center whitespace-nowrap `}
             >
-              <span className="text-2xl">
+              <span
+                className={`text-2xl 
+                ${collapse && "justify-center"}`}
+              >
                 <TbLogout2 />
               </span>
               <span
@@ -88,7 +94,8 @@ export default function Layout({ children }: LayoutProps) {
         <div className="flex-1">
           <div
             className={`bg-white w-full p-2
-              z-15 shadow-1 sticky top-0 `}
+              z-15 shadow-1 sticky top-0 flex 
+              justify-between items-center`}
           >
             <button
               onClick={collapseSidebar}
@@ -104,6 +111,19 @@ export default function Layout({ children }: LayoutProps) {
                 <TbLayoutSidebarLeftCollapse className="text-gray-500" />
               )}
             </button>
+
+            <div className="flex gap-4 pr-6 items-center ">
+              <span
+                className="bg-red-200 w-10 h-10 
+              flex justify-center items-center rounded-full"
+              >
+                img
+              </span>
+              <div className="flex flex-col">
+                <span className="font-medium">Dan Pirante</span>
+                <span className="text-xs font-medium text-gray-400">Admin</span>
+              </div>
+            </div>
           </div>
           <div className="px-10 py-6">{children}</div>
         </div>
@@ -117,10 +137,16 @@ type SidebarProps = {
 };
 
 const SidebarItems = ({ collapse }: SidebarProps) => {
+  const location = useLocation();
+
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
-    { name: "Sales Forecasting", icon: <MdOnlinePrediction />, path: "/pos/terminal" },
+    {
+      name: "Sales Forecasting",
+      icon: <MdOnlinePrediction />,
+      path: "/pos/forecasting",
+    },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
     {
       name: "Inventory",
@@ -135,28 +161,35 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
 
   return (
     <>
-      {items.map((item, i) => (
-        <Link to={item.path} className="w-full" key={i}>
-          <div
-            title={item.name}
-            className={`flex gap-1 items-center 
-                px-6 py-2 hover:bg-gray-200 hover:rounded-md
-                cursor-pointer text-gray-500
-                font-semibold duration-200 ease-in-out hover:text-mayormoto-blue
-                transition-all ${collapse ? "justify-center" : ""}`}
-          >
-            <span className="text-2xl transition-transform duration-200">
-              {item.icon}
-            </span>
-            <span
-              className={`transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden
-                ${collapse ? "opacity-0 w-0" : "opacity-100 ml-2"}`}
+      {items.map((item, i) => {
+        const isActive = location.pathname === item.path;
+
+        return (
+          <Link to={item.path} className="w-full" key={i}>
+            <div
+              title={item.name}
+              className={`flex gap-1 items-center px-6 py-2 rounded-md cursor-pointer 
+                font-semibold transition-all duration-100 ease-in
+                ${collapse && "justify-center"}
+                ${
+                  isActive
+                    ? "bg-mayormoto-blue text-white"
+                    : "text-gray-600 hover:bg-gray-200 hover:text-mayormoto-blue"
+                }
+                `}
             >
-              {item.name}
-            </span>
-          </div>
-        </Link>
-      ))}
+              <span className={`text-2xl`}>{item.icon}</span>
+              <span
+                className={`transition-all duration-300 ease-in-out 
+                  whitespace-nowrap overflow-hidden
+                  ${collapse ? "opacity-0 w-0" : "opacity-100 ml-2"}`}
+              >
+                {item.name}
+              </span>
+            </div>
+          </Link>
+        );
+      })}
     </>
   );
 };

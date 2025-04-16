@@ -9,7 +9,7 @@ import Signup from "./pages/Signup";
 import Test from "./pages/Test";
 import ProductDetails from "./pages/ProductDetails";
 import Brand from "./pages/Brand";
-import PosLogin from "./pages/pos/PosLogin";
+import Dashboard from "./pages/pos/Dashboard";
 import PosMain from "./pages/pos/PosMain";
 
 export default function App() {
@@ -28,7 +28,15 @@ export default function App() {
 
             <Route path="/pos">
               <Route path="" element={<PosMain />} />
-              <Route path="#" element={<PosLogin />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="terminal" element={<Dashboard />} />
+              <Route path="forecasting" element={<Dashboard />} />
+              <Route path="products" element={<Dashboard />} />
+              <Route path="inventory" element={<Dashboard />} />
+              <Route path="orders" element={<Dashboard />} />
+              <Route path="transaction_history" element={<Dashboard />} />
+              <Route path="employees" element={<Dashboard />} />
+              <Route path="reports" element={<Dashboard />} />
             </Route>
           </Routes>
         </Router>

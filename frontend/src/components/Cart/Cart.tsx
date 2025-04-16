@@ -32,7 +32,7 @@ export function CartModal({
 
   return (
     <div
-      className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-2xl 
+      className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-1  
     animate-fade animate-once animate-duration-[300ms] animate-ease`}
     >
       <div
@@ -40,10 +40,10 @@ export function CartModal({
           max-h-[22rem] w-[30rem] 
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
-          after:w-0 after:h-0 
+          after:w-0 after:h-0 after:z-50 
           after:border-l-[8px] after:border-l-transparent
           after:border-r-[8px] after:border-r-transparent
-          after:border-b-[8px] after:border-b-white
+          after:border-b-[8px] after:border-b-white 
           after:shadow-t-sm
         `}
       >
