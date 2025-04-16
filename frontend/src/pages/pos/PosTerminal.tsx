@@ -1,8 +1,12 @@
 
+import Calculator from "../../components/pos/calculator/Calculator";
+import Layout from "../../components/pos/nav/Layout";
+
 export default function PosTerminal() {
   return (
-    <div>
-      
-    </div>
-  )
+    <Layout>
+        
+        lorem*30
+    </Layout>
+  );
 }

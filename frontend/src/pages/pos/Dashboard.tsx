@@ -53,9 +53,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-5 grid-rows-2 gap-4">
           <div
             className="col-span-3 flex flex-col gap-2 bg-white
-          shadow-1 p-4 rounded row-span-2"
+          shadow-1 px-4 py-6 rounded row-span-2"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center px-4">
               <span className="font-medium">Recent Orders</span>
               <span
                 className="text-sm text-gray-500 
@@ -64,21 +64,22 @@ export default function Dashboard() {
                 View more
               </span>
             </div>
+
             <div className="">
               <DataTable>
                 <TableHead>
-                  <Header>#</Header>
-                  <Header>Name</Header>
-                  <Header>Order</Header>
-                  <Header>Quantity</Header>
-                  <Header>Total</Header>
-                  <Header>Status</Header>
+                  <TableRow>
+                    <Header>#</Header>
+                    <Header>Item Name</Header>
+                    <Header>Quantity</Header>
+                    <Header>Total</Header>
+                    <Header>Status</Header>
+                  </TableRow>
                 </TableHead>
                 <TableBody>
-                  {Array.from({ length: 7 }).map((_, i) => (
+                  {Array.from({ length: 5 }).map((_, i) => (
                     <TableRow key={i}>
                       <Data>{i + 1}</Data>
-                      <Data>Dan Pirante</Data>
                       <Data>Gille Helmete Green</Data>
                       <Data>{formatNumber(2)}</Data>
                       <Data>{formatMoney(2457)}</Data>
@@ -94,7 +95,7 @@ export default function Dashboard() {
             className=" bg-white col-span-2 
           shadow-1 p-4 rounded flex flex-col gap-1"
           >
-            <span className="font-medium">Sales Comparison</span>
+            <span className="font-medium">Products per Category</span>
             <div>
               <CategoryDonutChart data={categoryProductCounts} />
             </div>
@@ -124,7 +125,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <section>lorem*20</section>
+        {/* FOR ADDING NEW SECTION */}
       </div>
     </Layout>
   );

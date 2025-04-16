@@ -11,6 +11,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Brand from "./pages/Brand";
 import Dashboard from "./pages/pos/Dashboard";
 import PosMain from "./pages/pos/PosMain";
+import PosTerminal from "./pages/pos/PosTerminal";
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
             <Route path="/pos">
               <Route path="" element={<PosMain />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="terminal" element={<Dashboard />} />
+              <Route path="terminal" element={<PosTerminal />} />
               <Route path="forecasting" element={<Dashboard />} />
               <Route path="products" element={<Dashboard />} />
               <Route path="inventory" element={<Dashboard />} />
