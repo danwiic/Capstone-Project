@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { CgMaximize } from "react-icons/cg";
+import { CgMinimize } from "react-icons/cg";
 
 const FullscreenButton = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -23,11 +25,20 @@ const FullscreenButton = () => {
 
   return (
     <button
-      className="bg-mayormoto-blue text-white rounded text-sm 
-      cursor-pointer p-2 px-4"
+      className={`bg-mayormoto-blue  rounded 
+      cursor-pointer p-2 px-2 ${
+        !isFullscreen
+          ? `text-2xl bg-transparent text-gray-500 
+        hover:bg-gray-200`
+          : "text-2xl text-white"
+      }`}
       onClick={toggleFullscreen}
     >
-      {isFullscreen ? "Minimize" : "Maximize"}
+      {isFullscreen ? (
+        <CgMinimize title="Minimize screen" className="" />
+      ) : (
+        <CgMaximize title="Maximize screen" />
+      )}
     </button>
   );
 };

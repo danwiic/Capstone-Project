@@ -16,7 +16,7 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
-
+import { CiCalculator1 } from "react-icons/ci";
 import { MdOutlineSell } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { useState } from "react";
@@ -104,30 +104,37 @@ export default function Layout({ children }: LayoutProps) {
 
           <div className="flex-1">
             <div
-              className={`bg-white w-full p-2
+              className={`bg-white w-full p-3
               z-15 shadow-1 sticky top-0 flex 
               justify-between items-center`}
             >
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-2 items-center">
                 <button
                   onClick={collapseSidebar}
-                  className={`flex items-center px-4 py-2
-               rounded-md text-4xl cursor-pointer
-              hover:bg-gray-200 transition-colors duration-200 ${
-                collapse && "bg-gray-200 text-mayormoto-blue"
+                  className={`flex items-center px-2 py-2
+               rounded-md text-2xl cursor-pointer
+              hover:bg-mayormoto-blue  transition-colors duration-200 ${
+                collapse && "bg-mayormoto-blue text-white"
               }`}
                 >
                   {collapse ? (
                     <TbLayoutSidebarRightCollapse />
                   ) : (
-                    <TbLayoutSidebarLeftCollapse className="text-gray-500" />
+                    <TbLayoutSidebarLeftCollapse className="text-gray-500 hover:text-white" />
                   )}
                 </button>
                 {loc.pathname === "/pos/terminal" && (
-                  <>
-                    <button onClick={() => handleCalc()}>View Calc</button>
+                  <div className="flex gap-2 items-center">
                     <FullscreenButton />
-                  </>
+                    <button
+                      title="Open calculator"
+                      className="cursor-pointer text-2xl
+                      font-medium hover:bg-gray-200 p-2 rounded"
+                      onClick={() => handleCalc()}
+                    >
+                      <CiCalculator1 />
+                    </button>
+                  </div>
                 )}
               </div>
 
