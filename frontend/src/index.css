@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "tailwindcss-animated";
+@plugin 'tailwind-scrollbar';
+@plugin 'tailwind-scrollbar' {
+    nocompatible: true;
+}
 @theme {
     /* colors */
     --color-mayormoto-blue: #403a67;   

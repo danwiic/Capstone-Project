@@ -112,7 +112,7 @@ export default function Layout({ children }: LayoutProps) {
                 <button
                   onClick={collapseSidebar}
                   className={`flex items-center px-2 py-2
-               rounded-md text-2xl cursor-pointer
+               rounded-md text-2xl cursor-pointer hover:text-white text-gray-500
               hover:bg-mayormoto-blue  transition-colors duration-200 ${
                 collapse && "bg-mayormoto-blue text-white"
               }`}
@@ -120,12 +120,14 @@ export default function Layout({ children }: LayoutProps) {
                   {collapse ? (
                     <TbLayoutSidebarRightCollapse />
                   ) : (
-                    <TbLayoutSidebarLeftCollapse className="text-gray-500 hover:text-white" />
+                    <TbLayoutSidebarLeftCollapse className="" />
                   )}
                 </button>
-                {loc.pathname === "/pos/terminal" && (
-                  <div className="flex gap-2 items-center">
-                    <FullscreenButton />
+
+                <div className="flex gap-2 items-center">
+                  <FullscreenButton />
+
+                  {loc.pathname === "/pos/terminal" && (
                     <button
                       title="Open calculator"
                       className="cursor-pointer text-2xl
@@ -134,8 +136,8 @@ export default function Layout({ children }: LayoutProps) {
                     >
                       <CiCalculator1 />
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
 
               <div className="flex gap-4 pr-6 items-center ">
