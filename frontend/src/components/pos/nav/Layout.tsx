@@ -27,10 +27,17 @@ type LayoutProps = {
   children?: React.ReactNode;
 };
 export default function Layout({ children }: LayoutProps) {
-  const [collapse, setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(() => {
+    const saved = localStorage.getItem("sidebarCollapsed");
+    return saved === "true"; // return boolean
+  });
 
   const collapseSidebar = () => {
-    setCollapse((prev) => !prev);
+    setCollapse((prev) => {
+      const newState = !prev;
+      localStorage.setItem("sidebarCollapsed", String(newState));
+      return newState;
+    });
   };
 
   const loc = useLocation();
@@ -177,7 +184,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
     {
       name: "Sales Forecasting",
       icon: <MdOnlinePrediction />,
-      path: "/pos/forecasting",
+      path: "/pos/forecast",
     },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
     {
