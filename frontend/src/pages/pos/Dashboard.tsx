@@ -3,12 +3,7 @@ import Layout from "../../components/pos/nav/Layout";
 import { GiMoneyStack } from "react-icons/gi";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { PiPackageThin } from "react-icons/pi";
-import DataTable from "../../components/pos/table/DataTable";
-import TableHead from "../../components/pos/table/TableHead";
-import Header from "../../components/pos/table/Header";
-import TableBody from "../../components/pos/table/TableBody";
-import TableRow from "../../components/pos/table/TableRow";
-import Data from "../../components/pos/table/Data";
+import Table from "../../components/pos/table/index";
 import formatNumber from "../../utils/formatNumber";
 import { formatMoney } from "../../utils/formatMoney";
 import { CiDeliveryTruck } from "react-icons/ci";
@@ -17,6 +12,8 @@ import {
   SalesComparisonLineChart,
 } from "../../components/pos/charts/Charts";
 import StockCard from "../../components/pos/cards/StockCard";
+import Status from "../../components/pos/status card/Status";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   return (
@@ -61,33 +58,35 @@ export default function Dashboard() {
                 className="text-sm text-gray-500 
               hover:text-mayormoto-blue cursor-pointer"
               >
-                View more
+                <Link to="/pos/orders"> View more</Link>
               </span>
             </div>
 
             <div className="">
-              <DataTable status={true}>
-                <TableHead>
-                  <TableRow>
-                    <Header>#</Header>
-                    <Header>Item Name</Header>
-                    <Header>Quantity</Header>
-                    <Header>Total</Header>
-                    <Header>Status</Header>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+              <Table.DataTable>
+                <Table.TableHead>
+                  <Table.TableRow>
+                    <Table.Header>#</Table.Header>
+                    <Table.Header>Item Name</Table.Header>
+                    <Table.Header>Quantity</Table.Header>
+                    <Table.Header>Total</Table.Header>
+                    <Table.Header>Status</Table.Header>
+                  </Table.TableRow>
+                </Table.TableHead>
+                <Table.TableBody>
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <TableRow key={i}>
-                      <Data>{i + 1}</Data>
-                      <Data>Gille Helmete Green</Data>
-                      <Data>{formatNumber(2)}</Data>
-                      <Data>{formatMoney(2457)}</Data>
-                      <Data>PENDING</Data>
-                    </TableRow>
+                    <Table.TableRow key={i}>
+                      <Table.Data>{i + 1}</Table.Data>
+                      <Table.Data>Gille Helmete Green</Table.Data>
+                      <Table.Data>{formatNumber(2)}</Table.Data>
+                      <Table.Data>{formatMoney(2457)}</Table.Data>
+                      <Table.Data>
+                        <Status status="pending" />
+                      </Table.Data>
+                    </Table.TableRow>
                   ))}
-                </TableBody>
-              </DataTable>
+                </Table.TableBody>
+              </Table.DataTable>
             </div>
           </div>
 

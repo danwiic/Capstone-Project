@@ -15,6 +15,10 @@ import PosTerminal from "./pages/pos/PosTerminal";
 import Products from "./pages/pos/Products";
 import Inventory from "./pages/pos/Inventory";
 import Orders from "./pages/pos/Orders";
+import History from "./pages/pos/History";
+import Employee from "./pages/pos/Employee";
+import User from "./pages/pos/User";
+import Analytics from "./pages/pos/Analytics";
 
 export default function App() {
   return (
@@ -37,9 +41,10 @@ export default function App() {
               <Route path="products" element={<Products />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="orders" element={<Orders />} />
-              <Route path="history" element={<Dashboard />} />
-              <Route path="employees" element={<Dashboard />} />
-              <Route path="analytics" element={<Dashboard />} />
+              <Route path="history" element={<History />} />
+              <Route path="employees" element={<Employee />} />
+              <Route path="user" element={<User />} />
+              <Route path="analytics" element={<Analytics />} />
             </Route>
           </Routes>
         </Router>

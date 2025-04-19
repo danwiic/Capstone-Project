@@ -10,11 +10,11 @@ export default function Inventory() {
       <Layout>
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
-            <span className="font-medium text-xl">Inventory</span>
+            <span className="font-medium text-lg">Inventory</span>
             <div>
               <button
                 className="bg-mayormoto-blue text-white px-3 w-full
-               py-2 text-xs rounded-sm hover:bg-mayormoto-blue-hover cursor-pointer"
+               py-3 text-xs rounded-sm hover:bg-mayormoto-blue-hover cursor-pointer"
               >
                 Inventory Logs
               </button>
@@ -67,7 +67,7 @@ export default function Inventory() {
                   <Table.Header>Availabe Stock</Table.Header>
                   <Table.Header>Variant/s</Table.Header>
                   <Table.Header>Created By</Table.Header>
-                  <Table.Header>Created At</Table.Header>
+                  <Table.Header>Created On</Table.Header>
                   <Table.Header>Updated By</Table.Header>
                   <Table.Header>Last Update</Table.Header>
                   <Table.Header></Table.Header>

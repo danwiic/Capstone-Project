@@ -22,6 +22,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { useState } from "react";
 import FullscreenButton from "../button/FSButton";
 import Calculator from "../calculator/Calculator";
+import { CiUser } from "react-icons/ci";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -180,6 +181,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
 
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
+    { name: "Analytics", icon: <MdOutlineBarChart />, path: "/pos/analytics" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     {
       name: "Sales Forecasting",
@@ -195,7 +197,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
     { name: "Orders", icon: <MdOutlineReceiptLong />, path: "/pos/orders" },
     { name: "Transaction History", icon: <MdHistory />, path: "/pos/history" },
     { name: "Employees", icon: <MdPeopleOutline />, path: "/pos/employees" },
-    { name: "Analytics", icon: <MdOutlineBarChart />, path: "/pos/analytics" },
+    { name: "User", icon: <CiUser />, path: "/pos/user" },
   ];
 
   return (
