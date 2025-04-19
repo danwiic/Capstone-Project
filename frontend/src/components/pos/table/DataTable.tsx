@@ -1,4 +1,4 @@
-export default function DataTable({ children }: any) {
+export default function DataTable({ children, status }: any) {
   return (
     <div className="p-4 w-full flex flex-col gap-4 justify-between">
       <div
@@ -22,19 +22,21 @@ export default function DataTable({ children }: any) {
         </div>
 
         <div className="flex gap-6 items-center">
-          <div className="flex gap-1 items-center text-gray-500 text-sm">
-            <span>Status</span>
-            <select
-              className="border rounded border-gray-300 
+          {status && (
+            <div className="flex gap-1 items-center text-gray-500 text-sm">
+              <span>Status</span>
+              <select
+                className="border rounded border-gray-300 
                       text-sm p-1 text-center text-gray-600"
-            >
-              <option>All</option>
-              <option>Pending</option>
-              <option>Shipped</option>
-              <option>Delivered</option>
-              <option>Canceled</option>
-            </select>
-          </div>
+              >
+                <option>All</option>
+                <option>Pending</option>
+                <option>Shipped</option>
+                <option>Delivered</option>
+                <option>Canceled</option>
+              </select>
+            </div>
+          )}
 
           {/* <div className="flex gap-1 items-center text-gray-500 text-sm">
             <span>Status</span>

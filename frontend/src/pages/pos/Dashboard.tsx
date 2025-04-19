@@ -66,7 +66,7 @@ export default function Dashboard() {
             </div>
 
             <div className="">
-              <DataTable>
+              <DataTable status={true}>
                 <TableHead>
                   <TableRow>
                     <Header>#</Header>

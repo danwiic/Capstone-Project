@@ -13,6 +13,8 @@ import Dashboard from "./pages/pos/Dashboard";
 import SalesForecast from "./pages/pos/SalesForecast";
 import PosTerminal from "./pages/pos/PosTerminal";
 import Products from "./pages/pos/Products";
+import Inventory from "./pages/pos/Inventory";
+import Orders from "./pages/pos/Orders";
 
 export default function App() {
   return (
@@ -33,8 +35,8 @@ export default function App() {
               <Route path="terminal" element={<PosTerminal />} />
               <Route path="forecast" element={<SalesForecast />} />
               <Route path="products" element={<Products />} />
-              <Route path="inventory" element={<Dashboard />} />
-              <Route path="orders" element={<Dashboard />} />
+              <Route path="inventory" element={<Inventory />} />
+              <Route path="orders" element={<Orders />} />
               <Route path="history" element={<Dashboard />} />
               <Route path="employees" element={<Dashboard />} />
               <Route path="analytics" element={<Dashboard />} />

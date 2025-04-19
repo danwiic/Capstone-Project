@@ -49,19 +49,7 @@ export default function Products() {
     "Accessories",
     "Tools",
     "Parts",
-    "Electronics",
-    "Maintenance",
-    "Cleaning",
-    "Safety",
-    "Comfort",
-    "Storage",
-    "Navigation",
-    "Lighting",
-    "Security",
-    "Performance",
-    "Customization",
-    "Apparel",
-    "Footwear",
+ ,
   ];
 
   return (
@@ -72,13 +60,13 @@ export default function Products() {
           <div className="flex gap-2 w-full max-w-[20rem]">
             <button
               className="bg-mayormoto-blue text-white px-3 w-full
-               py-3 text-sm rounded-xs hover:bg-mayormoto-blue-hover cursor-pointer"
+               py-3 text-xs rounded-sm hover:bg-mayormoto-blue-hover cursor-pointer"
             >
               Product Logs
             </button>
             <button
               className="bg-mayormoto-blue text-white px-3 w-full
-               py-3 text-sm rounded-xs hover:bg-mayormoto-blue-hover cursor-pointer"
+               py-3 text-xs rounded-sm hover:bg-mayormoto-blue-hover cursor-pointer"
             >
               + New Product
             </button>
@@ -116,7 +104,7 @@ export default function Products() {
                     <div key={i} className="flex items-center gap-2 p-2">
                       <div
                         className="text-sm flex justify-between items-center 
-                      w-full border-b border-gray-200"
+                      w-full "
                       >
                         <span className="text-gray-600 font-medium">{cat}</span>
                         <div className="flex gap-1">
