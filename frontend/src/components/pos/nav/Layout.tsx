@@ -73,7 +73,7 @@ export default function Layout({ children }: LayoutProps) {
                     src={logo}
                     alt="Logo"
                     loading="lazy"
-                    className="w-auto h-auto transition-all duration-300 ease-in-out"
+                    className="w-auto h-10 transition-all duration-300 ease-in-out"
                   />
                 </div>
               )}

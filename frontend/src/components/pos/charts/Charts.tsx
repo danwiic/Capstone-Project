@@ -72,13 +72,12 @@ export const SalesComparisonLineChart = ({
 }: {
   data: { month: string; pos: number; online: number }[];
 }) => {
+
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div
-          className="bg-white p-2 shadow rounded
-text-sm border border-gray-200"
-        >
+        <div className="bg-white p-2 shadow rounded text-sm border border-gray-200">
           <p className="font-semibold">{label}</p>
           <p className="text-blue-500">POS: {formatMoney(payload[0].value)}</p>
           <p className="text-green-500">
@@ -92,8 +91,15 @@ text-sm border border-gray-200"
 
   return (
     <ResponsiveContainer width="100%" height={180}>
-      <LineChart data={data}>
-        <CartesianGrid strokeDasharray="10 0" stroke="#e5e7eb" vertical={false} />
+      <LineChart
+        data={data}
+        margin={{ top: 5, right: 30, left: 30, bottom: 5 }} // Add these margins
+      >
+        <CartesianGrid
+          strokeDasharray="10 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
         <XAxis dataKey="month" tick={{ fontSize: 12 }} />
         <Tooltip content={<CustomTooltip />} />
         <Legend verticalAlign="top" height={36} />
@@ -119,8 +125,6 @@ text-sm border border-gray-200"
 };
 
 export default function SalesDashboard({ combinedData }: any) {
-  // Format number as peso currency
-
   return (
     <div className="flex flex-col w-full gap-8 p-6 mx-auto bg-white rounded-lg shadow-md">
       <div className="mb-8 flex items-center justify-between">

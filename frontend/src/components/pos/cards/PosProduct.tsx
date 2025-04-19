@@ -8,21 +8,21 @@ export default function PosProduct() {
           <img
             src="https://res.cloudinary.com/dvexdyqea/image/upload/v1744769418/EVO_RX-7_Magenta_-_2_800_xeiiow.png"
             alt="/"
-            className="w-28 h-full  scale-100"
+            className="w-28 h-full  scale-110"
           />
         </div>
       </div>
       <div className="text-sm flex flex-col gap-2 px-4">
         <div className="flex flex-col gap">
           <span className="text-gray-500">Helmet</span>
-          <span className="">Helmet Zebra 432</span>
+          <span className="font-medium">Helmet Zebra 432</span>
         </div>
         <div className="flex flex-col justify-center gap-1">
-          <span className="font-medium">{formatMoney(2199)}</span>
+          <span className="font-medium text-red-500">{formatMoney(2199)}</span>
           <span>
             <button
-              className="cursor-pointer p-2 py-2 bg-mayormoto-blue 
-            text-white rounded-xs text-sm w-full hover:bg-mayormoto-blue-hover transition-colors duration-200"
+              className="cursor-pointer p-2 py-2.5 bg-mayormoto-blue rounded-sm
+            text-white  text-sm w-full hover:bg-mayormoto-blue-hover transition-colors duration-200 "
             >
               ADD
             </button>

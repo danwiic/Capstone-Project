@@ -113,10 +113,10 @@ export default function Dashboard() {
                   className="border rounded border-gray-300 
                 text-sm p-1 text-center text-gray-600"
                 >
-                  <option>Today</option>
-                  <option>This Week</option>
-                  <option>This Month</option>
-                  <option>This Year</option>
+                  <option>1st Quarter</option>
+                  <option>2nd Quarter</option>
+                  <option>3rd Quarter</option>
+                  <option>4th Quarter</option>
                 </select>
               </div>
             </div>
