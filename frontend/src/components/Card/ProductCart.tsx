@@ -2,6 +2,10 @@ import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Button from "../ui/button/Button";
 import { Link } from "react-router-dom";
+import { IoMdCheckmark } from "react-icons/io";
+import Rate from "../rating/Rate";
+import { FaRegEye } from "react-icons/fa";
+
 
 type ProductCardProps = {
   imageUrl?: string;
@@ -20,17 +24,25 @@ function DisplayProductCart({
       <div
         className="rounded-xs  flex flex-col w-full
       py-6 px-4 justify-center gap-2 bg-white border border-gray-200
-      border-l-0 [&:nth-child(4n)]:border-r-0 border-t-0"
+      border-l-0 [&:nth-child(4n)]:border-r-0 border-t-0 group"
       >
         <div className="flex flex-col gap-5">
-          <div className="flex justify-center w-full  h-32">
+          <div className="flex justify-center w-full h-32 relative overflow-hidden">
             <img
               src={imageUrl}
               loading="lazy"
               alt="/"
               className="w-28 h-full transition-transform duration-200 
-                  cursor-pointer scale-120 hover:scale-125"
+                  cursor-pointer scale-120 group-hover:scale-125"
             />
+            <button
+              className=" rounded-full absolute top-0 right-0 hidden group-hover:block 
+             border p-2 border-gray-300  hover:bg-mayormoto-blue hover:text-white 
+             text-lg cursor-pointer
+            "
+            >
+              <FaRegEye />
+            </button>
           </div>
 
           <div className=" flex flex-col gap-2 cursor-pointer">
@@ -48,14 +60,24 @@ function DisplayProductCart({
                 {name}
               </span>
             </Link>
+            <span className="flex gap-1 items-center text-xs text-gray-700">
+              <Rate readOnly={true} value={5} />
+              <span className="font-semibold">(19)</span>
+            </span>
           </div>
         </div>
 
-        <div className="text-xl font-medium text-red-500 ">
-          {formatMoney(price)}
+        <div className="flex flex-col">
+          <span className="text-lg font-medium text-red-500">
+            {formatMoney(price)}
+          </span>
+
+          <span className="flex gap-1 items-center text-sm text-green-600">
+            In stock <IoMdCheckmark />
+          </span>
         </div>
 
-        <Button className="rounded-xs ">Add to cart</Button>
+        <Button className="rounded-xs text-sm">Add to cart</Button>
       </div>
     </>
   );

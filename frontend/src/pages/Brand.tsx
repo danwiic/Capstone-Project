@@ -6,7 +6,7 @@ export default function Brand() {
   return (
     <>
       <Navbar>
-        <div className="px-16 py-10">
+        <div className="p-10">
           <BrandLayout>
             {Array.from({ length: 16 }).map((_, i) => (
               <ProductCart

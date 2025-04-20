@@ -6,37 +6,85 @@ type BrandLayout = {
   children?: React.ReactNode;
 };
 
+const categories = [
+  "Helmets",
+  "Top Box",
+  "Safety Gear",
+  "Accessories & Electronics",
+  "Lubricants & Oils",
+  "Sprays & Cleaners",
+  "Motorcycle Safety",
+  "External Accessories",
+  "Lubricants",
+];
+
+const brands = [
+  "Gille",
+  "Zebra",
+  "Spyder",
+  "LS2",
+  "EVO",
+  "Smok",
+  "Poizon",
+  "Origin",
+  "Niwra",
+  "HNJ",
+  "FTR",
+  "RYO",
+  "Motowolf",
+  "Sphinx",
+  "RS8",
+  "Ariete",
+  "Arjhen",
+  "AX7",
+  "BOSCH",
+  "Dicatti",
+  "Flamingo",
+  "Freed Conn ",
+  "KOBY",
+  "Mayormoto",
+  "MOTUL",
+  "RS8",
+  "VMAX",
+  "SZL",
+];
+
 export default function BrandLayout({ children }: BrandLayout) {
   return (
-    <div className="grid lg:grid-cols-1 xl:grid-cols-4 auto-cols-auto bg-white p-10 rounded-xs shadow-1">
-      <div className="md:col-span-1 xl:col-span-4 py-10  ">
-        <span className="text-2xl font-bold text-mayormoto-blue">GILLE</span>
-      </div>
-
+    <div
+      className="grid bg-white lg:grid-cols-1 xl:grid-cols-4 auto-cols-auto  
+    p-10 rounded-sm "
+    >
       <div
         className="bg-white px-10 py-6 
-        flex flex-col gap-3 border border-gray-200"
+        flex flex-col gap-6 border border-gray-200"
       >
-        <span className="font-medium text-xl">Filter by Category</span>
-        <div className="flex flex-col gap-2 px-4">
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            All Categories
+        <div className="flex flex-col gap-2">
+          <span className="text-md uppercase font-semibold text-gray-700">
+            Categories
           </span>
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            Helmet
+          <div className="flex flex-col gap-2">
+            {categories.map((category, i) => (
+              <div key={i} className="flex gap-2 items-center">
+                <input type="checkbox" />
+                {category}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-md uppercase font-semibold text-gray-700">
+            Categories
           </span>
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            Top Box
-          </span>
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            Riding Jacket
-          </span>
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            Gloves & Arm Sleeve
-          </span>
-          <span className="hover:text-mayormoto-blue cursor-pointer font-medium text-gray-500">
-            Gears
-          </span>
+          <div className="flex flex-col gap-2">
+            {brands.map((brand, i) => (
+              <div key={i} className="flex gap-2 items-center">
+                <input type="checkbox" />
+                {brand}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -44,16 +92,32 @@ export default function BrandLayout({ children }: BrandLayout) {
         className="md:col-span-1 xl:col-span-3
         flex flex-col gap-2 px-4"
       >
-        <div className="flex border border-gray-200 bg-white ">
-          <button className="p-4 text-center text-xl text-gray-600">
-            <IoSearch />
-          </button>
-          <input
-            type="text"
-            placeholder="Search..."
-            className=" py-2 text-sm
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex border border-gray-200 bg-white flex-1 ">
+            <button className="p-4 text-center text-xl text-gray-600">
+              <IoSearch />
+            </button>
+            <input
+              type="text"
+              placeholder="Search..."
+              className=" py-2 text-sm
             w-full outline-0"
-          />
+            />
+          </div>
+
+          <div className="flex items-center justify-between w-auto gap-2">
+            <span className="text-sm text-gray-700">Sort by</span>
+            <select
+              className="border rounded border-gray-300 bg-white
+                text-sm py-2 px-4 text-center text-gray-600 "
+            >
+              <option selected>Default</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low </option>
+              <option>Best Selling </option>
+              <option>Top Rated </option>
+            </select>
+          </div>
         </div>
 
         <div className="flex flex-col gap-8">

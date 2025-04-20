@@ -15,7 +15,7 @@ export default function CartIcon() {
         name: "Helmet",
         price: formatMoney(2000),
         image:
-          "https://i.postimg.cc/YCc54BPn/Gille-Astral-Honda-Grey-4-800.png",
+          "https://res.cloudinary.com/dvexdyqea/image/upload/v1744769418/EVO_RX-7_Magenta_-_2_800_xeiiow.png",
         quantity: 1,
       },
     ]);
@@ -32,7 +32,7 @@ export default function CartIcon() {
       <button onClick={() => handleViewCart()} className="relative flex">
         <BsCart2 className="text-4xl cursor-pointer text-mayormoto-blue" />
         <span
-          className="font-medium bg-mayormoto-blue text-white absolute h-6 w-6 p-1 
+          className="font-medium bg-mayormoto-pink text-white absolute h-6 w-6 p-1 
         text-center rounded-2xl flex items-center justify-center
         -right-2.5 -top-0.5 text-sm hover:scale-120 
         duration-300 ease-in-out transition-all cursor-pointer  "

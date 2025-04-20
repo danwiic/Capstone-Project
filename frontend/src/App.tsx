@@ -19,12 +19,14 @@ import History from "./pages/pos/History";
 import Employee from "./pages/pos/Employee";
 import User from "./pages/pos/User";
 import Insight from "./pages/pos/Insight";
+import ScrollToTop from "./utils/scrollToTop";
 
 export default function App() {
   return (
     <UserProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />

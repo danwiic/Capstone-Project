@@ -1,6 +1,6 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useUserContext } from "../../context/userContext";
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import AccountModal from "../MyAccount/index.tsx";
 import { useClickOutside } from "../../hooks/useClickOutside.tsx";
@@ -34,7 +34,7 @@ export default function LoginNav() {
       ) : (
         <Link
           to={"/login"}
-          className="font-medium text-sm hover:text-mayormoto-blue"
+          className="text-sm font-semibold uppercase hover:text-mayormoto-blue"
         >
           <div>Login / Signup</div>
         </Link>

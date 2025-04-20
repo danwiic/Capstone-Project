@@ -1,6 +1,48 @@
 import { Link } from "react-router-dom";
 import logo from "../../images/mayormoto_logo.png";
 
+const categories = [
+  "Helmets",
+  "Top Box",
+  "Safety Gear",
+  "Accessories & Electronics",
+  "Lubricants & Oils",
+  "Sprays & Cleaners",
+  "Motorcycle Safety",
+  "External Accessories",
+  "Lubricants",
+];
+
+const brands = [
+  "Gille",
+  "Zebra",
+  "Spyder",
+  "LS2",
+  "EVO",
+  "Smok",
+  "Poizon",
+  "Origin",
+  "Niwra",
+  "HNJ",
+  "FTR",
+  "RYO",
+  "Motowolf",
+  "Sphinx",
+  "RS8",
+  "Ariete",
+  "Arjhen",
+  "AX7",
+  "BOSCH",
+  "Dicatti",
+  "Flamingo",
+  "Freed Conn ",
+  "KOBY",
+  "Mayormoto",
+  "MOTUL",
+  "RS8",
+  "VMAX",
+  "SZL",
+];
 export default function Footer({ children }: { children?: React.ReactNode }) {
   const date = new Date();
   const year = date.getFullYear();
@@ -30,61 +72,29 @@ export default function Footer({ children }: { children?: React.ReactNode }) {
               CATEGORIES
             </span>
             <div className="flex flex-col pl-4 gap-2">
-              <Link
-                to={"/about"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Helmet
-              </Link>
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Top Box
-              </Link>
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Riding Jacket
-              </Link>
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Gloves & Arm Sleeve
-              </Link>
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Gears
-              </Link>
+              {categories.map((cat, i) => (
+                <Link
+                  key={i}
+                  to={`/${cat.toLowerCase()}`}
+                  className="text-sm font-medium hover:text-mayormoto-blue"
+                >
+                  {cat}
+                </Link>
+              ))}
             </div>
           </div>
-
-          <div className="flex flex-col gap-2 h-full w-full p-10">
+          <div className="flex flex-col gap-2 w-full p-10">
             <span className="font-medium text-md text-gray-800">BRANDS</span>
-            <div className="flex flex-col pl-4 gap-2">
-              <Link
-                to={"/about"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Gille
-              </Link>
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Zebra
-              </Link>
-
-              <Link
-                to={"/contact"}
-                className="text-sm font-medium hover:text-mayormoto-blue"
-              >
-                Spyder
-              </Link>
+            <div className="grid grid-cols-2 pl-4 gap-x-4 gap-y-2">
+              {brands.map((br, i) => (
+                <Link
+                  key={i}
+                  to={`/${br.toLowerCase()}`}
+                  className="text-sm font-medium hover:text-mayormoto-blue"
+                >
+                  {br}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

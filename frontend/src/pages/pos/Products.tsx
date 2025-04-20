@@ -41,15 +41,15 @@ export default function Products() {
   ];
 
   const categories = [
-    "Helmet",
-    "Gloves",
-    "Jacket",
-    "Pants",
-    "Shoes",
-    "Accessories",
-    "Tools",
-    "Parts",
- ,
+    "Helmets",
+    "Top Box",
+    "Safety Gear",
+    "Accessories & Electronics",
+    "Lubricants & Oils",
+    "Sprays & Cleaners",
+    "Motorcycle Safety",
+    "External Accessories",
+    "Lubricants",
   ];
 
   return (
