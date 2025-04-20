@@ -18,7 +18,7 @@ import Orders from "./pages/pos/Orders";
 import History from "./pages/pos/History";
 import Employee from "./pages/pos/Employee";
 import User from "./pages/pos/User";
-import Analytics from "./pages/pos/Analytics";
+import Insight from "./pages/pos/Insight";
 
 export default function App() {
   return (
@@ -44,7 +44,7 @@ export default function App() {
               <Route path="history" element={<History />} />
               <Route path="employees" element={<Employee />} />
               <Route path="user" element={<User />} />
-              <Route path="analytics" element={<Analytics />} />
+              <Route path="insight" element={<Insight />} />
             </Route>
           </Routes>
         </Router>

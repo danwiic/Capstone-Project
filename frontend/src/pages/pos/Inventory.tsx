@@ -1,8 +1,9 @@
 import { IoSearchSharp } from "react-icons/io5";
 import Layout from "../../components/pos/nav/Layout";
 import Table from "../../components/pos/table/index";
-import formatNumber from "../../utils/formatNumber";
 import KebabMenu from "../../components/pos/menu/Kebab";
+import { TfiExport } from "react-icons/tfi";
+import Status from "../../components/pos/status card/Status";
 
 export default function Inventory() {
   return (
@@ -10,7 +11,7 @@ export default function Inventory() {
       <Layout>
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
-            <span className="font-medium text-lg">Inventory</span>
+            <span className="font-medium text-xl">Inventory</span>
             <div>
               <button
                 className="bg-mayormoto-blue text-white px-3 w-full
@@ -32,32 +33,18 @@ export default function Inventory() {
                   <IoSearchSharp />
                 </button>
               </div>
-              <div className="flex gap-4 text-sm">
-                <div className="flex gap-2 items-center">
-                  <span className="text-gray-600">Category</span>
-                  <select
-                    className="border rounded border-gray-300 
-                      text-sm p-1 text-center text-gray-600"
-                  >
-                    <option>All Category</option>
-                    <option>1</option>
-                    <option>1</option>
-                  </select>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <span className="text-gray-600">Brand</span>
-                  <select
-                    className="border rounded border-gray-300 
-                      text-sm p-1 text-center text-gray-600"
-                  >
-                    <option>All Brand</option>
-                    <option>1</option>
-                    <option>1</option>
-                  </select>
-                </div>
+              <div>
+                <button
+                  className="bg-mayormoto-blue flex text-white
+               px-4 py-2 items-center gap-2 rounded text-sm
+               hover:bg-mayormoto-blue-hover cursor-pointer"
+                >
+                  <TfiExport />
+                  Export
+                </button>
               </div>
             </div>
-            <Table.DataTable>
+            <Table.DataTable category brand>
               <Table.TableHead>
                 <Table.TableRow>
                   <Table.Header>#</Table.Header>
@@ -80,7 +67,9 @@ export default function Inventory() {
                     <Table.Data>Gille Helmet Green</Table.Data>
                     <Table.Data>Helmet</Table.Data>
                     <Table.Data>Gille</Table.Data>
-                    <Table.Data>{formatNumber(2)}</Table.Data>
+                    <Table.Data>
+                      <Status status="IN STOCK" />
+                    </Table.Data>
                     <Table.Data>MD, LG, XL, 2XL</Table.Data>
                     <Table.Data>Dan</Table.Data>
                     <Table.Data>April 10, 2025</Table.Data>

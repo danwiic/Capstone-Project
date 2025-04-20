@@ -23,6 +23,7 @@ import { useState } from "react";
 import FullscreenButton from "../button/FSButton";
 import Calculator from "../calculator/Calculator";
 import { CiUser } from "react-icons/ci";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -149,6 +150,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
 
               <div className="flex gap-4 pr-6 items-center ">
+                <IoIosNotificationsOutline className="text-3xl cursor-pointer" />
                 <span
                   className="bg-red-200 w-10 h-10 
               flex justify-center items-center rounded-full"
@@ -181,7 +183,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
 
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
-    { name: "Analytics", icon: <MdOutlineBarChart />, path: "/pos/analytics" },
+    { name: "Insight", icon: <MdOutlineBarChart />, path: "/pos/insight" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     {
       name: "Sales Forecasting",

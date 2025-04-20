@@ -4,6 +4,7 @@ import Layout from "../../components/pos/nav/Layout";
 import Table from "../../components/pos/table";
 import { formatMoney } from "../../utils/formatMoney";
 import Status from "../../components/pos/status card/Status";
+import { TfiExport } from "react-icons/tfi";
 
 export default function Orders() {
   return (
@@ -13,12 +14,12 @@ export default function Orders() {
           <div className="flex justify-between items-center">
             <span className="font-medium text-xl">Orders</span>
             <div>
-               <button
+              <button
                 className="bg-mayormoto-blue text-white px-3 w-full
                        py-3 text-xs rounded-sm hover:bg-mayormoto-blue-hover cursor-pointer"
               >
                 Archived Orders
-              </button> 
+              </button>
             </div>
           </div>
           <div className="bg-white py-2 shadow-1 rounded-sm">
@@ -31,6 +32,16 @@ export default function Orders() {
                 />
                 <button className="px-4 py-2">
                   <IoSearchSharp />
+                </button>
+              </div>
+              <div>
+                <button
+                  className="bg-mayormoto-blue flex text-white
+                             px-4 py-2 items-center gap-2 rounded text-sm
+                             hover:bg-mayormoto-blue-hover cursor-pointer"
+                >
+                  <TfiExport />
+                  Export
                 </button>
               </div>
               {/* <div>

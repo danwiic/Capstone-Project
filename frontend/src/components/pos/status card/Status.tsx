@@ -12,8 +12,15 @@ type StatusValue =
   | "completed"
   | "COMPLETED"
   | "cancelled"
-  | "CANCELLED";
-
+  | "CANCELLED"
+  | "Low Stock"
+  | "LOW STOCK"
+  | "Out of Stock"
+  | "OUT OF STOCK"
+  | "In Stock"
+  | "IN STOCK"
+  | "On Hold"
+  | "ON HOLD";
 type Props = {
   status: StatusValue;
 };
@@ -40,6 +47,12 @@ export default function Status({ status }: Props) {
           : normalizedStatus === "inactive"
           ? "bg-gray-100 text-gray-800"
           : normalizedStatus === "active"
+          ? "bg-green-100 text-green-800"
+          : normalizedStatus === "low stock"
+          ? "bg-yellow-100 text-yellow-800"
+          : normalizedStatus === "out of stock"
+          ? "bg-red-100 text-red-800"
+          : normalizedStatus === "in stock"
           ? "bg-green-100 text-green-800"
           : ""
       } px-2 py-1 rounded-md text-sm font-medium w-auto text-center`}

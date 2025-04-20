@@ -14,11 +14,9 @@ import {
   Cell,
   Legend,
   ReferenceLine,
+  ComposedChart,
 } from "recharts";
 import { formatMoney } from "../../../utils/formatMoney";
-import { ValueType } from "recharts/types/component/DefaultTooltipContent";
-
-const COLORS = ["#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
 export const CategoryDonutChart = ({
   data,
@@ -39,7 +37,7 @@ export const CategoryDonutChart = ({
       return (
         <div className="bg-white border border-gray-200 p-2 rounded shadow text-sm">
           <p className="font-semibold">{payload[0].name}</p>
-          <p>{payload[0].value} products</p>
+          <p>{payload[0].value} sold</p>
         </div>
       );
     }
@@ -72,8 +70,6 @@ export const SalesComparisonLineChart = ({
 }: {
   data: { month: string; pos: number; online: number }[];
 }) => {
-
-
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -180,3 +176,289 @@ export default function SalesDashboard({ combinedData }: any) {
     </div>
   );
 }
+
+export function TrendingProductsChart({ data }: any) {
+  return (
+    <div className="p-6 h-[400px]">
+      <ResponsiveContainer width="100%" height={"100%"}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 20,
+            left: 20,
+            bottom: -15,
+          }}
+        >
+          <CartesianGrid strokeDasharray="10 0" vertical={false} />
+          <XAxis
+            dataKey="month"
+            angle={-45}
+            textAnchor="end"
+            height={80}
+            tick={{ fontSize: 12 }}
+          />
+
+          <Tooltip
+            formatter={(value, name, props) => [value, "sold"]}
+            labelFormatter={(label) =>
+              `${label}: ${
+                data.find((item: any) => item.month === label)?.product
+              }`
+            }
+          />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="sold"
+            stroke="#8884d8"
+            dot={false}
+            activeDot={{ r: 6 }}
+            name="Trending Category"
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+export const SalesByHourChart = ({
+  data,
+}: {
+  data: { time: string; pos: number; online: number }[];
+}) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 shadow rounded text-sm border border-gray-200">
+          <p className="font-semibold">{label}</p>
+          <p className="text-blue-500">POS: {formatMoney(payload[0].value)}</p>
+          <p className="text-green-500">
+            Online: {formatMoney(payload[1].value)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={220}>
+      <LineChart
+        data={data}
+        margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
+        <XAxis dataKey="time" tick={{ fontSize: 12 }} />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend verticalAlign="top" height={36} />
+        <Line
+          type="monotone"
+          dataKey="pos"
+          stroke="#6366f1"
+          strokeWidth={3}
+          dot={{ r: 0 }}
+          name="POS Sales"
+        />
+        <Line
+          type="monotone"
+          dataKey="online"
+          stroke="#34d399"
+          strokeWidth={3}
+          dot={{ r: 0 }}
+          name="Online Sales"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
+export const SalesLast7DaysChart = ({
+  data,
+}: {
+  data: { time: string; sales: number }[];
+}) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 shadow rounded text-sm border border-gray-200">
+          <p className="font-semibold">{label}</p>
+          <p className="text-indigo-500">
+            Sales: {formatMoney(payload[0].value)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={250}>
+      <LineChart
+        data={data}
+        margin={{ top: 10, right: 30, left: 20, bottom: -5 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
+        <XAxis dataKey="time" tick={{ fontSize: 12 }} />
+        <Tooltip content={<CustomTooltip />} />
+        <Line
+          type="monotone"
+          dataKey="sales"
+          stroke="#6366f1"
+          strokeWidth={3}
+          dot={{ r: 0 }}
+          name="Total Sales"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
+export const SalesByCategoryBarChart = ({
+  data,
+}: {
+  data: { category: string; sales: number }[];
+}) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 shadow rounded text-sm border border-gray-200">
+          <p className="font-semibold">{label}</p>
+          <p className="text-indigo-600">
+            Sales: {formatMoney(payload[0].value)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart
+        data={data}
+        layout="vertical"
+        margin={{ top: 30, right: 50, left: 10, bottom: -5 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
+        <XAxis type="number" tickFormatter={(value) => formatMoney(value)} />
+        <YAxis
+          dataKey="category"
+          type="category"
+          tick={{ fontSize: 12 }}
+          width={120}
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey="sales" fill="#6366f1" radius={[0, 8, 8, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
+
+const formatNumber = (n: number) => n.toLocaleString();
+
+export const TransactionComparisonLineChart = ({
+  data,
+}: {
+  data: { date: string; pos: number; online: number }[];
+}) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 shadow rounded text-sm border border-gray-200">
+          <p className="font-semibold">{label}</p>
+          <p className="text-blue-500">POS: {formatNumber(payload[0].value)}</p>
+          <p className="text-green-500">
+            Online: {formatNumber(payload[1].value)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart
+        data={data}
+        margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
+      >
+        <CartesianGrid strokeDasharray="3 0" stroke="#e5e7eb" vertical={false} />
+        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend verticalAlign="top" height={36} />
+        <Line
+          type="monotone"
+          dataKey="pos"
+          stroke="#3b82f6"
+          strokeWidth={3}
+          dot={{ r: 0 }}
+          name="POS Transactions"
+        />
+        <Line
+          type="monotone"
+          dataKey="online"
+          stroke="#10b981"
+          strokeWidth={3}
+          dot={{ r: 0 }}
+          name="Online Transactions"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};
+
+export const RevenueGrowthRateChart = ({
+  data,
+}: {
+  data: { month: string; growthRate: number }[];
+}) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 rounded shadow text-sm border border-gray-200">
+          <p className="font-semibold">{label}</p>
+          <p
+            className={`${
+              payload[0].value >= 0 ? "text-green-600" : "text-red-500"
+            }`}
+          >
+            Growth: {payload[0].value.toFixed(1)}%
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
+        <CartesianGrid strokeDasharray="3 0" stroke="#e5e7eb" vertical={false} />
+        <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+    
+        <Tooltip content={<CustomTooltip />} />
+        <Line
+          type="monotone"
+          dataKey="growthRate"
+          stroke="#3b82f6"
+          strokeWidth={3}
+          dot={{ r: 3 }}
+          name="Revenue Growth %"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+};

@@ -54,7 +54,7 @@ export default function SalesForecast() {
     <>
       <Layout>
         <div className="flex flex-col gap-4">
-          <span className="font-medium text-lg">Sales Forecast</span>
+          <span className="font-medium text-xl">Sales Forecast</span>
 
           <div className="grid grid-cols-4 gap-4">
             <div

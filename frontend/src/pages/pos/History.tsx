@@ -4,13 +4,14 @@ import Table from "../../components/pos/table";
 import KebabMenu from "../../components/pos/menu/Kebab";
 import { formatMoney } from "../../utils/formatMoney";
 import Status from "../../components/pos/status card/Status";
+import { TfiExport } from "react-icons/tfi";
 
 export default function History() {
   return (
     <Layout>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <span className="font-medium text-lg">Transaction History</span>
+          <span className="font-medium text-xl">Transaction History</span>
           <div>
             <button
               className="bg-mayormoto-blue text-white px-3 w-full
@@ -30,6 +31,16 @@ export default function History() {
               />
               <button className="px-4 py-2">
                 <IoSearchSharp />
+              </button>
+            </div>
+            <div>
+              <button
+                className="bg-mayormoto-blue flex text-white
+                           px-4 py-2 items-center gap-2 rounded text-sm
+                           hover:bg-mayormoto-blue-hover cursor-pointer"
+              >
+                <TfiExport />
+                Export
               </button>
             </div>
             {/* <div>

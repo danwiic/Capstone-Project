@@ -56,7 +56,7 @@ export default function Products() {
     <Layout>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <span className="font-medium text-lg">Products</span>
+          <span className="font-medium text-xl">Products</span>
           <div className="flex gap-2 w-full max-w-[20rem]">
             <button
               className="bg-mayormoto-blue text-white px-3 w-full

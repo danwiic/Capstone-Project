@@ -9,7 +9,7 @@ import { formatMoney } from "../../utils/formatMoney";
 import { CiDeliveryTruck } from "react-icons/ci";
 import {
   CategoryDonutChart,
-  SalesComparisonLineChart,
+  SalesByHourChart,
 } from "../../components/pos/charts/Charts";
 import StockCard from "../../components/pos/cards/StockCard";
 import Status from "../../components/pos/status card/Status";
@@ -22,25 +22,29 @@ export default function Dashboard() {
         <div className="flex flex-col gap-1">
           <div className="flex gap-4">
             <Card
-              title="Total Revenue"
+              title="Today's Sale"
+              subtitle="vs Yesterday"
               icon={<GiMoneyStack />}
-              numberValue={10000}
+              numberValue={10300}
               moneyFormat
             />
             <Card
-              title="Total User"
+              title="New User"
+              subtitle="vs Yesterday"
               icon={<PiUsersThreeLight />}
-              numberValue={1033}
+              numberValue={36}
             />
             <Card
-              title="Total Order"
+              title="New Order"
+              subtitle="vs Yesterday"
               icon={<PiPackageThin />}
-              numberValue={224}
+              numberValue={16}
             />
             <Card
               title="Orders Shipped"
+              subtitle="vs Yesterday"
               icon={<CiDeliveryTruck />}
-              numberValue={32}
+              numberValue={12}
             />
 
             <StockCard />
@@ -53,7 +57,9 @@ export default function Dashboard() {
           shadow-1 px-4 py-6 rounded row-span-2"
           >
             <div className="flex justify-between items-center px-4">
-              <span className="font-medium">Recent Orders</span>
+              <span className="font-bold text-gray-600 text-sm">
+                Recent Orders
+              </span>
               <span
                 className="text-sm text-gray-500 
               hover:text-mayormoto-blue cursor-pointer"
@@ -94,7 +100,21 @@ export default function Dashboard() {
             className=" bg-white col-span-2 
           shadow-1 p-4 rounded flex flex-col gap-1"
           >
-            <span className="font-medium">Products per Category</span>
+            <div className="flex items-center justify-between">
+              <span className="font-medium">Top 5 Selling Products</span>
+              <div className="flex gap-2 items-center">
+                <span className="text-gray-500 text-sm">Filter by</span>
+                <select
+                  className="border rounded border-gray-300 
+                text-sm p-1 text-center text-gray-600"
+                >
+                  <option>Today</option>
+                  <option>This Week</option>
+                  <option>This Month</option>
+                  <option>This Year</option>
+                </select>
+              </div>
+            </div>
             <div>
               <CategoryDonutChart data={categoryProductCounts} />
             </div>
@@ -112,15 +132,15 @@ export default function Dashboard() {
                   className="border rounded border-gray-300 
                 text-sm p-1 text-center text-gray-600"
                 >
-                  <option>1st Quarter</option>
-                  <option>2nd Quarter</option>
-                  <option>3rd Quarter</option>
-                  <option>4th Quarter</option>
+                  <option>Today</option>
+                  <option>This Week</option>
+                  <option>This Month</option>
+                  <option>This YEar</option>
                 </select>
               </div>
             </div>
             <div className="px-2">
-              <SalesComparisonLineChart data={salesComparisonData} />
+              <SalesByHourChart data={data} />
             </div>
           </div>
         </div>
@@ -129,17 +149,28 @@ export default function Dashboard() {
     </Layout>
   );
 }
-const salesComparisonData = [
-  { month: "January", pos: 15560, online: 7353 },
-  { month: "February", pos: 11800, online: 12400 },
-  { month: "March", pos: 13000, online: 25400 },
-];
+
+// Mock data for the charts and tables
+// const salesComparisonData = [
+//   { month: "January", pos: 15560, online: 7353 },
+//   { month: "February", pos: 11800, online: 12400 },
+//   { month: "March", pos: 13000, online: 25400 },
+// ];
 
 const categoryProductCounts = [
-  { name: "Helmet", value: 40 },
-  { name: "Riding Jacket", value: 25 },
-  { name: "Top Box", value: 15 },
-  { name: "Gloves", value: 20 },
-  { name: "Arm Sleeve", value: 10 },
-  { name: "Gears", value: 30 },
+  { name: "SMOK Top Box", value: 40 },
+  { name: "FLAMINGO Tire Sealant", value: 25 },
+  { name: "Gille Astral Honda Gray", value: 15 },
+  { name: "Zebra 879", value: 20 },
+  { name: "Zebra Ritzi White", value: 10 },
+];
+
+const data = [
+  { time: "12 AM", pos: 1200, online: 800 },
+  { time: "4 AM", pos: 1200, online: 2100 },
+  { time: "8 AM", pos: 1400, online: 0 },
+  { time: "12 PM", pos: 2200, online: 1800 },
+  { time: "4 PM", pos: 2800, online: 2300 },
+  { time: "8 PM", pos: 3100, online: 2700 },
+  { time: "12 AM", pos: 1500, online: 3600 },
 ];

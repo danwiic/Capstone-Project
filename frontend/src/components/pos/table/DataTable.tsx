@@ -1,4 +1,10 @@
-export default function DataTable({ children, status, date }: any) {
+export default function DataTable({
+  children,
+  status,
+  date,
+  category,
+  brand,
+}: any) {
   return (
     <div className="p-4 w-full flex flex-col gap-4 justify-between">
       <div
@@ -50,6 +56,34 @@ export default function DataTable({ children, status, date }: any) {
                 <option>This Week</option>
                 <option>This Month</option>
                 <option>Custom Date</option>
+              </select>
+            </div>
+          )}
+
+          {category && (
+            <div className="flex gap-2 items-center">
+              <span className="text-gray-600">Category</span>
+              <select
+                className="border rounded border-gray-300 
+                text-sm p-1 text-center text-gray-600"
+              >
+                <option>All Category</option>
+                <option>1</option>
+                <option>1</option>
+              </select>
+            </div>
+          )}
+
+          {brand && (
+            <div className="flex gap-2 items-center">
+              <span className="text-gray-600">Brand</span>
+              <select
+                className="border rounded border-gray-300 
+               text-sm p-1 text-center text-gray-600"
+              >
+                <option>All Brand</option>
+                <option>1</option>
+                <option>1</option>
               </select>
             </div>
           )}

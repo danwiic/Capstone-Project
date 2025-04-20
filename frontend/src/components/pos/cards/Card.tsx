@@ -4,6 +4,7 @@ import formatNumber from "../../../utils/formatNumber";
 
 type CardProps = {
   title: string;
+  subtitle?: string;
   icon?: React.ReactNode;
   moneyFormat?: boolean;
   numberValue: any;
@@ -11,6 +12,7 @@ type CardProps = {
 
 export default function Card({
   title,
+  subtitle = "Last 30 days",
   icon,
   moneyFormat,
   numberValue = 0,
@@ -20,7 +22,7 @@ export default function Card({
       <div className="flex justify-between gap-6 items-center">
         <div className="flex flex-col">
           <span>{title}</span>
-          <span className="text-xs text-gray-500">Last 30 days</span>
+          <span className="text-xs text-gray-500">{subtitle}</span>
         </div>
         <div className="text-3xl">{icon}</div>
       </div>

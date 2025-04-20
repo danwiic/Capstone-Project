@@ -10,7 +10,7 @@ export default function PosTerminal() {
       <div className="flex h-[calc(100vh-20px)] gap-4 ">
         <div className="flex-1 flex flex-col gap-2">
           <div className="flex justify-between items-center">
-            <span className="font-medium text-lg">POS</span>
+            <span className="font-medium text-xl">POS</span>
             <div className="bg-white border border-gray-300 rounded flex items-center">
               <input
                 className="outline-none px-4 py-2 text-sm text-gray-600 w-full"
