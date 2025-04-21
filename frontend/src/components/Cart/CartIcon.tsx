@@ -15,7 +15,7 @@ export default function CartIcon() {
         name: "Helmet",
         price: formatMoney(2000),
         image:
-          "https://res.cloudinary.com/dvexdyqea/image/upload/v1744769418/EVO_RX-7_Magenta_-_2_800_xeiiow.png",
+          "https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png",
         quantity: 1,
       },
     ]);

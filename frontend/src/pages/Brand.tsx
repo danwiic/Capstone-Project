@@ -14,7 +14,7 @@ export default function Brand() {
                 name="Gille Astral Honda Grey"
                 price={4800}
                 brand="gille"
-                imageUrl="https://res.cloudinary.com/dvexdyqea/image/upload/v1744769418/EVO_RX-7_Magenta_-_2_800_xeiiow.png"
+                imageUrl="https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png"
               />
             ))}
           </BrandLayout>

@@ -5,7 +5,7 @@ import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
 import Footer from "../footer/Footer.tsx";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   const { setUser } = useUserContext();
 
@@ -30,7 +30,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
               <img src={logo} alt="" className="w-52 cursor-pointer" />
             </Link>
           </div>
-       
 
           <div className="w-2/4">
             <Search />
@@ -41,16 +40,51 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             <Cart.Icon />
           </div>
         </div>
-        <div className="bg-light-gray px-30 py-2 ">
+        <div className="bg-light-gray px-30  flex items-center">
           <div className="flex gap-6 items-center text-sm font-semibold text-gray-500">
-            <span>PRODUCTS</span>
-            <span>ABOUT</span>
-            <span>CONTACT</span>
+            <NavItems />
           </div>
         </div>
       </div>
       <main>{children}</main>
       <Footer />
+    </>
+  );
+}
+
+function NavItems() {
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Cart", path: "/cart" },
+  ];
+
+  const loc = useLocation();
+
+  const isActive = `text-mayormoto-pink relative after:absolute after:h-0.5 
+  after:w-full after:bottom-0 after:left-0 after:transition-all after:duration-200 
+    after:ease-in-out hover:text-mayormoto-pink after:bg-mayormoto-pink 
+   after:bottom-0 after:left-0 after:rounded-full `;
+  const isNotActive = `text-gray-500 hover:text-mayormoto-pink transition-all duration-200 
+  after:w-0 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-mayormoto-pink
+  after:transition-all after:duration-200 after:ease-in-out after:rounded-full hover:after:w-full`;
+
+  const isActiveLink = (path: string) => {
+    return loc.pathname === path ? isActive : isNotActive;
+  };
+  return (
+    <>
+      {navItems.map((item, i) => (
+        <Link
+          to={item.path}
+          className={`py-3 text-sm ${isActiveLink(item.path)}`}
+          key={i}
+        >
+          <span>{item.name}</span>
+        </Link>
+      ))}
     </>
   );
 }
