@@ -21,6 +21,7 @@ import User from "./pages/pos/User";
 import Insight from "./pages/pos/Insight";
 import ScrollToTop from "./utils/scrollToTop";
 import Settings from "./pages/pos/Settings";
+import CartComponent from "./components/Cart/Cart";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/cart" element={<CartComponent />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/products" element={<Brand />} />

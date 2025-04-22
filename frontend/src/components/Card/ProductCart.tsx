@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Button from "../ui/button/Button";
 import { Link } from "react-router-dom";
 import { IoMdCheckmark } from "react-icons/io";
 import Rate from "../rating/Rate";
-import { FaRegEye } from "react-icons/fa";
+import { FaHeart, FaRegEye } from "react-icons/fa";
+import ProductModal from "../modal/ProductModal";
 
 type ProductCardProps = {
   imageUrl?: string;
@@ -18,6 +19,17 @@ function DisplayProductCart({
   brand,
   price,
 }: ProductCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to open modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <div
@@ -35,16 +47,31 @@ function DisplayProductCart({
               className="w-auto h-full transition-transform duration-200 
                   cursor-pointer scale-80 group-hover:scale-90"
             />
-            <button
-              className=" rounded-full absolute top-0 right-0 opacity-0  group-hover:opacity-100
-             transition-all duration-200 
-             border p-2 border-gray-300  hover:bg-mayormoto-blue hover:text-white 
-             text-lg cursor-pointer
-            "
-              title="Quick view"
+            <div
+              className="flex flex-col gap-1 absolute top-0 right-0 opacity-0  
+                       group-hover:opacity-100"
             >
-              <FaRegEye />
-            </button>
+              <button
+                className="rounded-full  group-hover:opacity-100
+                              transition-all duration-200
+                              border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                              text-lg cursor-pointer"
+                title="Add to wishlist"
+                onClick={openModal}
+              >
+                <FaHeart className="text-mayormoto-pink" />
+              </button>
+              <button
+                className="rounded-full  
+                                  transition-all duration-200
+                                  border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                                  text-lg cursor-pointer"
+                title="Quick view"
+                onClick={openModal}
+              >
+                <FaRegEye />
+              </button>
+            </div>
           </div>
 
           <div className=" flex flex-col gap-2 cursor-pointer">
@@ -80,6 +107,18 @@ function DisplayProductCart({
 
         <Button className="rounded-xs text-sm">Add to cart</Button>
       </div>
+      {isModalOpen && (
+        <ProductModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          product={{
+            imageUrl,
+            name,
+            brand,
+            price,
+          }}
+        />
+      )}
     </>
   );
 }

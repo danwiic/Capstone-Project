@@ -1,17 +1,57 @@
-import { TbLoader2 } from "react-icons/tb";
-import logo from "../images/output-onlinepngtools.png";
+import { useReducer } from "react";
+
 export default function Test() {
+  const [state, action] = useReducer(reducerIncrement, {
+    count: 0,
+    error: String || null,
+  });
   return (
     <div className="p-16 flex flex-col ">
-      <div className="p-16 flex flex-col items-center justify-center">
-        <div className="relative w-24 h-24">
-          <TbLoader2 className="animate-spin text-6xl text-mayormoto-blue w-full h-full" />
-          <img
-            src={logo}
-            className="absolute top-1/2 left-1/2 w-10 h-10 transform -translate-x-1/2 -translate-y-1/2"
-          />
-        </div>
+      <span>{state.count}</span>
+      {state.error && <span className="text-red-500">{state.error}</span>}
+
+      <div className="flex gap-4">
+        <button onClick={() => action({ type: "increment" })}>increment</button>
+        <button onClick={() => action({ type: "decrement" })}>decrement</button>
+        <button onClick={() => action({ type: "reset" })}>reset</button>
       </div>
     </div>
   );
+}
+
+type State = {
+  count: number;
+  error: string | null;
+};
+
+type Action = {
+  type: "increment" | "decrement" | "reset";
+};
+
+function reducerIncrement(state: State, action: Action) {
+  const { type } = action;
+
+  switch (type) {
+    case "increment": {
+      const count = state.count + 1;
+      return {
+        ...state,
+        count,
+        error: null,
+      };
+    }
+    case "decrement": {
+      const count = state.count - 1;
+      const hasError = count < 0;
+      return {
+        ...state,
+        count: hasError ? state.count : count,
+        error: hasError ? "Cannot go down 0" : null,
+      };
+    }
+    case "reset":
+      return { ...state, count: (state.count = 0) };
+    default:
+      break;
+  }
 }

@@ -67,7 +67,7 @@ export default function ProductModal({
             <div className="flex items-center gap-2">
               <Rate readOnly={true} value={product.rating || 0} />
               <span className="text-sm text-gray-600">
-                ({product.noOfReviews}) Reviews
+                ({product.noOfReviews || 0}) Reviews
               </span>
             </div>
 
