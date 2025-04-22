@@ -1,19 +1,41 @@
 import Navbar from "../components/Nav/Navbar";
 import bg from "../images/bg.png";
-import { useEffect, useState } from "react";
 import ProductCard from "../components/Card/ProductCard";
 import React from "react";
+import BrandCard from "../components/Card/BrandCard";
 
 function Home() {
-  const [_, setIsLoading] = useState(true);
+  const productCategories = [
+    {
+      image:
+        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
+      label: "Riding Jacket",
+    },
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, []);
+    {
+      image:
+        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745207280/EVO_RX-7__Yellow_-_2_800_qyezku.png",
+      label: "Helmet",
+    },
 
+    {
+      image:
+        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745290550/SMOK_Zeus_36L__Alloy_Side_View-removebg-preview_agoevh.png",
+      label: "Top Box",
+    },
+
+    {
+      image:
+        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
+      label: "Riding Jacket",
+    },
+
+    {
+      image:
+        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
+      label: "Riding Jacket",
+    },
+  ];
   return (
     <>
       <div>
@@ -35,7 +57,22 @@ function Home() {
               </span>
             </div>
             <div className="px-30 flex flex-col items-center ">
-              <div className=" max-w-[100rem] w-full">
+              <div className=" max-w-[100rem] w-full flex flex-col gap-20">
+                <section className="flex flex-col gap-10 ">
+                  <span
+                    className="text-2xl font-semibold after:h-1 after:rounded-full after:w-[5rem] relative
+                    after:bg-mayormoto-pink after:absolute after:bottom-0 after:left-0 pb-1"
+                  >
+                    What We Offer
+                  </span>
+
+                  <div className="flex gap-4">
+                    {productCategories.map((cat, i) => (
+                      <BrandCard label={cat.label} image={cat.image} />
+                    ))}
+                  </div>
+                </section>
+
                 <section className="flex flex-col gap-10 ">
                   <span
                     className="text-2xl font-semibold after:h-1 after:rounded-full after:w-[5rem] relative
@@ -60,7 +97,7 @@ function Home() {
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {Array.from({ length: 5 }, (_, i) => (
+                    {Array.from({ length: 10 }, (_, i) => (
                       <ProductCard
                         name={`Zebra Helmet Green j${i + 32}`}
                         brand="zebra"

@@ -20,6 +20,7 @@ import Employee from "./pages/pos/Employee";
 import User from "./pages/pos/User";
 import Insight from "./pages/pos/Insight";
 import ScrollToTop from "./utils/scrollToTop";
+import Settings from "./pages/pos/Settings";
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="employees" element={<Employee />} />
               <Route path="user" element={<User />} />
               <Route path="insight" element={<Insight />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
         </Router>

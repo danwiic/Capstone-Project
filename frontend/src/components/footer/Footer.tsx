@@ -106,29 +106,33 @@ export default function Footer({ children }: { children?: React.ReactNode }) {
           </div>
 
           <div className="flex flex-col gap-4 h-full w-full px-10 py-6">
-            <span className="font-semibold text-md text-gray-800">
-              Account
-            </span>
+            <span className="font-semibold text-md text-gray-800">ACCOUNT</span>
             <div className="flex flex-col gap-2">
-              
-                <Link
-                  to={`/#}`}
-                  className="text-sm font-medium hover:text-mayormoto-blue"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to={`/#}`}
-                  className="text-sm font-medium hover:text-mayormoto-blue"
-                >
-                  View Cart
-                </Link>
-                <Link
-                  to={`/#}`}
-                  className="text-sm font-medium hover:text-mayormoto-blue"
-                >
-                  Forgot Password
-                </Link>
+              <Link
+                to={`/#}`}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Wishlist
+              </Link>
+
+              <Link
+                to={`/#}`}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                View Cart
+              </Link>
+              <Link
+                to={`/#}`}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Forgot Password
+              </Link>
+              <Link
+                to={`/#}`}
+                className="text-sm font-medium hover:text-mayormoto-blue"
+              >
+                Sign In
+              </Link>
             </div>
           </div>
           {/* <div className="flex flex-col gap-2 w-full p-10">
@@ -151,7 +155,7 @@ export default function Footer({ children }: { children?: React.ReactNode }) {
         className="flex justify-center items-center border-t bg-white
         border-gray-300 text-sm font-medium text-gray-500 py-4"
       >
-        ©{year} MayorMoto
+        ©{year} Mayormoto Helmet and Accessories.
       </span>
     </>
   );

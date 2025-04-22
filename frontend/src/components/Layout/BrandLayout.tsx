@@ -1,7 +1,9 @@
 import { IoSearch } from "react-icons/io5";
 import { FaGreaterThan } from "react-icons/fa6";
 import { FaLessThan } from "react-icons/fa6";
-
+import { useState } from "react";
+import { FaChevronUp } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa6";
 type BrandLayout = {
   children?: React.ReactNode;
 };
@@ -15,7 +17,6 @@ const categories = [
   "Sprays & Cleaners",
   "Motorcycle Safety",
   "External Accessories",
-  "Lubricants",
 ];
 
 const brands = [
@@ -50,40 +51,70 @@ const brands = [
 ];
 
 export default function BrandLayout({ children }: BrandLayout) {
+  const [collapseCategories, setCollapseCategories] = useState(false);
+  const [collapseBrands, setCollapseBrands] = useState(true);
   return (
     <div
       className="grid bg-white lg:grid-cols-1 xl:grid-cols-4 auto-cols-auto  
-    p-10 rounded-sm "
+    p-10 rounded-sm"
     >
-      <div
-        className="bg-white px-10 py-6 
+      <div className="sticky left-0">
+        <div
+          className="bg-white px-6 py-6 sticky top-40 
         flex flex-col gap-6 border border-gray-200"
-      >
-        <div className="flex flex-col gap-2">
-          <span className="text-md uppercase font-semibold text-gray-700">
-            Categories
-          </span>
-          <div className="flex flex-col gap-2">
-            {categories.map((category, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <input type="checkbox" />
-                {category}
-              </div>
-            ))}
+        >
+          <div
+            className={`flex flex-col gap-2 cursor-pointer ${
+              collapseCategories
+                ? "h-8 overflow-hidden"
+                : "flex-1 overflow-hidden"
+            }transition-all duration-300 `}
+          >
+            <span
+              onClick={() => setCollapseCategories((prev) => !prev)}
+              className="text-md uppercase font-semibold text-gray-700 
+            flex justify-between items-center"
+            >
+              <button>Categories</button>
+              <span>
+                {collapseCategories ? <FaChevronUp /> : <FaChevronDown />}
+              </span>
+            </span>
+            <div className="flex flex-col gap-2 transition-all duration-300">
+              {!collapseCategories &&
+                categories.map((category, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <input type="checkbox" />
+                    {category}
+                  </div>
+                ))}
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-2">
-          <span className="text-md uppercase font-semibold text-gray-700">
-            Categories
-          </span>
-          <div className="flex flex-col gap-2">
-            {brands.map((brand, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                <input type="checkbox" />
-                {brand}
-              </div>
-            ))}
+          <div
+            className={`flex flex-col gap-2 cursor-pointer transition-all duration-300 ${
+              collapseBrands ? "h-8 overflow-hidden" : "flex-1 overflow-hidden"
+            }`}
+          >
+            <span
+              onClick={() => setCollapseBrands((prev) => !prev)}
+              className="text-md uppercase font-semibold text-gray-700 
+            flex justify-between items-center"
+            >
+              <button>Brands</button>
+              <span>
+                {collapseBrands ? <FaChevronUp /> : <FaChevronDown />}
+              </span>
+            </span>
+            <div className="flex flex-col gap-2">
+              {!collapseBrands &&
+                brands.map((br, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <input type="checkbox" />
+                    {br}
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </div>

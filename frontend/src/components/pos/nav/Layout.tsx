@@ -11,6 +11,7 @@ import {
   MdPeopleOutline,
   MdPointOfSale,
   MdOnlinePrediction,
+  MdSettings,
 } from "react-icons/md";
 import {
   TbLayoutSidebarLeftCollapse,
@@ -150,7 +151,16 @@ export default function Layout({ children }: LayoutProps) {
               </div>
 
               <div className="flex gap-4 pr-6 items-center ">
-                <IoIosNotificationsOutline className="text-3xl cursor-pointer" />
+                <span className="relative flex">
+                  <IoIosNotificationsOutline className="text-3xl cursor-pointer" />
+                  <span
+                    className="bg-mayormoto-pink p-1 text-sm  
+                  absolute -top-0.5 rounded-full -right-1 text-white
+                  h-5 w-5 flex justify-center items-center"
+                  >
+                    1
+                  </span>
+                </span>
                 <span
                   className="bg-red-200 w-10 h-10 
               flex justify-center items-center rounded-full"
@@ -200,6 +210,7 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
     { name: "Transaction History", icon: <MdHistory />, path: "/pos/history" },
     { name: "Employees", icon: <MdPeopleOutline />, path: "/pos/employees" },
     { name: "User", icon: <CiUser />, path: "/pos/user" },
+    { name: "Settings", icon: <MdSettings />, path: "/pos/settings" },
   ];
 
   return (

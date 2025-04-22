@@ -4,6 +4,7 @@ import Rate from "../rating/Rate";
 import { FaRegEye } from "react-icons/fa";
 import { useState } from "react";
 import ProductModal from "../modal/ProductModal";
+import { FaHeart  } from "react-icons/fa";
 
 type ProductCardProps = {
   imageUrl?: string;
@@ -52,16 +53,31 @@ export default function ProductCard({
               className="w-auto h-full transition-all duration-200
                   cursor-pointer scale-80 group-hover:scale-90"
             />
-            <button
-              className="rounded-full absolute top-0 right-0 opacity-0 group-hover:opacity-100
+            <div
+              className="flex flex-col gap-1 absolute top-0 right-0 opacity-0  
+            group-hover:opacity-100"
+            >
+              <button
+                className="rounded-full  group-hover:opacity-100
+                   transition-all duration-200
+                   border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                   text-lg cursor-pointer"
+                title="Add to wishlist"
+                onClick={openModal}
+              >
+                <FaHeart className="text-mayormoto-pink" />
+              </button>
+              <button
+                className="rounded-full  
                        transition-all duration-200
                        border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
                        text-lg cursor-pointer"
-              title="Quick view"
-              onClick={openModal}
-            >
-              <FaRegEye />
-            </button>
+                title="Quick view"
+                onClick={openModal}
+              >
+                <FaRegEye />
+              </button>
+            </div>
           </div>
           <div className="flex flex-col gap-2 cursor-pointer">
             <span
