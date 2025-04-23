@@ -40,7 +40,8 @@ export default function App() {
               element={
                 <ProtectedRoute
                   element={<Wishlist />}
-                  allowedRoles={["admin"]}
+                  allowedRoles={["admin", "user"]}
+                  redirectPath="/login"
                 />
               }
             />
