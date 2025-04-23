@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useUserContext } from "../context/userContext";
 
 interface ProtectedRouteAccess {
-  allowedRoles: "user" | "admin";
+  allowedRoles: ("user" | "admin")[];
   element: React.ReactNode;
   redirectPath?: string;
 }
@@ -14,10 +14,15 @@ export default function ProtectedRoute({
 }: ProtectedRouteAccess) {
   const { user } = useUserContext();
 
-  const hasAccess = user?.role && allowedRoles.includes(user.role);
-  console.log("sdhahsdhasdh",hasAccess);
+  if (!user) return <Navigate to={redirectPath} />;
 
-  if (!hasAccess) {
+  const hasAccess = user?.role && allowedRoles.includes(user.role);
+
+  if (!hasAccess && user?.role) {
+    return <Navigate to={"/"} />;
+  }
+
+  if (!user && !hasAccess) {
     return <Navigate to={redirectPath} />;
   }
 

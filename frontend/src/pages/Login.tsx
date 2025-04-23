@@ -2,19 +2,26 @@ import Footer from "../components/footer/Footer";
 import Button from "../components/ui/button/Button";
 import InputBox from "../components/ui/InputBox";
 // import logo from "../images/mayormoto-logo-removebg-preview.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useUserContext } from "../context/userContext";
+import { useEffect } from "react";
 
 export default function Login() {
+  const { user, setUser } = useUserContext();
+  useEffect(() => {
+    setUser({
+      id: "123",
+      email: "danbalagbag@gmail.com",
+      name: "Dan",
+      role: "",
+    });
+  }, []);
+
+  if (user) return <Navigate to={"/"} />;
 
   return (
     <>
       <div className="flex flex-col items-center gap-6 h-auto py-20">
-        {/* <Link to={"/"}>
-          <figcaption>
-            <img src={logo} alt="" className="w-70 h-26 object-cover " />
-          </figcaption>
-        </Link> */}
-
         <form
           action=""
           className="w-1/4 px-8 py-8 rounded-sm shadow-1 bg-white"
@@ -32,7 +39,7 @@ export default function Login() {
               <InputBox
                 type="text"
                 name="username"
-                placeholder="Please enter your Username or Email"
+                placeholder="Please enter your Email"
                 classname="w-full"
                 required
               />
@@ -45,7 +52,7 @@ export default function Login() {
                 </label>
 
                 <Link to="" className="w-auto">
-                  <div className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer text-end">
+                  <div className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer text-end">
                     Forgot Password?
                   </div>
                 </Link>

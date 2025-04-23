@@ -7,19 +7,6 @@ import Footer from "../footer/Footer.tsx";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
-  const { setUser, user } = useUserContext();
-
-  useEffect(() => {
-    setUser({
-      id: "123",
-      email: "danbalagbag@gmail.com",
-      name: "Dan",
-      role: "admin",
-    });
-  }, []);
-
-  console.log(user);
-
   return (
     <>
       <div className="flex flex-col sticky top-0 z-50 shadow-md">

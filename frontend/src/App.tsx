@@ -38,7 +38,10 @@ export default function App() {
             <Route
               path="/wishlist"
               element={
-                <ProtectedRoute element={<Wishlist />} allowedRoles={"admin"} />
+                <ProtectedRoute
+                  element={<Wishlist />}
+                  allowedRoles={["admin"]}
+                />
               }
             />
             <Route path="/signup" element={<Signup />} />
