@@ -4,6 +4,7 @@ type SingleUser = {
   id: string;
   email: string;
   name?: String;
+  role: string
 };
 
 type UserContextType = {

@@ -68,7 +68,7 @@ function Home() {
 
                   <div className="flex gap-4">
                     {productCategories.map((cat, i) => (
-                      <BrandCard label={cat.label} image={cat.image} />
+                      <BrandCard key={i} label={cat.label} image={cat.image} />
                     ))}
                   </div>
                 </section>

@@ -68,7 +68,7 @@ export default function BrandLayout({ children }: BrandLayout) {
               collapseCategories
                 ? "h-8 overflow-hidden"
                 : "flex-1 overflow-hidden"
-            }transition-all duration-300 `}
+            } transition-all duration-300 ease-in-out `}
           >
             <span
               onClick={() => setCollapseCategories((prev) => !prev)}
@@ -80,21 +80,23 @@ export default function BrandLayout({ children }: BrandLayout) {
                 {collapseCategories ? <FaChevronUp /> : <FaChevronDown />}
               </span>
             </span>
-            <div className="flex flex-col gap-2 transition-all duration-300">
-              {!collapseCategories &&
-                categories.map((category, i) => (
-                  <div key={i} className="flex gap-2 items-center">
-                    <input type="checkbox" />
-                    {category}
-                  </div>
-                ))}
+            <div
+              className="flex flex-col gap-2 transition-all  
+            overflow-hidden duration-300 ease-in-out"
+            >
+              {categories.map((category, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <input type="checkbox" />
+                  {category}
+                </div>
+              ))}
             </div>
           </div>
 
           <div
-            className={`flex flex-col gap-2 cursor-pointer transition-all duration-300 ${
+            className={`flex flex-col gap-2 cursor-pointer ${
               collapseBrands ? "h-8 overflow-hidden" : "flex-1 overflow-hidden"
-            }`}
+            } transition-all duration-300 ease-in-out`}
           >
             <span
               onClick={() => setCollapseBrands((prev) => !prev)}
@@ -107,13 +109,12 @@ export default function BrandLayout({ children }: BrandLayout) {
               </span>
             </span>
             <div className="flex flex-col gap-2">
-              {!collapseBrands &&
-                brands.map((br, i) => (
-                  <div key={i} className="flex gap-2 items-center">
-                    <input type="checkbox" />
-                    {br}
-                  </div>
-                ))}
+              {brands.map((br, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <input type="checkbox" />
+                  {br}
+                </div>
+              ))}
             </div>
           </div>
         </div>

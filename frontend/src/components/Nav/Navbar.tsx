@@ -7,15 +7,18 @@ import Footer from "../footer/Footer.tsx";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
-  const { setUser } = useUserContext();
+  const { setUser, user } = useUserContext();
 
   useEffect(() => {
     setUser({
       id: "123",
       email: "danbalagbag@gmail.com",
       name: "Dan",
+      role: "admin",
     });
   }, []);
+
+  console.log(user);
 
   return (
     <>
@@ -53,11 +56,18 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
 }
 
 function NavItems() {
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/products" },
-    { name: "Wishlist", path: "/wishlist" },
-  ];
+  const { user } = useUserContext();
+
+  const navItems = user
+    ? [
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+        { name: "Wishlist", path: "/wishlist" },
+      ]
+    : [
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+      ];
 
   const loc = useLocation();
 

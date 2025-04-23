@@ -22,6 +22,8 @@ import Insight from "./pages/pos/Insight";
 import ScrollToTop from "./utils/scrollToTop";
 import Settings from "./pages/pos/Settings";
 import CartComponent from "./components/Cart/Cart";
+import Wishlist from "./pages/Wishlist";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 
 export default function App() {
   return (
@@ -33,6 +35,12 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
             <Route path="/cart" element={<CartComponent />} />
+            <Route
+              path="/wishlist"
+              element={
+                <ProtectedRoute element={<Wishlist />} allowedRoles={"admin"} />
+              }
+            />
             <Route path="/signup" element={<Signup />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/products" element={<Brand />} />

@@ -6,6 +6,7 @@ import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Navbar from "../Nav/Navbar";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface CartProps {
   children?: React.ReactNode;
@@ -66,7 +67,9 @@ export function CartModal({
               </div>
 
               <div className="flex justify-between items-center gap-2">
-                <Button className="rounded-xs">View Cart</Button>
+                <Link to="/cart" className="w-full">
+                  <Button className="rounded-xs">View Cart</Button>
+                </Link>
                 <Button className="bg-mayormoto-pink hover:bg-mayormoto-pink/80 rounded-xs">
                   Checkout
                 </Button>

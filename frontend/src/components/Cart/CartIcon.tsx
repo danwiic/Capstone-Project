@@ -22,6 +22,10 @@ export default function CartIcon() {
   }, []);
 
   function handleViewCart() {
+    // check if the current location is cart page
+    // if it is, do not open the cart modal
+    const curLoc = window.location.pathname;
+    if (curLoc === "/cart") return;
     setViewCart((prev) => !prev);
   }
 
