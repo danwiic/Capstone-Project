@@ -8,14 +8,14 @@ import { useEffect } from "react";
 
 export default function Login() {
   const { user, setUser } = useUserContext();
-  useEffect(() => {
-    setUser({
-      id: "123",
-      email: "danbalagbag@gmail.com",
-      name: "Dan",
-      role: "",
-    });
-  }, []);
+  // useEffect(() => {
+  //   setUser({
+  //     id: "123",
+  //     email: "danbalagbag@gmail.com",
+  //     name: "Dan",
+  //     role: "",
+  //   });
+  // }, []);
 
   if (user) return <Navigate to={"/"} />;
 

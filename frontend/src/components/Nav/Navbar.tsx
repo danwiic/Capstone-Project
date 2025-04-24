@@ -11,7 +11,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
     <>
       <div className="flex flex-col sticky top-0 z-50 shadow-md">
         <div
-          className="bg-white p-1 px-30 border-b border-gray-300 py-2
+          className="bg-body p-1 px-30 border-b border-gray-300 py-2
         flex justify-between items-center 
         "
         >

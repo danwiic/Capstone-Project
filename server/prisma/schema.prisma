@@ -38,7 +38,7 @@ model DeliverAddress {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("delivery_addresses")
+  @@map("deliver_addresses")
 }
 
 model Product {
