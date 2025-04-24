@@ -21,8 +21,10 @@ model User {
   deliverAddress DeliverAddress[]
   review         Review[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Product        Product[]
+  ProductVariant ProductVariant[]
 
   @@map("users")
 }
@@ -42,15 +44,26 @@ model DeliverAddress {
 }
 
 model Product {
-  id          String  @id @default(uuid()) @map("product_id")
+  id          String   @id @default(uuid()) @map("product_id")
   name        String
   description String?
+  price       Decimal? @db.Decimal(10, 2)
+  stock       Int      @default(0)
 
-  ProductImage ProductImage[]
-  review       Review[]
+  ProductImage   ProductImage[]
+  review         Review[]
+  ProductVariant ProductVariant[]
+
+  categoryId String
+  category   ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  brandId String
+  brand   ProductBrand @relation(fields: [brandId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  updatedBy String?
+  user      User?    @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
 }
 
 model ProductImage {
@@ -64,6 +77,48 @@ model ProductImage {
   updatedAt DateTime @updatedAt
 
   @@map("product_images")
+}
+
+model ProductCategory {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("product_categories")
+}
+
+model ProductBrand {
+  id   String @id @default(uuid())
+  name String @unique
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("product_brands")
+}
+
+model ProductVariant {
+  id String @id @default(uuid())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  sku         String  @unique
+  variantName String
+  price       Decimal @db.Decimal(10, 2)
+  stock       Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+  user      User?    @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
 }
 
 model Review {

@@ -60,7 +60,7 @@ export default function BrandLayout({ children }: BrandLayout) {
       <div className="max-w-[100rem] w-full flex flex-row gap-10">
         {/* STICKY CONTAINER */}
         <div>
-          <div className=" sticky top-40 flex flex-col gap-6">
+          <div className=" sticky top-45 flex flex-col gap-6">
             {/* CATEGORIES */}
             <div
               className=" bg-white flex flex-col rounded-md 
@@ -295,6 +295,7 @@ export default function BrandLayout({ children }: BrandLayout) {
           </div>
 
           <div className="grid grid-cols-4">{children}</div>
+          <div>PAGINATION HERE</div>
         </div>
         {/* MAIN CONTENT */}
       </div>
