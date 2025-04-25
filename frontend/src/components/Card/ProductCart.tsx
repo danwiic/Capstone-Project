@@ -7,18 +7,20 @@ import Rate from "../rating/Rate";
 import { FaHeart, FaRegEye } from "react-icons/fa";
 import ProductModal from "../modal/ProductModal";
 
-type ProductCardProps = {
-  imageUrl?: string;
+type ProductCartProps = {
+  productId: string;
+  imageUrl: string;
   name?: string;
   brand?: string;
   price: number;
+  rating?: number;
+  noOfReviews?: number;
 };
-function DisplayProductCart({
-  imageUrl,
-  name,
-  brand,
-  price,
-}: ProductCardProps) {
+
+type Product = {
+  product: ProductCartProps;
+};
+function DisplayProductCart({ product }: Product) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Function to open modal
@@ -41,7 +43,7 @@ function DisplayProductCart({
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full h-32 relative overflow-hidden">
             <img
-              src={imageUrl}
+              src={product?.imageUrl || product?.imageUrl[0]}
               loading="lazy"
               alt="/"
               className="w-auto h-full transition-transform duration-200 
@@ -74,19 +76,17 @@ function DisplayProductCart({
             </div>
           </div>
 
-          <div className=" flex flex-col gap-2 cursor-pointer">
-            <span
-              className="font-medium text-xs uppercase 
-            text-gray-500 hover:text-mayormoto-blue"
-            >
-              {brand}
+          <div className="flex flex-col gap-2 cursor-pointer w-11/12">
+            <span className="font-medium text-xs uppercase text-gray-500 hover:text-mayormoto-blue">
+              {product?.brand}
             </span>
-            <Link to={`/product/1`}>
+
+            <Link to={`/product/${product?.productId}`}>
               <span
-                className="text-sm font-bold break-words 
-            hover:text-mayormoto-blue"
+                className="text-sm font-bold truncate hover:text-mayormoto-blue block w-full"
+                title={product?.name} 
               >
-                {name}
+                {product?.name}
               </span>
             </Link>
           </div>
@@ -94,7 +94,6 @@ function DisplayProductCart({
 
         <div className="flex flex-col">
           <span className="text-lg font-medium text-red-500">
-            {formatMoney(price)}
           </span>
           <span className="flex gap-1 items-center text-xs text-gray-700">
             <Rate readOnly={true} value={5} />
@@ -112,10 +111,13 @@ function DisplayProductCart({
           isOpen={isModalOpen}
           onClose={closeModal}
           product={{
-            imageUrl,
-            name,
-            brand,
-            price,
+            productId: product.productId,
+            imageUrl: product.imageUrl,
+            name: product.name,
+            brand: product.brand,
+            price: product.price,
+            rating: product.rating,
+            noOfReviews: product.noOfReviews,
           }}
         />
       )}

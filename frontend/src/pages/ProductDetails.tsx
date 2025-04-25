@@ -8,6 +8,7 @@ import ProductInfo from "../components/Product/ProductInfo";
 import ProductDescription from "../components/Product/ProductDescription";
 import ProductReviews from "../components/Product/ProductReviews";
 import ProductCart from "../components/Card/ProductCart";
+import Loading from "../components/loader/Loading";
 
 type ProductDetailsProps = {
   name?: string;
@@ -36,7 +37,7 @@ export default function ProductDetails() {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <div>Loading...</div>;
+  if (!product) return <Loading />;
 
   return (
     <>

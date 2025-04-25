@@ -1,6 +1,4 @@
-import { get } from "http";
 import prisma from "../config/db";
-import product from "../routes/productRoute";
 
 export const createProduct = async (req: any, res: any) => {
   const {
@@ -48,7 +46,7 @@ export const createProduct = async (req: any, res: any) => {
   }
 };
 
-export const getAllProducts = async (req: any, res: any) => {
+export const getTenProducts = async (req: any, res: any) => {
   try {
     const products = await prisma.product.findMany({
       select: {
@@ -131,6 +129,73 @@ export const getOneProduct = async (req: any, res: any) => {
     return res.status(200).json(getProduct);
   } catch (error) {
     console.error("Error fetching product:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getAllProducts = async (req: any, res: any) => {
+  const { page = 1, limit = 16 } = req.query;
+
+  const pageNumber = parseInt(page as string, 10);
+  const limitNumber = parseInt(limit as string, 10);
+
+  const offset = (pageNumber - 1) * limitNumber;
+  const take = limitNumber > 0 ? limitNumber : undefined;
+  const skip = offset > 0 ? offset : undefined;
+
+  const totalProducts = await prisma.product.count();
+  const totalPages = Math.ceil(totalProducts / limitNumber);
+
+  try {
+    const products = await prisma.product
+      .findMany({
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          stock: true,
+          category: { select: { name: true } },
+          brand: { select: { name: true } },
+          ProductImage: { select: { imageUrl: true } },
+          ProductVariant: { select: { price: true } },
+        },
+        take,
+        skip,
+        orderBy: { createdAt: "desc" },
+      })
+      .then(async (products) => {
+        const enrichedProducts = await Promise.all(
+          products.map(async (product) => {
+            const ratingStats = await prisma.review.aggregate({
+              where: { productId: product.id },
+              _sum: { rating: true },
+              _count: { rating: true },
+            });
+
+            return {
+              ...product,
+              noOfReviews: ratingStats._count.rating || 0,
+              averageRating:
+                ratingStats._count.rating > 0
+                  ? (ratingStats._sum.rating ?? 0) / ratingStats._count.rating
+                  : 0,
+            };
+          })
+        );
+        return enrichedProducts;
+      });
+
+    return res.status(200).json({
+      products,
+      totalProducts,
+      totalPages,
+      currentPage: pageNumber,
+      hasNextPage: pageNumber < totalPages,
+      hasPreviousPage: pageNumber > 1,
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
