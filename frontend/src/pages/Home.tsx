@@ -3,6 +3,8 @@ import bg from "../images/bg.png";
 import ProductCard from "../components/Card/ProductCard";
 import React from "react";
 import BrandCard from "../components/Card/BrandCard";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Home() {
   const productCategories = [
@@ -36,6 +38,23 @@ function Home() {
       label: "Riding Jacket",
     },
   ];
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/product/");
+        setProducts(response.data);
+        console.log(response.data[0], "data here");
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <div>
@@ -97,15 +116,20 @@ function Home() {
                     </span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {Array.from({ length: 10 }, (_, i) => (
+                    {products.map((prod: any) => (
                       <ProductCard
-                        name={`Zebra Helmet Green j${i + 32}`}
-                        brand="zebra"
-                        key={i}
-                        imageUrl="https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png"
-                        price={15999 + i * 1000}
-                        rating={4.5}
-                        noOfReviews={24 + Math.floor(Math.random() * 10)}
+                        key={prod.id}
+                        product={{
+                          productId: prod.id,
+                          name: prod.name,
+                          brand: prod.brand.name,
+                          imageUrl:
+                            prod.ProductImage[0]?.imageUrl ||
+                            "/placeholder.jpg",
+                          price: prod.ProductVariant[0]?.price || prod.price,
+                          rating: prod.averageRating,
+                          noOfReviews: prod.noOfReviews,
+                        }}
                       />
                     ))}
                   </div>

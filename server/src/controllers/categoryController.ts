@@ -54,3 +54,23 @@ export const getAllCategories = async (req: any, res: any) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const fetchCategory = async (req: any, res: any) => {
+  try {
+    const category = await prisma.productCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (!category || category.length === 0) {
+      return res.status(404).json({ message: "No categories found" });
+    }
+
+    return res.status(200).json({ category });
+  } catch (error) {
+    console.error("Error creating category:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};

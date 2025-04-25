@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { formatMoney } from "../../utils/formatMoney";
 import Rate from "../rating/Rate";
 
@@ -5,6 +6,7 @@ type ProductModalProps = {
   isOpen: boolean;
   onClose: () => void;
   product: {
+    productId: string;
     imageUrl?: string;
     name?: string;
     brand?: string;
@@ -85,9 +87,11 @@ export default function ProductModal({
                 <button className="bg-mayormoto-blue text-white px-6 py-2 rounded hover:bg-mayormoto-blue-hover w-full transition-colors">
                   Add to Cart
                 </button>
-                <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded w-full hover:bg-gray-300 transition-colors">
-                  View Details
-                </button>
+                <Link className="w-full" to={`/product/${product.productId}`}>
+                  <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded w-full hover:bg-gray-300 transition-colors">
+                    View Details
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Rating, Typography } from "@mui/material";
+import { Rating } from "@mui/material";
 
 interface ProductRatingProps {
   value?: number; // The current rating value (e.g., 1, 2, 3, etc.)
@@ -17,9 +17,9 @@ const ProductRating: React.FC<ProductRatingProps> = ({
         size="small"
         name="product-rating"
         value={value}
-        precision={5}
         onChange={onChange}
         readOnly={readOnly}
+        precision={0.5}
       />
     </div>
   );
