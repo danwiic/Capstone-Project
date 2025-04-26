@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 type SingleUser = {
   id: string;
   email: string;
-  name?: String;
+  firstName?: String;
   role: string
 };
 

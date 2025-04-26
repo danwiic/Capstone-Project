@@ -25,6 +25,8 @@ model User {
   updatedAt      DateTime         @updatedAt
   Product        Product[]
   ProductVariant ProductVariant[]
+  WishList       WishList[]
+  Cart           Cart[]
 
   @@map("users")
 }
@@ -60,10 +62,24 @@ model Product {
   brandId String
   brand   ProductBrand @relation(fields: [brandId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  updatedBy String?
+  user      User?      @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+  WishList  WishList[]
+  CartItem  CartItem[]
+}
+
+model WishList {
+  id String @id @default(uuid())
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  updatedBy String?
-  user      User?    @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
 }
 
 model ProductImage {
@@ -115,10 +131,39 @@ model ProductVariant {
   price       Decimal @db.Decimal(10, 2)
   stock       Int     @default(0)
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  updatedBy String?
+  user      User?      @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+  CartItem  CartItem[]
+}
+
+model Cart {
+  id     String     @id @default(uuid())
+  userId String
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items  CartItem[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  updatedBy String?
-  user      User?    @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+}
+
+model CartItem {
+  id     String @id @default(uuid())
+  cartId String
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  variantId String? // If using ProductVariant
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  quantity Int     @default(1)
+  price    Decimal @db.Decimal(10, 2) // Save the price at the time it was added
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {

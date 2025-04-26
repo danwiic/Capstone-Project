@@ -5,6 +5,7 @@ import React from "react";
 import BrandCard from "../components/Card/BrandCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Loading from "../components/loader/Loading";
 
 function Home() {
   const productCategories = [
@@ -40,20 +41,25 @@ function Home() {
   ];
 
   const [products, setProducts] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("http://localhost:3000/product/");
         setProducts(response.data);
         console.log(response.data[0], "data here");
       } catch (error) {
         console.error("Error fetching products:", error);
+      }finally{
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
+
+  if(loading) return <Loading />
 
   return (
     <>
@@ -126,7 +132,8 @@ function Home() {
                           imageUrl:
                             prod.ProductImage[0]?.imageUrl ||
                             "/placeholder.jpg",
-                          price: prod.ProductVariant[0]?.price || prod.price,
+                          price:
+                            prod.ProductVariant[0]?.price || prod.price || 0,
                           rating: prod.averageRating,
                           noOfReviews: prod.noOfReviews,
                         }}

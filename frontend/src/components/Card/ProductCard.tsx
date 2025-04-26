@@ -15,6 +15,9 @@ type ProductCardProps = {
   cardDesign?: string;
   rating?: number;
   noOfReviews?: number;
+  ProductVariant?: {
+    price: number;
+  }[];
 };
 
 type Product = {
@@ -45,7 +48,7 @@ export default function ProductCard({ product }: Product) {
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full h-32 overflow-hidden relative">
             <img
-              src={product.imageUrl || product.imageUrl[0]}
+              src={product?.imageUrl || product?.imageUrl[0]}
               alt="/"
               loading="lazy"
               className="w-auto h-full transition-all duration-200
@@ -82,24 +85,24 @@ export default function ProductCard({ product }: Product) {
               {product.brand}
             </span>
 
-            <Link to={`/product/${product.productId}`}>
+            <Link to={`/product/${product?.productId}`}>
               <span
                 className="text-sm font-bold truncate hover:text-mayormoto-blue block w-full"
-                title={product.name} 
+                title={product?.name} 
               >
-                {product.name}
+                {product?.name}
               </span>
             </Link>
           </div>
         </div>
         <div className="flex flex-col">
           <span className="text-lg font-medium text-red-500">
-            {formatMoney(product.price)}
+            {formatMoney(product?.price)}
           </span>
           <span className="flex gap-1 items-center text-xs text-gray-700">
-            <Rate readOnly={true} value={product.rating || 0} />
+            <Rate readOnly={true} value={product?.rating || 0} />
             <span className="font-semibold">
-              ({product.noOfReviews || 0}) Reviews
+              ({product?.noOfReviews || 0}) Reviews
             </span>
           </span>
         </div>
@@ -114,7 +117,7 @@ export default function ProductCard({ product }: Product) {
             imageUrl: product.imageUrl,
             name: product.name,
             brand: product.brand,
-            price: product.price,
+            price: product.price || 220,
             rating: product.rating,
             noOfReviews: product.noOfReviews,
           }}

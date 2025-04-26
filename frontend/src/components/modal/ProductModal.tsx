@@ -74,7 +74,7 @@ export default function ProductModal({
             </div>
 
             <div className="text-2xl font-bold text-red-500">
-              {formatMoney(product.price)}
+              {formatMoney(product.price || 0)}
             </div>
 
             <div className="flex flex-col gap-6 border-t border-gray-200 pt-4">

@@ -21,7 +21,7 @@ export default function LoginNav() {
       {user ? (
         <div className="flex flex-col font-medium text-start">
           <span className="text-sm text-gray-600">
-            Hello, {user ? `${user.name}` : "User"}
+            Hello, {user ? `${user.firstName}` : "User"}
           </span>
           <button
             onClick={() => handleViewAccountSettings()}

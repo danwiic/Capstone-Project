@@ -13,7 +13,7 @@ import Loading from "../components/loader/Loading";
 type ProductDetailsProps = {
   name?: string;
   description?: string;
-  category: { name: string };
+  category: { name: string; id: string };
   brand: { name: string };
   ProductImage: { imageUrl: string }[];
   ProductVariant?: { price: number; name: string }[];
@@ -21,9 +21,25 @@ type ProductDetailsProps = {
   reviews?: { user: string; comment: string; rating: number }[];
 };
 
+type FiveProducts = {
+  category: { id: string; name: string };
+  products: {
+    name?: string;
+    description?: string;
+    category: { name: string; id: string };
+    brand: { name: string };
+    ProductImage: { imageUrl: string }[];
+    ProductVariant?: { price: number; name: string }[];
+  }[];
+};
+
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState<ProductDetailsProps | null>(null);
+  const categoryId = product?.category.id;
+  const [fiveProducts, setFiveProducts] = useState<FiveProducts | null>(null);
+
+  console.log(fiveProducts, "product");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,8 +50,25 @@ export default function ProductDetails() {
         console.error("Error fetching product:", error);
       }
     };
+
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    const fetchFiveProducts = async () => {
+      if (!product?.category.id) return; // wait until categoryId is available
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/category/five/${categoryId}`
+        );
+        setFiveProducts(response.data.products[0]);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchFiveProducts();
+  }, [product?.category.id]);
 
   if (!product) return <Loading />;
 
@@ -59,16 +92,23 @@ export default function ProductDetails() {
         </main>
 
         {/* SUGGESTED PRODUCTS */}
-        <div className=" w-full px-30 py-10 mb-10 flex flex-col gap-4 h-auto">
+        <div className="px-30 py-10 flex flex-col">
           <h2 className="text-xl font-bold text-gray-700">You may also like</h2>
-          <div className="flex rounded w-full gap-1 shadow-1">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="grid grid-cols-5 gap-1">
+            {fiveProducts?.products.map((product: any, i: number) => (
               <ProductCart
                 key={i}
-                name="Gille Astral Honda Grey"
-                price={4800}
-                brand="gille"
-                imageUrl="https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png"
+                product={{
+                  productId: product.id,
+                  imageUrl: product.ProductImage[0]?.imageUrl ?? "",
+                  name: product.name,
+                  brand: product.brand.name,
+                  price:
+                    product.price ?? product.ProductVariant?.[0]?.price ?? 0,
+                  stock: product.ProductVariant?.[0]?.stock || product.stock,
+                  rating: product.rating ?? 0,
+                  noOfReviews: product.noOfReviews ?? 0,
+                }}
               />
             ))}
           </div>

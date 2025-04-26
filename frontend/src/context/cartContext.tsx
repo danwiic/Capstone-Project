@@ -1,10 +1,22 @@
 import { createContext, useState } from "react";
 
 type CartItem = {
-  image: string;
-  name: string;
-  price: string | "₱0.00"; 
+  id: string;
+  cartId: string;
+  productId: string;
   quantity: number;
+  price: string;
+  product: {
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+    ProductImage: {
+      id: string;
+      imageUrl: string;
+    }[];
+  };
 };
 
 type CartContextType = {

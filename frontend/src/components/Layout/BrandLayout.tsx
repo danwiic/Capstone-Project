@@ -7,6 +7,10 @@ import { RxCross2 } from "react-icons/rx";
 type BrandLayout = {
   children?: React.ReactNode;
   pagination?: React.ReactNode;
+  selectedCategories: string[];
+  selectedBrands: string[];
+  onCategoryChange: (categoryIds: string[]) => void;
+  onBrandChange: (brandIds: string[]) => void;
 };
 
 type Category = {
@@ -19,20 +23,20 @@ type Brand = {
   name: string;
 };
 
-export default function BrandLayout({ children, pagination }: BrandLayout) {
-  const [collapseCategories, setCollapseCategories] = useState(true);
+export default function BrandLayout({ 
+  children, 
+  pagination,
+  selectedCategories,
+  selectedBrands,
+  onCategoryChange,
+  onBrandChange
+}: BrandLayout) {
+  const [collapseCategories, setCollapseCategories] = useState(false);
   const [collapseBrands, setCollapseBrands] = useState(true);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [brands, setBrands] = useState<Brand[] | null>(null);
 
-  // States for selected categories and brands
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0); // Total pages from the API
-
+  // Fetch data
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await axios.get("http://localhost:3000/category/");
@@ -49,25 +53,39 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
   }, []);
 
   const handleCategoryChange = (categoryId: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId]
-    );
+    const updatedSelection = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((id) => id !== categoryId)
+      : [...selectedCategories, categoryId];
+    
+    onCategoryChange(updatedSelection);
   };
 
   const handleBrandChange = (brandId: string) => {
-    setSelectedBrands((prev) =>
-      prev.includes(brandId)
-        ? prev.filter((id) => id !== brandId)
-        : [...prev, brandId]
-    );
+    const updatedSelection = selectedBrands.includes(brandId)
+      ? selectedBrands.filter((id) => id !== brandId)
+      : [...selectedBrands, brandId];
+    
+    onBrandChange(updatedSelection);
+  };
+
+  const handleAllCategoriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      onCategoryChange([]);
+    }
+  };
+
+  const handleAllBrandsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      onBrandChange([]);
+    }
   };
 
   const clearFilters = () => {
-    setSelectedCategories([]);
-    setSelectedBrands([]);
+    onCategoryChange([]);
+    onBrandChange([]);
   };
+
+  const areFiltersActive = selectedCategories.length > 0 || selectedBrands.length > 0;
 
   return (
     <div className="flex justify-center px-20">
@@ -102,6 +120,8 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                       <input
                         type="checkbox"
                         id="all"
+                        checked={selectedCategories.length === 0}
+                        onChange={handleAllCategoriesChange}
                         className="peer sr-only"
                       />
                       <div className="w-4 h-4 border border-gray-300 rounded peer-checked:bg-mayormoto-pink peer-checked:border-mayormoto-pink group-hover:border-mayormoto-pink transition-all"></div>
@@ -126,7 +146,7 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                   {categories?.map((category) => (
                     <label
                       key={category.id}
-                      htmlFor={category.name}
+                      htmlFor={category.id}
                       className="px-6 py-2 flex items-center gap-2 text-sm cursor-pointer hover:bg-mayormoto-pink/20 group"
                     >
                       <div className="relative flex items-center">
@@ -138,6 +158,20 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                           className="peer sr-only"
                         />
                         <div className="w-4 h-4 border border-gray-300 rounded peer-checked:bg-mayormoto-pink peer-checked:border-mayormoto-pink group-hover:border-mayormoto-pink transition-all"></div>
+                        <svg
+                          className="absolute w-3 h-3 text-white left-0.5 top-0.5 pointer-events-none hidden peer-checked:block"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
                       </div>
                       {category.name}
                     </label>
@@ -174,9 +208,25 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                       <input
                         type="checkbox"
                         id="all-brands"
+                        checked={selectedBrands.length === 0}
+                        onChange={handleAllBrandsChange}
                         className="peer sr-only"
                       />
                       <div className="w-4 h-4 border border-gray-300 rounded peer-checked:bg-mayormoto-pink peer-checked:border-mayormoto-pink group-hover:border-mayormoto-pink transition-all"></div>
+                      <svg
+                        className="absolute w-3 h-3 text-white left-0.5 top-0.5 pointer-events-none hidden peer-checked:block"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="3"
+                          d="M5 13l4 4L19 7"
+                        ></path>
+                      </svg>
                     </div>
                     All Brands
                   </label>
@@ -184,7 +234,7 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                   {brands?.map((brand) => (
                     <label
                       key={brand.id}
-                      htmlFor={brand.name}
+                      htmlFor={brand.id}
                       className="px-6 py-2 flex items-center gap-2 text-sm cursor-pointer hover:bg-mayormoto-pink/20 group"
                     >
                       <div className="relative flex items-center">
@@ -196,6 +246,20 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
                           className="peer sr-only"
                         />
                         <div className="w-4 h-4 border border-gray-300 rounded peer-checked:bg-mayormoto-pink peer-checked:border-mayormoto-pink group-hover:border-mayormoto-pink transition-all"></div>
+                        <svg
+                          className="absolute w-3 h-3 text-white left-0.5 top-0.5 pointer-events-none hidden peer-checked:block"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
                       </div>
                       {brand.name}
                     </label>
@@ -211,21 +275,20 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
         {/* MAIN CONTENT */}
         <div className="flex-1 flex flex-col gap-6">
           <div className="filter-badges w-full h-fit flex gap-4">
-            {selectedCategories.length > 0 || selectedBrands.length > 0 ? (
+            {areFiltersActive ? (
               <div className="rounded-full px-4 py-1 flex items-center gap-2 text-mayormoto-pink bg-mayormoto-pink/10">
                 <span>Filters Applied</span>
                 <RxCross2 onClick={clearFilters} className="cursor-pointer" />
               </div>
             ) : (
-              <div className="rounded-full px-4 py-1 flex items-center gap-2 text-mayormoto-pink bg-mayormoto-pink/10">
+              <div className="rounded-full px-4 py-1 flex items-center gap-2 opacity-0 text-mayormoto-pink bg-mayormoto-pink/10">
                 <span>All</span>
-                <RxCross2 className="cursor-pointer" />
               </div>
             )}
           </div>
 
           <div className="flex items-center justify-between text-gray-500 text-sm">
-            <span>Showing results</span>
+            {areFiltersActive && <span>Showing filtered results</span>}
             <select className="bg-white border border-gray-200 px-6 py-3 rounded-sm text-gray-700 font-medium">
               <option>Relevance</option>
               <option>Price: Low to High</option>
@@ -235,7 +298,7 @@ export default function BrandLayout({ children, pagination }: BrandLayout) {
             </select>
           </div>
 
-          <div className="grid grid-cols-4">{children}</div>
+          <div className="grid grid-cols-4 gap-4">{children}</div>
           <div className="flex">{pagination}</div>
         </div>
         {/* MAIN CONTENT */}

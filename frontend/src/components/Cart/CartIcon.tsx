@@ -3,23 +3,31 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CartContext } from "../../context/cartContext";
 import Cart from "./index.tsx";
 import { useClickOutside } from "../../hooks/useClickOutside.tsx";
+import { useUserContext } from "../../context/userContext.tsx";
+import axios from "axios";
 import { formatMoney } from "../../utils/formatMoney.ts";
-
 export default function CartIcon() {
   const { cart, setCart } = useContext(CartContext);
   const [viewCart, setViewCart] = useState(false);
+  const { user } = useUserContext();
 
   useEffect(() => {
-    setCart([
-      {
-        name: "Helmet",
-        price: formatMoney(2000),
-        image:
-          "https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png",
-        quantity: 1,
-      },
-    ]);
-  }, []);
+    const fetchCart = async () => {
+      if (!user?.id) return;
+      try {
+        const res = await axios.get(`http://localhost:3000/cart/${user?.id}`);
+        if (res.status === 200) {
+          setCart(res.data);
+          console.log("Cart fetched successfully:", res.data);
+        } else {
+          console.error("Error fetching cart:", res.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    };
+    fetchCart();
+  }, [user?.id]);
 
   function handleViewCart() {
     // check if the current location is cart page
@@ -41,7 +49,7 @@ export default function CartIcon() {
         -right-2.5 -top-0.5 text-sm hover:scale-120 
         duration-300 ease-in-out transition-all cursor-pointer  "
         >
-          {cart.length ?? 0}
+          {cart?.length ?? 0}
         </span>
       </button>
 
@@ -55,10 +63,12 @@ export default function CartIcon() {
               cart.length > 0 &&
               cart.map((ct, i) => (
                 <Cart.Items
-                  key={i}
-                  image={ct.image}
-                  itemName={ct.name}
-                  price={ct.price}
+                  key={ct.id}
+                  image={
+                    ct.product?.ProductImage?.[0]?.imageUrl || "/placeholder.png"
+                  }
+                  itemName={ct.product?.name || "Unknown Product"}
+                  price={formatMoney(ct.price)}
                   quantity={ct.quantity}
                 />
               ))}

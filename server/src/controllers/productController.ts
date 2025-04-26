@@ -106,6 +106,7 @@ export const getOneProduct = async (req: any, res: any) => {
         stock: true,
         category: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -158,7 +159,7 @@ export const getAllProducts = async (req: any, res: any) => {
           category: { select: { name: true } },
           brand: { select: { name: true } },
           ProductImage: { select: { imageUrl: true } },
-          ProductVariant: { select: { price: true } },
+          ProductVariant: { select: { price: true, stock: true } },
         },
         take,
         skip,

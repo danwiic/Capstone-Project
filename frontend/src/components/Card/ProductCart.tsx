@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Button from "../ui/button/Button";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { IoMdCheckmark } from "react-icons/io";
 import Rate from "../rating/Rate";
 import { FaHeart, FaRegEye } from "react-icons/fa";
 import ProductModal from "../modal/ProductModal";
+import { X } from "lucide-react";
 
 type ProductCartProps = {
   productId: string;
@@ -15,6 +16,8 @@ type ProductCartProps = {
   price: number;
   rating?: number;
   noOfReviews?: number;
+  variant?: number;
+  stock: number;
 };
 
 type Product = {
@@ -32,13 +35,16 @@ function DisplayProductCart({ product }: Product) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const checkStock = product?.stock !== undefined && product?.stock > 0;
+
   return (
     <>
       <div
         className="rounded-xs  flex flex-col w-full
       p-4 justify-center gap-2 bg-white border border-gray-200
       border-l-0 [&:nth-child(4n)]:border-r-0 border-t-0 group
-      hover:shadow-1 transition-all duration-200"
+      hover:shadow-1-hover shadow-1 transition-all duration-200"
       >
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full h-32 relative overflow-hidden">
@@ -84,7 +90,7 @@ function DisplayProductCart({ product }: Product) {
             <Link to={`/product/${product?.productId}`}>
               <span
                 className="text-sm font-bold truncate hover:text-mayormoto-blue block w-full"
-                title={product?.name} 
+                title={product?.name}
               >
                 {product?.name}
               </span>
@@ -94,30 +100,55 @@ function DisplayProductCart({ product }: Product) {
 
         <div className="flex flex-col">
           <span className="text-lg font-medium text-red-500">
+            {formatMoney(product?.price || 0)}
           </span>
           <span className="flex gap-1 items-center text-xs text-gray-700">
-            <Rate readOnly={true} value={5} />
-            <span className="font-semibold">(19)</span>
+            <Rate readOnly={true} value={product?.rating || 0} />
+            <span className="font-semibold">({product?.noOfReviews || 0})</span>
           </span>
-          <span className="flex gap-1 items-center text-sm text-green-600">
-            In stock <IoMdCheckmark />
-          </span>
+          {checkStock && (
+            <>
+              {product?.stock > 0 ? (
+                product.stock < 3 ? (
+                  <span className="flex gap-1 items-center text-sm text-yellow-500">
+                    Low stock
+                  </span>
+                ) : (
+                  <span className="flex gap-1 items-center text-sm text-green-600">
+                    In stock
+                  </span>
+                )
+              ) : (
+                <span className="flex gap-1 items-center text-sm text-red-600">
+                  Out of stock
+                  <X className="text-red-600" size={16} />
+                </span>
+              )}
+            </>
+          )}
         </div>
 
-        <Button className="rounded-xs text-sm">Add to cart</Button>
+        <Button
+          disable={!checkStock}
+          disabledText="Out of stock"
+          className="rounded-xs text-sm"
+        >
+          Add to cart
+        </Button>
       </div>
       {isModalOpen && (
         <ProductModal
           isOpen={isModalOpen}
           onClose={closeModal}
           product={{
-            productId: product.productId,
-            imageUrl: product.imageUrl,
-            name: product.name,
-            brand: product.brand,
-            price: product.price,
-            rating: product.rating,
-            noOfReviews: product.noOfReviews,
+            productId: product.productId || "0",
+            imageUrl:
+              product.imageUrl || product.imageUrl[0] || "/placeholder.jpg",
+            name: product.name || "Product Name",
+            brand: product.brand || "Brand Name",
+            price: product.price || 0,
+            rating: product.rating || 0,
+            noOfReviews: product.noOfReviews || 0,
           }}
         />
       )}

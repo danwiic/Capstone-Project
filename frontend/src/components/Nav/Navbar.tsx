@@ -4,7 +4,6 @@ import Cart from "../Cart/index.tsx";
 import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
 import Footer from "../footer/Footer.tsx";
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
