@@ -19,6 +19,7 @@ interface Product {
     imageUrl: string;
   }[];
   ProductVariant?: {
+    id: string;
     price: number;
     stock: number;
   }[];
@@ -142,6 +143,7 @@ export default function Brand() {
                               : product.stock,
                           rating: product.rating ?? 0,
                           noOfReviews: product.noOfReviews ?? 0,
+                          variantId: product.ProductVariant?.[0]?.id,
                         }}
                       />
                     );

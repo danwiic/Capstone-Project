@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Button from "../ui/button/Button";
 import { Link } from "react-router-dom";
-import { IoMdCheckmark } from "react-icons/io";
 import Rate from "../rating/Rate";
 import { FaHeart, FaRegEye } from "react-icons/fa";
 import ProductModal from "../modal/ProductModal";
 import { X } from "lucide-react";
+import { useUserContext } from "../../context/userContext";
+import LoginModal from "../modal/LoginModal"; // 👈 import your LoginModal here
+import { useCartContext } from "../../context/cartContext";
 
 type ProductCartProps = {
   productId: string;
@@ -16,32 +18,50 @@ type ProductCartProps = {
   price: number;
   rating?: number;
   noOfReviews?: number;
-  variant?: number;
+  variantId?: string;
   stock: number;
 };
 
 type Product = {
   product: ProductCartProps;
 };
+
 function DisplayProductCart({ product }: Product) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { user } = useUserContext();
 
-  // Function to open modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Function to close modal
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const checkStock = product?.stock !== undefined && product?.stock > 0;
+
+  const { addToCart } = useCartContext();
+
+  const handleAddToCart = async () => {
+    if (!user || !user.id) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    try {
+      const quantity = 1; // Default quantity to add to cart
+      await addToCart(
+        user.id,
+        product.productId,
+        product?.variantId ?? null,
+        quantity
+      );
+      console.log("Item added to cart!");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+  };
 
   return (
     <>
       <div
-        className="rounded-xs  flex flex-col w-full
+        className="rounded-xs flex flex-col w-full
       p-4 justify-center gap-2 bg-white border border-gray-200
       border-l-0 [&:nth-child(4n)]:border-r-0 border-t-0 group
       hover:shadow-1-hover shadow-1 transition-all duration-200"
@@ -49,9 +69,9 @@ function DisplayProductCart({ product }: Product) {
         <div className="flex flex-col gap-5">
           <div className="flex justify-center w-full h-32 relative overflow-hidden">
             <img
-              src={product?.imageUrl || product?.imageUrl[0]}
+              src={product?.imageUrl || "/placeholder.jpg"}
               loading="lazy"
-              alt="/"
+              alt={product?.name || "Product"}
               className="w-auto h-full transition-transform duration-200 
                   cursor-pointer scale-80 group-hover:scale-90"
             />
@@ -60,20 +80,16 @@ function DisplayProductCart({ product }: Product) {
                        group-hover:opacity-100"
             >
               <button
-                className="rounded-full  group-hover:opacity-100
-                              transition-all duration-200
-                              border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
-                              text-lg cursor-pointer"
+                className="rounded-full border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                text-lg cursor-pointer transition-all"
                 title="Add to wishlist"
                 onClick={openModal}
               >
                 <FaHeart className="text-mayormoto-pink" />
               </button>
               <button
-                className="rounded-full  
-                                  transition-all duration-200
-                                  border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
-                                  text-lg cursor-pointer"
+                className="rounded-full border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                text-lg cursor-pointer transition-all"
                 title="Quick view"
                 onClick={openModal}
               >
@@ -106,29 +122,31 @@ function DisplayProductCart({ product }: Product) {
             <Rate readOnly={true} value={product?.rating || 0} />
             <span className="font-semibold">({product?.noOfReviews || 0})</span>
           </span>
+
           {checkStock && (
             <>
-              {product?.stock > 0 ? (
-                product.stock < 3 ? (
-                  <span className="flex gap-1 items-center text-sm text-yellow-500">
-                    Low stock
-                  </span>
-                ) : (
-                  <span className="flex gap-1 items-center text-sm text-green-600">
-                    In stock
-                  </span>
-                )
+              {product.stock < 3 ? (
+                <span className="flex gap-1 items-center text-sm text-yellow-500">
+                  Low stock
+                </span>
               ) : (
-                <span className="flex gap-1 items-center text-sm text-red-600">
-                  Out of stock
-                  <X className="text-red-600" size={16} />
+                <span className="flex gap-1 items-center text-sm text-green-600">
+                  In stock
                 </span>
               )}
             </>
           )}
+
+          {!checkStock && (
+            <span className="flex gap-1 items-center text-sm text-red-600">
+              Out of stock
+              <X className="text-red-600" size={16} />
+            </span>
+          )}
         </div>
 
         <Button
+          onClick={handleAddToCart} // ✅ connect the button!
           disable={!checkStock}
           disabledText="Out of stock"
           className="rounded-xs text-sm"
@@ -136,14 +154,15 @@ function DisplayProductCart({ product }: Product) {
           Add to cart
         </Button>
       </div>
+
+      {/* Product quick view modal */}
       {isModalOpen && (
         <ProductModal
           isOpen={isModalOpen}
           onClose={closeModal}
           product={{
             productId: product.productId || "0",
-            imageUrl:
-              product.imageUrl || product.imageUrl[0] || "/placeholder.jpg",
+            imageUrl: product.imageUrl || "/placeholder.jpg",
             name: product.name || "Product Name",
             brand: product.brand || "Brand Name",
             price: product.price || 0,
@@ -151,6 +170,11 @@ function DisplayProductCart({ product }: Product) {
             noOfReviews: product.noOfReviews || 0,
           }}
         />
+      )}
+
+      {/* Login modal if not logged in */}
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
       )}
     </>
   );

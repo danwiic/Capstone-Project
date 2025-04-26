@@ -44,8 +44,8 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
 function NavItems() {
   const { user } = useUserContext();
 
-  const navItems =
-    user && user.role === "admin"
+  const navItems = user
+    ? user.role === "admin"
       ? [
           { name: "Dashboard", path: "/pos/dashboard" },
           { name: "Home", path: "/" },
@@ -56,7 +56,11 @@ function NavItems() {
           { name: "Home", path: "/" },
           { name: "Products", path: "/products" },
           { name: "Wishlist", path: "/wishlist" },
-        ];
+        ]
+    : [
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+      ];
 
   const loc = useLocation();
 

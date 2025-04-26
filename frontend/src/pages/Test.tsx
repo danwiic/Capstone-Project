@@ -1,10 +1,12 @@
 import AddProduct from "../components/modal/AddProduct";
+import LoginModal from "../components/modal/LoginModal";
 export default function Test() {
 
 
   return (
     <div className="flex gap-6 p-20 items-start relative">
-     <AddProduct isOpen={true} onClose={() => {}}/>
+     {/* <AddProduct isOpen={true} onClose={() => {}}/> */}
+
     </div>
   );
 }

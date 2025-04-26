@@ -38,7 +38,7 @@ export function CartModal({
     animate-fade animate-once animate-duration-[300ms] animate-ease`}
     >
       <div
-        className={`rounded shadow-md h-[18rem]
+        className={`rounded shadow-1 h-[18rem]
           max-h-[22rem] w-[30rem] 
           relative
           after:content-[''] after:absolute after:-top-2 ${className} 
@@ -51,13 +51,13 @@ export function CartModal({
       >
         {children ? (
           <div className="h-auto relative flex flex-col">
-            <div className="max-h-[350px] overflow-auto pb-34 flex flex-col gap-3 p-6">
+            <div className="max-h-[350px] overflow-auto scrollbar-corner-cyan-900 pb-34 flex flex-col gap-3 p-6">
               {children}
             </div>
 
             <div
-              className="flex flex-col justify-between absolute bottom-0 h-auto w-full gap-5 
-            border-t border-gray-300 pt-2 z-10 bg-white p-6"
+              className="flex flex-col shadow-1 justify-between absolute bottom-0 h-auto w-full gap-5 
+             pt-2 z-10 bg-white p-6"
             >
               <div className="flex justify-between items-center">
                 <div className="font-medium">Total</div>

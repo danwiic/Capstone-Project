@@ -120,7 +120,14 @@ export const getOneProduct = async (req: any, res: any) => {
             imageUrl: true,
           },
         },
-        ProductVariant: true,
+        ProductVariant: {
+          select: {
+            id: true,
+            price: true,
+            stock: true,
+            variantName: true,
+          },
+        },
       },
     });
 
@@ -159,7 +166,7 @@ export const getAllProducts = async (req: any, res: any) => {
           category: { select: { name: true } },
           brand: { select: { name: true } },
           ProductImage: { select: { imageUrl: true } },
-          ProductVariant: { select: { price: true, stock: true } },
+          ProductVariant: { select: { id: true, price: true, stock: true } },
         },
         take,
         skip,

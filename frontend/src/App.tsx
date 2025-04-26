@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserProvider from "./context/userContext";
-import CartProvider from "./context/cartContext";
+import { CartProvider } from "./context/cartContext";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";

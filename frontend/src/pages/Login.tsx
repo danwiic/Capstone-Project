@@ -58,7 +58,10 @@ export default function Login() {
       dispatch({ type: "SET_EMAIL_ERROR", payload: "Email is required" });
       hasError = true;
     } else if (!emailRegex.test(email)) {
-      dispatch({ type: "SET_EMAIL_ERROR", payload: "Please enter a valid email address" });
+      dispatch({
+        type: "SET_EMAIL_ERROR",
+        payload: "Please enter a valid email address",
+      });
       hasError = true;
     }
 
@@ -80,7 +83,7 @@ export default function Login() {
       setUser(response.data.user);
       console.log("Login successful:", response.data.user);
       localStorage.setItem("token", response.data.token);
-      
+
       localStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
       console.error("Login failed:", error);
@@ -106,8 +109,10 @@ export default function Login() {
               Enter your email below to login to your account
             </div>
 
-            <label htmlFor="email" className="font-medium text-sm mb-2">
-              Email
+            <div className="flex flex-col w-full">
+              <label htmlFor="email" className="font-medium text-sm mb-2">
+                Email
+              </label>
               <InputBox
                 type="email"
                 name="email"
@@ -115,23 +120,24 @@ export default function Login() {
                 classname="w-full"
               />
               {state.emailError && (
-                <div className="text-red-500 text-xs mt-1">{state.emailError}</div>
+                <div className="text-red-500 text-xs mt-1">
+                  {state.emailError}
+                </div>
               )}
-            </label>
+            </div>
 
-            <div>
-              <div className="flex justify-between items-center p-0 m-0">
+            <div className="flex flex-col w-full">
+              <div className="flex justify-between items-center">
                 <label htmlFor="password" className="font-medium text-sm">
                   Password
                 </label>
-
-                <Link to="" className="w-auto">
-                  <div className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer text-end">
-                    Forgot Password?
-                  </div>
+                <Link
+                  to=""
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  Forgot Password?
                 </Link>
               </div>
-
               <InputBox
                 type="password"
                 name="password"
@@ -139,7 +145,9 @@ export default function Login() {
                 classname="w-full"
               />
               {state.passwordError && (
-                <div className="text-red-500 text-xs mt-1">{state.passwordError}</div>
+                <div className="text-red-500 text-xs mt-1">
+                  {state.passwordError}
+                </div>
               )}
             </div>
 

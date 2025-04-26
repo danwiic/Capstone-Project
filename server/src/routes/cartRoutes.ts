@@ -9,8 +9,8 @@ import {
 const cart = Router();
 
 cart.post("/add", addToCart);
-cart.post("/delete", deleteCartItem);
-cart.post("/update", updateCartItem);
+cart.delete("/delete/:id", deleteCartItem);
+cart.put("/update/:id", updateCartItem);
 cart.get("/:id", getUserCart);
 
 export default cart;

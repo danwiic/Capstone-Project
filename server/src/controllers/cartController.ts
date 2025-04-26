@@ -2,55 +2,57 @@ import prisma from "../config/db";
 
 // --- ADD to Cart ---
 export const addToCart = async (req: any, res: any) => {
-    const { userId, productId, variantId, quantity } = req.body;
-  
-    try {
-      let cart = await prisma.cart.findFirst({ where: { userId } });
-  
-      if (!cart) {
-        cart = await prisma.cart.create({
-          data: { userId },
-        });
-      }
-  
-      // 🛠 VariantId handling: convert "" to null
-      const cleanVariantId = variantId && variantId !== "" ? variantId : null;
-  
-      const existingCartItem = await prisma.cartItem.findFirst({
-        where: {
-          cartId: cart.id,
-          productId,
-          variantId: cleanVariantId, // Important: variantId is either real or null
-        },
+  const { userId, productId, variantId, quantity } = req.body;
+
+  try {
+    let cart = await prisma.cart.findFirst({ where: { userId } });
+
+    if (!cart) {
+      cart = await prisma.cart.create({
+        data: { userId },
       });
-  
-      if (existingCartItem) {
-        await prisma.cartItem.update({
-          where: { id: existingCartItem.id },
-          data: {
-            quantity: { increment: quantity || 1 },
-          },
-        });
-        return res.status(200).json({ message: "Product quantity updated in cart" });
-      }
-  
-      const cartItem = await prisma.cartItem.create({
-        data: {
-          cartId: cart.id,
-          productId,
-          variantId: cleanVariantId,
-          quantity: quantity || 1,
-          price: await getProductPrice(productId, cleanVariantId),
-        },
-      });
-  
-      return res.status(200).json({ message: "Product added to cart", cartItem });
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      return res.status(500).json({ message: "Internal server error" });
     }
-  };
-  
+
+    // 🛠 VariantId handling: convert "" to null
+    const cleanVariantId = variantId && variantId !== "" ? variantId : null;
+
+    const existingCartItem = await prisma.cartItem.findFirst({
+      where: {
+        cartId: cart.id,
+        productId,
+        variantId: cleanVariantId, // Important: variantId is either real or null
+      },
+    });
+
+    if (existingCartItem) {
+      await prisma.cartItem.update({
+        where: { id: existingCartItem.id },
+        data: {
+          quantity: { increment: quantity || 1 },
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Product quantity updated in cart" });
+    }
+
+    const cartItem = await prisma.cartItem.create({
+      data: {
+        cartId: cart.id,
+        productId,
+        variantId: cleanVariantId,
+        quantity: quantity || 1,
+        price: await getProductPrice(productId, cleanVariantId),
+      },
+    });
+
+    return res.status(200).json({ message: "Product added to cart", cartItem });
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 // --- GET User's Cart Items ---
 export const getUserCart = async (req: any, res: any) => {
   const { userId } = req.params;
@@ -86,12 +88,16 @@ export const getUserCart = async (req: any, res: any) => {
 
 // --- UPDATE Cart Item Quantity ---
 export const updateCartItem = async (req: any, res: any) => {
-  const { cartItemId } = req.params;
+  const { id } = req.params;
   const { quantity } = req.body;
+
+  if (!quantity || quantity < 1) {
+    return res.status(400).json({ message: "Quantity must be at least 1" });
+  }
 
   try {
     const updatedItem = await prisma.cartItem.update({
-      where: { id: cartItemId },
+      where: { id },
       data: { quantity },
     });
 
@@ -104,13 +110,14 @@ export const updateCartItem = async (req: any, res: any) => {
 
 // --- DELETE Cart Item ---
 export const deleteCartItem = async (req: any, res: any) => {
-  const { cartItemId } = req.params;
+  const { id } = req.params;
+
+  console.log("Deleting cart item with ID:", id); // Debug log
 
   try {
     await prisma.cartItem.delete({
-      where: { id: cartItemId },
+      where: { id: id },
     });
-
     return res.status(200).json({ message: "Cart item deleted" });
   } catch (error) {
     console.error("Error deleting cart item:", error);
