@@ -124,31 +124,29 @@ export default function Brand() {
               <Loading />
             ) : filteredProducts && filteredProducts.length > 0 ? (
               <>
-                <>
-                  {filteredProducts.map((product) => {
-                    const variant = product.ProductVariant?.[0];
+                {filteredProducts.map((product) => {
+                  const variant = product.ProductVariant?.[0];
 
-                    return (
-                      <ProductCart
-                        key={product.id}
-                        product={{
-                          productId: product.id,
-                          imageUrl: product.ProductImage[0]?.imageUrl ?? "",
-                          name: product.name,
-                          brand: product.brand.name,
-                          price: product.price ?? variant?.price ?? 0,
-                          stock:
-                            variant?.stock !== undefined
-                              ? variant.stock
-                              : product.stock,
-                          rating: product.rating ?? 0,
-                          noOfReviews: product.noOfReviews ?? 0,
-                          variantId: product.ProductVariant?.[0]?.id,
-                        }}
-                      />
-                    );
-                  })}
-                </>
+                  return (
+                    <ProductCart
+                      key={product.id}
+                      product={{
+                        productId: product.id,
+                        imageUrl: product.ProductImage[0]?.imageUrl ?? "",
+                        name: product.name,
+                        brand: product.brand.name,
+                        price: product.price ?? variant?.price ?? 0,
+                        stock:
+                          variant?.stock !== undefined
+                            ? variant.stock
+                            : product.stock,
+                        rating: product.rating ?? 0,
+                        noOfReviews: product.noOfReviews ?? 0,
+                        variantId: product.ProductVariant?.[0]?.id,
+                      }}
+                    />
+                  );
+                })}
               </>
             ) : (
               <div className="col-span-4 py-12 text-center text-gray-500">
