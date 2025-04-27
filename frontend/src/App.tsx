@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserProvider from "./context/userContext";
 import { CartProvider } from "./context/cartContext";
-
+import { WishlistProvider } from "./context/WishlistContext";
+import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -29,43 +30,55 @@ export default function App() {
   return (
     <UserProvider>
       <CartProvider>
-        <Router>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/test" element={<Test />} />
-            <Route path="/cart" element={<CartComponent />} />
-            <Route
-              path="/wishlist"
-              element={
-                <ProtectedRoute
-                  element={<Wishlist />}
-                  allowedRoles={["admin", "user"]}
-                  redirectPath="/login"
-                />
-              }
+        <WishlistProvider>
+          <Router>
+            <ScrollToTop />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
             />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/products" element={<Brand />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-
-            <Route path="/pos">
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="terminal" element={<PosTerminal />} />
-              <Route path="forecast" element={<SalesForecast />} />
-              <Route path="products" element={<Products />} />
-              <Route path="inventory" element={<Inventory />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="history" element={<History />} />
-              <Route path="employees" element={<Employee />} />
-              <Route path="user" element={<User />} />
-              <Route path="insight" element={<Insight />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-          </Routes>
-        </Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/test" element={<Test />} />
+              <Route path="/cart" element={<CartComponent />} />
+              <Route
+                path="/wishlist"
+                element={
+                  <ProtectedRoute
+                    element={<Wishlist />}
+                    allowedRoles={["admin", "user"]}
+                    redirectPath="/login"
+                  />
+                }
+              />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/products" element={<Brand />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/pos">
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="terminal" element={<PosTerminal />} />
+                <Route path="forecast" element={<SalesForecast />} />
+                <Route path="products" element={<Products />} />
+                <Route path="inventory" element={<Inventory />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="history" element={<History />} />
+                <Route path="employees" element={<Employee />} />
+                <Route path="user" element={<User />} />
+                <Route path="insight" element={<Insight />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+            </Routes>
+          </Router>
+        </WishlistProvider>
       </CartProvider>
     </UserProvider>
   );

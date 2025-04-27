@@ -1,9 +1,10 @@
 import Button from "../ui/button/Button";
 import { formatMoney } from "../../utils/formatMoney";
 import { useState } from "react";
-import axios from "axios";
 import { useUserContext } from "../../context/userContext";
 import LoginModal from "../modal/LoginModal";
+import { useCartContext } from "../../context/cartContext";
+
 interface props {
   id: string;
   name: string;
@@ -21,7 +22,7 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
   const [showLoginModal, setShowLoginModal] = useState(false); // 👈 modal control
 
   const { user } = useUserContext(); // 👈 assuming you have user context
-
+  const { addToCart } = useCartContext(); // 👈 assuming you have cart context
   const handleAddToCart = async () => {
     if (!user || !user.id) {
       setShowLoginModal(true); // 👈 open the modal
@@ -29,13 +30,13 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
     }
 
     try {
-      const response = await axios.post(`http://localhost:3000/cart/add`, {
-        userId: user.id,
-        productId: id,
-        quantity,
-        variantId: variants[selectedVariantIndex]?.id || "",
-      });
-      console.log("Added to cart", response.data);
+      const res = await addToCart(
+        user.id,
+        id,
+        variants[selectedVariantIndex]?.id || "",
+        quantity
+      );
+      console.log("Added to cart", res);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -100,7 +101,6 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
                 type="text"
                 value={quantity}
                 className="w-10 text-center text-gray-700 text-sm outline-0"
-                readOnly
               />
               <button
                 onClick={() => setQuantity((prev) => prev + 1)}
@@ -122,7 +122,9 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
           </div>
         </div>
       </div>
-      {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
+      )}
     </>
   );
 }

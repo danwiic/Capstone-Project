@@ -7,41 +7,28 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Loading from "../components/loader/Loading";
 
+type FiveProducts = {
+  id: string;
+  name: string;
+  products: {
+    id: string;
+    name: string;
+    price: string;
+    stock: number;
+    description: string;
+    brand: { name: string };
+    ProductImage: { imageUrl: string }[];
+    ProductVariant: { id: string; price: number; stock: number }[];
+  }[];
+}[];
+
 function Home() {
-  const productCategories = [
-    {
-      image:
-        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
-      label: "Riding Jacket",
-    },
-
-    {
-      image:
-        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745207280/EVO_RX-7__Yellow_-_2_800_qyezku.png",
-      label: "Helmet",
-    },
-
-    {
-      image:
-        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745290550/SMOK_Zeus_36L__Alloy_Side_View-removebg-preview_agoevh.png",
-      label: "Top Box",
-    },
-
-    {
-      image:
-        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
-      label: "Riding Jacket",
-    },
-
-    {
-      image:
-        "https://res.cloudinary.com/dvexdyqea/image/upload/v1745226378/LS2_Airy_Evo_Man_Jacket__Black_Grey_Yellow__Large_-_3_990_bgsb4l.png",
-      label: "Riding Jacket",
-    },
-  ];
-
   const [products, setProducts] = useState([]);
+  const [fiveProducts, setFiveProducts] = useState<FiveProducts>([]);
   const [loading, setLoading] = useState(true);
+
+  console.log(fiveProducts, "fiveProducts");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -51,15 +38,24 @@ function Home() {
         console.log(response.data[0], "data here");
       } catch (error) {
         console.error("Error fetching products:", error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/category/five");
+        setFiveProducts(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
     fetchProducts();
   }, []);
 
-  if(loading) return <Loading />
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -92,8 +88,15 @@ function Home() {
                   </span>
 
                   <div className="flex gap-4">
-                    {productCategories.map((cat, i) => (
-                      <BrandCard key={i} label={cat.label} image={cat.image} />
+                    {fiveProducts.map((cat, i) => (
+                      <BrandCard
+                        key={i}
+                        label={cat.name}
+                        image={
+                          cat.products[0]?.ProductImage[0]?.imageUrl ||
+                          "/placeholder.jpg"
+                        }
+                      />
                     ))}
                   </div>
                 </section>

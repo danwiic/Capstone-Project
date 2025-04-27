@@ -1,7 +1,7 @@
 import { BsCart2 } from "react-icons/bs";
 import { useContext, useMemo, useState } from "react";
 import Button from "../ui/button/Button";
-import { CartContext } from "../../context/cartContext";
+import { CartContext, useCartContext } from "../../context/cartContext";
 import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Navbar from "../Nav/Navbar";
@@ -98,6 +98,22 @@ React.memo(CartModal);
 
 export default function CartComponent() {
   const [isOpen, setIsOpen] = useState(false);
+  const { cart, updateCartQuantity, removeFromCart } = useCartContext();
+
+  console.log(cart);
+
+  const calculateTotal = useMemo(() => {
+    let total = 0;
+    cart.forEach((item: any) => {
+      total += parseFloat(item.price.replace(/₱|,/g, "")) * item.quantity;
+    });
+    return total.toFixed(2);
+  }, [cart]);
+
+  const handleQuantityChange = (cartId: string, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    updateCartQuantity(cartId, newQuantity);
+  };
   return (
     <>
       <Navbar>
@@ -110,48 +126,71 @@ export default function CartComponent() {
                   <tr>
                     <th className=" p-5">Item Name</th>
                     <th className=" p-5">Quantity</th>
-                    <th className=" p-5">Total</th>
+                    <th className=" p-5">Price</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className=" p-5 flex items-center gap-4 relative">
-                      <span
-                        className="w-[5.7rem] h-[5.7rem] inset-0  rounded-md 
+                  {cart.map((item: any) => (
+                    <tr
+                      className="border-b border-gray-200 last:border-0"
+                      key={item.id}
+                    >
+                      <td className=" p-5 flex items-center gap-4 relative">
+                        <span
+                          className="w-[5.7rem] h-[5.7rem] inset-0  rounded-md 
                       overflow-hidden abosolute flex items-center justify-center"
-                      >
-                        <img
-                          className="object-contain w-5/6 h-5/6"
-                          src="https://res.cloudinary.com/dvexdyqea/image/upload/v1745207283/EVO_RX-7_Magenta_-_2_800_kajpcz.png"
-                          alt=""
-                        />
-                      </span>
-                      <div className="flex flex-col gap">
-                        <span className="text-sm uppercase text-gray-600">
-                          GILLE
+                        >
+                          <img
+                            className="object-contain w-5/6 h-5/6"
+                            src={item.product.ProductImage[0]?.imageUrl}
+                            alt=""
+                          />
                         </span>
-                        <span className=" font-semibold">
-                          GILLE Helmet Boss
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="border-1 w-fit border-gray-200 flex items-center">
-                        <button className="p-1 border-r px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">
-                          -
-                        </button>
-                        <input
-                          type="text"
-                          className="w-10 outline-0 text-center text-gray-700 text-sm"
-                          defaultValue={1}
-                        />
-                        <button className="p-1 border-l px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer">
-                          +
-                        </button>
-                      </div>
-                    </td>
-                    <td>{formatMoney(2400)}</td>
-                  </tr>
+                        <div className="flex flex-col gap">
+                          <span className="text-sm uppercase text-gray-600">
+                            {item.product.brand.name}
+                          </span>
+                          <span className=" font-semibold">
+                            {item.product.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="flex flex-col text-center w-fit gap-2">
+                          <div className="border-1 w-fit border-gray-200 flex items-center">
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(item.id, item.quantity - 1)
+                              }
+                              className="p-1 border-r px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="text"
+                              className="w-10 outline-0 text-center text-gray-700 text-sm"
+                              value={item.quantity}
+                            />
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(item.id, item.quantity + 1)
+                              }
+                              className="p-1 border-l px-3 border-gray-200 text-xl font-medium text-gray-400 hover:text-gray-700 cursor-pointer"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span
+                            className="text-sm text-red-500 cursor-pointer hover:text-red-400"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            Remove
+                          </span>
+                        </div>
+                      </td>
+                      <td>{formatMoney(item.price || item.variant.price)}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -161,7 +200,7 @@ export default function CartComponent() {
               font-semibold text-xl text-gray-700"
               >
                 <span className="uppercase">total</span>
-                <span>{formatMoney(2400)}</span>
+                <span>{formatMoney(calculateTotal)}</span>
               </div>
               <div>
                 <div
@@ -209,7 +248,9 @@ export default function CartComponent() {
                 </button>
               </div>
             </div>
-            <div>lorem*50</div>
+            {/* <div> ======================================>
+              another container if needed
+            </div> */}
           </div>
         </div>
       </Navbar>

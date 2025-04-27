@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { formatMoney } from "../../utils/formatMoney";
 import Rate from "../rating/Rate";
-import { FaRegEye } from "react-icons/fa";
-import { useState } from "react";
+import { FaRegEye, FaRegHeart } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import ProductModal from "../modal/ProductModal";
 import { FaHeart } from "react-icons/fa";
-
+import axios from "axios";
+import { useUserContext } from "../../context/userContext";
 type ProductCardProps = {
   productId: string;
   imageUrl: string;
@@ -25,15 +26,50 @@ type Product = {
 };
 
 export default function ProductCard({ product }: Product) {
-  // Add state for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const { user } = useUserContext();
 
-  // Function to open modal
+  useEffect(() => {
+    const checkWishlist = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/wishlist/${user?.id}`
+        );
+        const wishlist = res.data;
+        const found = wishlist.some(
+          (item: any) => item.productId === product.productId
+        );
+        setIsInWishlist(found);
+      } catch (error) {}
+    };
+
+    checkWishlist();
+  }, [product.productId, user?.id]);
+
+  const toggleWishlist = async () => {
+    setIsInWishlist((prev) => !prev);
+
+    try {
+      const url = isInWishlist
+        ? "http://localhost:3000/wishlist/delete"
+        : "http://localhost:3000/wishlist/add";
+
+      await axios({
+        method: isInWishlist ? "delete" : "post",
+        url,
+        data: { userId: user?.id, productId: product.productId },
+      });
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+      setIsInWishlist((prev) => !prev);
+    }
+  };
+
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Function to close modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -58,16 +94,22 @@ export default function ProductCard({ product }: Product) {
               className="flex flex-col gap-1 absolute top-0 right-0 opacity-0  
             group-hover:opacity-100"
             >
-              <button
-                className="rounded-full  group-hover:opacity-100
+              {user && (
+                <button
+                  className="rounded-full  group-hover:opacity-100
                    transition-all duration-200
-                   border p-2 border-gray-300 hover:bg-mayormoto-blue hover:text-white
+                   border p-2 border-gray-300 hover:text-white
                    text-lg cursor-pointer"
-                title="Add to wishlist"
-                onClick={openModal}
-              >
-                <FaHeart className="text-mayormoto-pink" />
-              </button>
+                  title={`${isInWishlist ? "Remove from" : "Add to"} wishlist`}
+                  onClick={toggleWishlist}
+                >
+                  {isInWishlist ? (
+                    <FaHeart className="text-mayormoto-pink" />
+                  ) : (
+                    <FaRegHeart className="text-mayormoto-pink" />
+                  )}
+                </button>
+              )}
               <button
                 className="rounded-full  
                        transition-all duration-200
@@ -88,7 +130,7 @@ export default function ProductCard({ product }: Product) {
             <Link to={`/product/${product?.productId}`}>
               <span
                 className="text-sm font-bold truncate hover:text-mayormoto-blue block w-full"
-                title={product?.name} 
+                title={product?.name}
               >
                 {product?.name}
               </span>

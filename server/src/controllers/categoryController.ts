@@ -112,4 +112,41 @@ export const getFiveProducts = async (req: any, res: any) => {
     console.error("Error fetching product:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
+}
+
+export const getFiveCategories = async (req: any, res: any) => {
+  try {
+    const categories = await prisma.productCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+        products: {
+          take: 1,
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            stock: true,
+            description: true,
+            ProductImage: { select: { imageUrl: true } },
+            ProductVariant: { select: { price: true, stock: true } },
+            brand: { select: { name: true } },
+          },
+        },
+      },
+      take: 5,
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    if (!categories || categories.length === 0) {
+      return res.status(404).json({ message: "No categories found" });
+    }
+
+    return res.status(200).json({ categories });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };

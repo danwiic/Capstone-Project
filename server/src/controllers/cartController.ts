@@ -99,6 +99,9 @@ export const updateCartItem = async (req: any, res: any) => {
     const updatedItem = await prisma.cartItem.update({
       where: { id },
       data: { quantity },
+      select: {
+        id: true,
+      },
     });
 
     return res.status(200).json({ message: "Cart item updated", updatedItem });
