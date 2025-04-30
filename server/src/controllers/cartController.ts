@@ -55,11 +55,11 @@ export const addToCart = async (req: any, res: any) => {
 
 // --- GET User's Cart Items ---
 export const getUserCart = async (req: any, res: any) => {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
     const cart = await prisma.cart.findFirst({
-      where: { userId },
+      where: { id },
       include: {
         items: {
           include: {
@@ -114,9 +114,6 @@ export const updateCartItem = async (req: any, res: any) => {
 // --- DELETE Cart Item ---
 export const deleteCartItem = async (req: any, res: any) => {
   const { id } = req.params;
-
-  console.log("Deleting cart item with ID:", id); // Debug log
-
   try {
     await prisma.cartItem.delete({
       where: { id: id },

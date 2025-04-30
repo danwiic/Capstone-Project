@@ -30,11 +30,11 @@ export const addToWishlist = async (req: any, res: any) => {
 };
 
 export const getWishListByUserId = async (req: any, res: any) => {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
     const wishlist = await prisma.wishList.findMany({
-      where: { userId: userId },
+      where: { userId: id },
       include: {
         product: {
           select: {

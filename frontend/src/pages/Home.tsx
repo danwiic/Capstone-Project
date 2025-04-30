@@ -87,7 +87,7 @@ function Home() {
                     What We Offer
                   </span>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 justify-center">
                     {fiveProducts.map((cat, i) => (
                       <BrandCard
                         key={i}

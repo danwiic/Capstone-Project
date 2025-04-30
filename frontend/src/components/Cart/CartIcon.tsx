@@ -44,9 +44,11 @@ export default function CartIcon() {
     <div ref={ref}>
       <button onClick={handleViewCart} className="relative flex">
         <BsCart2 className="text-4xl cursor-pointer text-mayormoto-blue" />
-        <span className="font-medium bg-mayormoto-pink text-white absolute h-6 w-6 p-1 text-center rounded-2xl flex items-center justify-center -right-2.5 -top-0.5 text-sm hover:scale-120 duration-300 ease-in-out transition-all cursor-pointer">
-          {cart?.length ?? 0}
-        </span>
+        {cart.length > 0 && (
+          <span className="font-medium bg-mayormoto-pink text-white absolute h-6 w-6 p-1 text-center rounded-2xl flex items-center justify-center -right-2.5 -top-0.5 text-sm hover:scale-120 duration-300 ease-in-out transition-all cursor-pointer">
+            {cart?.length ?? 0}
+          </span>
+        )}
       </button>
 
       {viewCart && (
@@ -57,20 +59,18 @@ export default function CartIcon() {
           >
             {cart?.length > 0 &&
               cart.map((ct) => (
-              <Cart.Items
-              key={ct.id}
-              productId={ct.productId}
-              cartItemId={ct.id} // Check if ct.id is valid here
-              image={
-              ct.product?.ProductImage?.[0]?.imageUrl ||
-              "/placeholder.png"
-              }
-              itemName={ct.product?.name || "Unknown Product"}
-              price={formatMoney(
-              ct.price ? Number(ct.price) : 0
-              )}
-              quantity={ct.quantity}
-              />
+                <Cart.Items
+                  key={ct.id}
+                  productId={ct.productId}
+                  cartItemId={ct.id} // Check if ct.id is valid here
+                  image={
+                    ct.product?.ProductImage?.[0]?.imageUrl ||
+                    "/placeholder.png"
+                  }
+                  itemName={ct.product?.name || "Unknown Product"}
+                  price={formatMoney(ct.price ? Number(ct.price) : 0)}
+                  quantity={ct.quantity}
+                />
               ))}
           </Cart.Modal>
         </div>

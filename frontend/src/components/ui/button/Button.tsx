@@ -1,4 +1,5 @@
 interface ButtonProps {
+  bg?: string,
   children?: React.ReactNode;
   className?: string;
   onClick?: () => void;
@@ -8,6 +9,7 @@ interface ButtonProps {
 }
 
 export default function Button({
+  bg,
   children,
   className = "",
   onClick,
@@ -20,10 +22,10 @@ export default function Button({
       type={type}
       disabled={disable}
       onClick={onClick}
-      className={`w-full bg-mayormoto-blue cursor-pointer text-white 
-        py-3 rounded-sm hover:bg-mayormoto-blue-hover font-medium
+      className={`w-full  bg-mayormoto-pink cursor-pointer text-white 
+        py-3 rounded-sm hover:bg-mayormoto-pink/80 font-medium
         disabled:bg-gray-300 disabled:cursor-not-allowed
-        transition-all duration-200 ease-in-out
+        transition-all duration-200 ease-in-out ${bg}
         ${className}`}
     >
       {disable && disabledText ? disabledText : children}
