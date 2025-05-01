@@ -196,16 +196,11 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
     { name: "Insight", icon: <MdOutlineBarChart />, path: "/pos/insight" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     {
-      name: "Sales Forecasting",
+      name: "Forecast",
       icon: <MdOnlinePrediction />,
       path: "/pos/forecast",
     },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
-    {
-      name: "Inventory",
-      icon: <MdOutlineInventory2 />,
-      path: "/pos/inventory",
-    },
     { name: "Orders", icon: <MdOutlineReceiptLong />, path: "/pos/orders" },
     { name: "Transaction History", icon: <MdHistory />, path: "/pos/history" },
     { name: "Employees", icon: <MdPeopleOutline />, path: "/pos/employees" },

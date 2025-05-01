@@ -8,34 +8,40 @@ import { Link, useLocation } from "react-router-dom";
 export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <div className="flex flex-col sticky top-0 z-50 shadow-md">
-        <div
-          className="bg-body p-1 px-30 border-b border-gray-300 py-2
-        flex justify-between items-center 
+      <div className="flex justify-center sticky top-0 z-50">
+        <div className="flex-1 flex flex-col shadow-md">
+          <div
+            className="bg-body p-1 px-30 border-b border-gray-300 py-2
+        flex justify-center
         "
-        >
-          <div>
-            <Link to="/">
-              <img src={logo} alt="" className="w-52 cursor-pointer" />
-            </Link>
-          </div>
+          >
+            <div className="flex justify-between flex-1 max-w-[100rem] items-center ">
+              <div>
+                <Link to="/">
+                  <img src={logo} alt="" className="w-52 cursor-pointer" />
+                </Link>
+              </div>
 
-          <div className="w-2/4">
-            <Search />
-          </div>
+              <div className="w-2/4">
+                <Search />
+              </div>
 
-          <div className="flex gap-6 items-center">
-            <LoginNav />
-            <Cart.Icon />
+              <div className="flex gap-6 items-center">
+                <LoginNav />
+                <Cart.Icon />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="bg-light-gray px-30  flex items-center">
-          <div className="flex gap-6 items-center text-sm font-semibold text-gray-500">
-            <NavItems />
+          <div className="bg-light-gray px-30  flex justify-center">
+            <div className="max-w-[100rem] w-full flex-1 flex gap-6 items-center">
+              <NavItems />
+            </div>
           </div>
         </div>
       </div>
-      <main>{children}</main>
+      <div className="flex justify-center w-full">
+        <main className="max-w-[100rem]">{children}</main>
+      </div>
       <Footer />
     </>
   );

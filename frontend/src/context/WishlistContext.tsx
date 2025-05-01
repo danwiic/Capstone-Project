@@ -56,12 +56,18 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useUserContext();
 
   const refreshWishlist = useCallback(async () => {
+    if (!user) return;
+
     if (user?.id) {
       try {
         const response = await axios.get(
           `http://localhost:3000/wishlist/${user.id}`
         );
         setWishlistItems(response.data);
+
+        if (response.data.length === 0) {
+          return setWishlistItems([]);
+        }
       } catch (error) {
         console.error("Error fetching wishlist:", error);
       }

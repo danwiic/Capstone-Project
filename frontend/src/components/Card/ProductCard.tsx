@@ -32,6 +32,7 @@ export default function ProductCard({ product }: Product) {
 
   useEffect(() => {
     const checkWishlist = async () => {
+      if (!user) return;
       try {
         const res = await axios.get(
           `http://localhost:3000/wishlist/${user?.id}`
