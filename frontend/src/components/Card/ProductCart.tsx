@@ -90,7 +90,7 @@ function DisplayProductCart({ product, onWishlistChange }: Product) {
             <div className="flex flex-col gap-1 absolute top-0 right-0 opacity-0 group-hover:opacity-100">
               {user && (
                 <button
-                  className="rounded-full group-hover:opacity-100 transition-all hover:border-0
+                  className="rounded-full group-hover:opacity-100 transition-all 
                   duration-200 border p-2 border-gray-300 hover:text-white text-lg cursor-pointer"
                   title={`${
                     productInWishlist ? "Remove from" : "Add to"

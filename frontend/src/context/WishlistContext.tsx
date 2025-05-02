@@ -89,7 +89,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const toggleWishlistItem = useCallback(
     async (productId: string) => {
-      if (!user?.id) return;
+      if (!user) return;
 
       const inWishlist = isInWishlist(productId);
 

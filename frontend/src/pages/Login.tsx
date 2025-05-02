@@ -41,7 +41,7 @@ export default function Login() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isOpen, setIsModalOpen] = useState(false);  // State for OTP modal
+  const [isOpen, setIsModalOpen] = useState(false); // State for OTP modal
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,12 +83,10 @@ export default function Login() {
 
       setUser(response.data.user);
       console.log("Login successful:", response.data.user);
-      localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       // Show OTP modal after successful login
       setIsModalOpen(true);
-
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
@@ -96,14 +94,20 @@ export default function Login() {
     }
   };
 
-  if (user) return <Navigate to="/" />;
   const closeModal = () => setIsModalOpen(false);
+  if (user?.role === "admin") return <Navigate to="/pos/dashboard" />;
+  if (user?.role === "employee") return <Navigate to="/pos/terminal" />;
+  if (user) return <Navigate to="/" />;
 
   return (
     <>
-
       <div className="px-10 py-6">
-        <Link to="/" className="bg-mayormoto-pink text-white px-6 py-3  text-sm rounded hover:bg-mayormoto-pink/80">BACK</Link>
+        <Link
+          to="/"
+          className="bg-mayormoto-pink text-white px-6 py-3  text-sm rounded hover:bg-mayormoto-pink/80"
+        >
+          BACK
+        </Link>
       </div>
       <div className="flex flex-col items-center gap-6 h-auto py-20">
         <form
@@ -195,7 +199,6 @@ export default function Login() {
       </div>
       <Footer />
       {/* {isOpen && <OTP isOpen={isOpen} onClose={closeModal} />} */}
-
     </>
   );
 }
