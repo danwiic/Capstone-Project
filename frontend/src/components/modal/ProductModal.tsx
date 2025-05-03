@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatMoney } from "../../utils/formatMoney";
 import Rate from "../rating/Rate";
 
@@ -22,6 +22,8 @@ export default function ProductModal({
   product,
 }: ProductModalProps) {
   if (!isOpen) return null;
+
+  const navigate = useNavigate();
 
   return (
     <div className="fixed inset-0 bg-black/45 z-50 flex items-center justify-center p-4">
@@ -87,11 +89,13 @@ export default function ProductModal({
                 <button className="bg-mayormoto-blue text-white px-6 py-2 rounded hover:bg-mayormoto-blue-hover w-full transition-colors">
                   Add to Cart
                 </button>
-                <Link className="w-full" to={`/product/${product.productId}`}>
-                  <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded w-full hover:bg-gray-300 transition-colors">
-                    View Details
-                  </button>
-                </Link>
+
+                <button
+                  onClick={() => navigate(`/product/${product.productId}`)}
+                  className="bg-gray-200 text-gray-800 px-6 py-2 rounded w-full hover:bg-gray-300 transition-colors"
+                >
+                  View Details
+                </button>
               </div>
             </div>
           </div>

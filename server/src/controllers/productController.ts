@@ -8,7 +8,6 @@ export const createProduct = async (req: any, res: any) => {
     brandId,
     images = [],
     price,
-    stock,
     variants = [],
   } = req.body;
 
@@ -25,7 +24,6 @@ export const createProduct = async (req: any, res: any) => {
         ...(variants.length === 0
           ? {
               price: price,
-              stock: stock,
             }
           : {
               ProductVariant: {
@@ -33,7 +31,6 @@ export const createProduct = async (req: any, res: any) => {
                   sku: v.sku,
                   variantName: v.variantName,
                   price: v.price,
-                  stock: v.stock,
                 })),
               },
             }),
@@ -104,6 +101,7 @@ export const getOneProduct = async (req: any, res: any) => {
         description: true,
         price: true,
         stock: true,
+        createdAt: true,
         category: {
           select: {
             id: true,
@@ -126,6 +124,7 @@ export const getOneProduct = async (req: any, res: any) => {
             price: true,
             stock: true,
             variantName: true,
+            createdAt: true,
           },
         },
       },

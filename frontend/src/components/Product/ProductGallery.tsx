@@ -24,7 +24,7 @@ export default function ProductGallery({
             key={i}
             className="w-16 h-16 flex justify-center items-center border rounded overflow-hidden"
           >
-            <img src={img.imageUrl} className="w-full h-full object-cover" />
+            <img src={img.imageUrl} className="w-auto h-full " />
           </div>
         ))}
       </div>

@@ -27,7 +27,6 @@ interface Brand {
 export default function ProductModal({ isOpen, onClose }: AddProductProps) {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -122,13 +121,11 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
           brandId: brand,
           images: imageUrls.filter((url) => url.trim() !== ""), // Filter out empty URLs
           price: hasVariants ? null : parseFloat(price),
-          stock: hasVariants ? null : parseInt(stock),
           variants: hasVariants ? variants : [],
         }
       );
       setProductName("");
       setPrice("");
-      setStock("");
       setDescription("");
       setSelectedCategory("");
       setBrand("");
@@ -149,7 +146,6 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
     if (!isOpen) {
       setProductName("");
       setPrice("");
-      setStock("");
       setDescription("");
       setSelectedCategory("");
       setBrand("");
@@ -167,7 +163,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
     p-4 backdrop-blur-sm"
     >
       <div className="flex flex-col bg-white w-full max-w-2xl p-6 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
-        <div className="flex justify-between items-center pb-4">
+        <div className="flex justify-between items-center pb-4 sticky top-0 bg-white">
           <h2 className="text-xl font-bold text-gray-800">ADD NEW PRODUCT</h2>
           <button
             onClick={onClose}
@@ -178,241 +174,31 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmitProduct} className="mt-4 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Product Name Field */}
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Product Name<span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Price & Stock (shown only if no variants) */}
-            {!hasVariants && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price<span className="text-red-600">*</span>
-                  </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
-                      ₱
-                    </span>
-                    <input
-                      type="number"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      className="w-full pl-8 px-3 py-2 border border-gray-300 rounded-md 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500
-                      [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                      [&::-webkit-inner-spin-button]:appearance-none"
-                      required={!hasVariants}
-                      min="0"
-                      max={40000}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Stock<span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none 
-                    focus:ring-2 focus:ring-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                    [&::-webkit-inner-spin-button]:appearance-none"
-                    required={!hasVariants}
-                    min="0"
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Category & Brand Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category<span className="text-red-600">*</span>
-              </label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">Select a category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Brand<span className="text-red-600">*</span>
-              </label>
-              <select
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">Select a brand</option>
-                {brands.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Description */}
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description<span className="text-red-600">*</span>
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Write a brief description of the product..."
-                rows={4}
-                className="w-full px-3 py-2 border text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {/* Image URLs Section */}
-            <div className="col-span-2">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Product Images<span className="text-red-600">*</span>
+        <form onSubmit={handleSubmitProduct} className="overflow-hidden">
+          <div
+            className="overflow-auto max-h-120  scrollbar-thin scroll-ml-4 
+          scrollbar-thumb-gray-300 scrollbar-track-gray-50 
+         "
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Product Name Field */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Product Name<span className="text-red-600">*</span>
                 </label>
-                <button
-                  type="button"
-                  onClick={addImageUrl}
-                  className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-                >
-                  <Plus className="h-4 w-4 mr-1" /> Add Image
-                </button>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                {imageUrls.map((url, index) => (
-                  <div key={index} className="flex mb-2 items-center gap-2">
-                    <div className="flex-grow relative flex flex-col gap-1">
-                      <input
-                        type="url"
-                        value={url}
-                        onChange={(e) => updateImageUrl(index, e.target.value)}
-                        placeholder="Enter image URL"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                      />
-                    </div>
-                    {imageUrls.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeImageUrl(index)}
-                        className="text-red-500 hover:text-red-700"
-                        aria-label="Remove image URL"
-                      >
-                        <Trash className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Add URLs for product images. The first image will be used as the
-                main display image.
-              </p>
-            </div>
-
-            {/* Variant Checkbox */}
-            <div className="col-span-2">
-              <div className="flex items-center gap-1">
                 <input
-                  id="has-variants"
-                  type="checkbox"
-                  checked={hasVariants}
-                  onChange={(e) => setHasVariants(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  type="text"
+                  value={productName}
+                  placeholder="Enter product name"
+                  onChange={(e) => setProductName(e.target.value)}
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
                 />
-                <label
-                  htmlFor="has-variants"
-                  className="ml-2 block text-sm text-gray-700"
-                >
-                  This product has variants (sizes, colors, etc.)
-                </label>
               </div>
-            </div>
-          </div>
 
-          {/* Variants Section */}
-          {hasVariants && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">
-                Product Variants
-              </h3>
-
-              {variants.map((variant) => (
-                <div
-                  key={variant.id}
-                  className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 rounded-md relative"
-                >
-                  {variants.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeVariant(variant.id)}
-                      className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-                      aria-label="Remove variant"
-                    >
-                      <Trash className="h-4 w-4" />
-                    </button>
-                  )}
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Variant Name<span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={variant.variantName}
-                      onChange={(e) =>
-                        updateVariant(variant.id, "variantName", e.target.value)
-                      }
-                      placeholder="e.g. Small, Red, etc."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      SKU<span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={variant.sku}
-                      onChange={(e) =>
-                        updateVariant(variant.id, "sku", e.target.value)
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
+              {/* Price & Stock (shown only if no variants) */}
+              {!hasVariants && (
+                <>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Price<span className="text-red-600">*</span>
@@ -423,62 +209,259 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                       </span>
                       <input
                         type="number"
-                        value={variant.price}
-                        onChange={(e) =>
-                          updateVariant(
-                            variant.id,
-                            "price",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                        className="w-full pl-8 px-3 py-2 border border-gray-300 rounded-md 
-                        focus:outline-none focus:ring-2 focus:ring-blue-500
-                        [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                        [&::-webkit-inner-spin-button]:appearance-none"
-                        required
-                        step="0.01"
+                        value={price}
+                        placeholder="0"
+                        onChange={(e) => setPrice(e.target.value)}
+                        className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded-md 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500
+                      [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                      [&::-webkit-inner-spin-button]:appearance-none"
+                        required={!hasVariants}
                         min="0"
+                        max={100000}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stock<span className="text-red-600">*</span>
+                      SKU<span className="text-red-600">*</span>
                     </label>
                     <input
-                      type="number"
-                      value={variant.stock}
-                      onChange={(e) =>
-                        updateVariant(
-                          variant.id,
-                          "stock",
-                          parseInt(e.target.value)
-                        )
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500
-                      [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                      [&::-webkit-inner-spin-button]:appearance-none"
-                      required
+                      type="text"
+                      placeholder="SKU"
+                      className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none 
+                    focus:ring-2 focus:ring-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                    [&::-webkit-inner-spin-button]:appearance-none"
                       min="0"
                     />
                   </div>
+                </>
+              )}
+
+              {/* Category & Brand Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category<span className="text-red-600">*</span>
+                </label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Brand<span className="text-red-600">*</span>
+                </label>
+                <select
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select a brand</option>
+                  {brands.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Description */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Write a brief description of the product..."
+                  rows={4}
+                  className="w-full px-3 py-2 border text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Image URLs Section */}
+              <div className="col-span-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Product Images<span className="text-red-600">*</span>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={addImageUrl}
+                    className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Add Image
+                  </button>
                 </div>
-              ))}
 
-              <button
-                type="button"
-                onClick={addVariant}
-                className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-              >
-                <Plus className="h-4 w-4 mr-1" /> Add Another Variant
-              </button>
+                <div className="flex flex-col gap-2">
+                  {imageUrls.map((url, index) => (
+                    <div key={index} className="flex mb-2 items-center gap-2">
+                      <div className="flex-grow relative flex flex-col gap-1">
+                        <input
+                          type="url"
+                          value={url}
+                          onChange={(e) =>
+                            updateImageUrl(index, e.target.value)
+                          }
+                          placeholder="Enter image URL"
+                          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      {imageUrls.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeImageUrl(index)}
+                          className="text-red-500 hover:text-red-700"
+                          aria-label="Remove image URL"
+                        >
+                          <Trash className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Add URLs for product images. The first image will be used as
+                  the main display image.
+                </p>
+              </div>
+
+              {/* Variant Checkbox */}
+              <div className="col-span-2">
+                <div className="flex items-center gap-1">
+                  <input
+                    id="has-variants"
+                    type="checkbox"
+                    checked={hasVariants}
+                    onChange={(e) => setHasVariants(e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label
+                    htmlFor="has-variants"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
+                    This product has variants (sizes, colors, etc.)
+                  </label>
+                </div>
+              </div>
             </div>
-          )}
 
+            {/* Variants Section */}
+            {hasVariants && (
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-lg font-medium text-gray-800 mb-4">
+                  Product Variants
+                </h3>
+
+                {variants.map((variant) => (
+                  <div
+                    key={variant.id}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-md relative"
+                  >
+                    {variants.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeVariant(variant.id)}
+                        className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                        aria-label="Remove variant"
+                      >
+                        <Trash className="h-4 w-4" />
+                      </button>
+                    )}
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Variant Name<span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={variant.variantName}
+                        onChange={(e) =>
+                          updateVariant(
+                            variant.id,
+                            "variantName",
+                            e.target.value
+                          )
+                        }
+                        placeholder="e.g. Small, Red, etc."
+                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        SKU<span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={variant.sku}
+                        onChange={(e) =>
+                          updateVariant(variant.id, "sku", e.target.value)
+                        }
+                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Price<span className="text-red-600">*</span>
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                          ₱
+                        </span>
+                        <input
+                          type="number"
+                          value={variant.price}
+                          onChange={(e) =>
+                            updateVariant(
+                              variant.id,
+                              "price",
+                              parseFloat(e.target.value)
+                            )
+                          }
+                          className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded-md 
+                        focus:outline-none focus:ring-2 focus:ring-blue-500
+                        [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                        [&::-webkit-inner-spin-button]:appearance-none"
+                          required
+                          step="0.01"
+                          min="0"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={addVariant}
+                  className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
+                >
+                  <Plus className="h-4 w-4 mr-1" /> Add Another Variant
+                </button>
+              </div>
+            )}
+          </div>
           {/* Action Buttons */}
-          <div className="flex justify-end gap-2 space-x-3 pt-6 border-t border-gray-200">
+          <div className="sticky bottom-0 bg-white flex justify-end gap-2 space-x-3 pt-6 border-t border-gray-200">
             <button
               type="button"
               onClick={onClose}

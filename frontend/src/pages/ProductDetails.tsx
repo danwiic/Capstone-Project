@@ -9,6 +9,7 @@ import ProductDescription from "../components/Product/ProductDescription";
 import ProductReviews from "../components/Product/ProductReviews";
 import ProductCart from "../components/Card/ProductCart";
 import Loading from "../components/loader/Loading";
+// import formatDate from "../utils/formatDate";
 
 type ProductDetailsProps = {
   id: string;
@@ -20,6 +21,7 @@ type ProductDetailsProps = {
   ProductVariant?: { id: string; price: number; variantName: string }[];
   price?: number;
   reviews?: { user: string; comment: string; rating: number }[];
+  createdAt?: string;
 };
 
 type FiveProducts = {
@@ -76,7 +78,9 @@ export default function ProductDetails() {
   return (
     <>
       <Navbar>
-        <main className="px-30 py-10 flex gap-10">
+        <main className="px-16 py-10 flex gap-10">
+          {/* {formatDate(product?.createdAt ?? "")} */}
+
           <div className="grid gap-10 md:grid-cols-1 lg:grid-cols-4 w-full">
             <ProductGallery images={product.ProductImage} />
             <ProductInfo

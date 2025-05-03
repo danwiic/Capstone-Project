@@ -40,7 +40,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
         </div>
       </div>
       <div className="flex justify-center w-full">
-        <main className="max-w-[100rem]">{children}</main>
+        <main className="max-w-[100rem] w-full">{children}</main>
       </div>
       <Footer />
     </>
