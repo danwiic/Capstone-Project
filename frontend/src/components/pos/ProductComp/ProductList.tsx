@@ -1,13 +1,29 @@
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import generateSKU from "../../../utils/skuGenerator";
-import KebabMenu from "../menu/Kebab";
-import { useState } from "react";
-import ProductModal from "../../modal/AddProduct";
-import ProductDetails from "./ProductDetails";
+import AddProduct from "../../modal/AddProduct";
+import { formatMoney } from "../../../utils/formatMoney";
+import { getAllProducts } from "../../../services/products.ts";
+interface ProductListProps {
+  onProductSelect: (productId: string) => void;
+}
 
-export default function ProductList() {
+export default function ProductList({ onProductSelect }: ProductListProps) {
   const [openAddProduct, setOpenAddProduct] = useState(false);
-  const [viewProductDetails, setViewProductDetails] = useState(false);
+  const [productList, setProductList] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+        setProductList(data);
+        console.log("Product List:", data);
+      } catch (error) {
+        console.log("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <>
@@ -64,70 +80,56 @@ export default function ProductList() {
                     <th className="px-6 py-4">SKU</th>
                     <th className="px-6 py-4">Stock</th>
                     <th className="px-6 py-4">Created</th>
-                    <th className="px-6 py-4">Action</th>
+                    <th className="px-6 py-4">Created by</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white text-md text-gray-600 font-medium">
-                  <tr
-                    onClick={() => setViewProductDetails(!viewProductDetails)}
-                    className="border-b border-gray-200 hover:bg-gray-50 
-               cursor-pointer"
-                  >
-                    <td className="p-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <span className="w-10 h-10 flex items-center justify-center">
-                          <img
-                            className="w-auto h-auto"
-                            src="https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png"
-                          />
-                        </span>
-                        <div className="flex flex-col gap-1 items-center">
-                          <span className="text-md font-medium">
-                            Helmet Zebra 432
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            No variants
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">Helmet</td>
-                    <td className="py-4 px-6">2,000</td>
-                    <td className="py-4 px-6">
-                      {generateSKU({
-                        name: "Kerena",
-                        brand: "Zebra",
-                        variant: null,
-                        category: "Helmet",
-                        color: "Green",
-                      })}
-                    </td>
-                    <td className="py-4 px-6">100 unit/s</td>
-                    <td className="py-4 px-6">04-21-25</td>
-                    <td className="py-4 px-6">
-                      <KebabMenu
-                        items={[
-                          {
-                            label: "View",
-                            onClick: () => console.log("View clicked"),
-                          },
-                          {
-                            label: "Edit",
-                            onClick: () => console.log("Edit clicked"),
-                          },
-                          {
-                            label: "Archive",
-                            onClick: () => console.log("archived clicked"),
-                          },
-                          {
-                            label: "Delete",
-                            onClick: () => console.log("Delete clicked"),
-                            className: "text-red-600 hover:text-red-700",
-                          },
-                        ]}
-                      />
-                    </td>
-                  </tr>
+                  {productList &&
+                    productList.map((prod: any) => (
+                      <tr
+                        onClick={() => onProductSelect(prod.id)} // Pass the product ID when row is clicked
+                        className="border-b border-gray-200 hover:bg-gray-50 
+                 cursor-pointer"
+                      >
+                        <td className="p-6 py-4 max-w-[25rem]">
+                          <div className="flex items-center gap-4 w-full">
+                            <span className="w-10 h-10 flex items-center justify-center">
+                              <img
+                                className="w-auto h-auto"
+                                src={
+                                  prod?.ProductImage?.[0]?.imageUrl ||
+                                  "/placeholder.png"
+                                }
+                                alt={prod.name}
+                              />
+                            </span>
+                            <div className="flex flex-col gap-1 items-start w-11/12">
+                              <span className="text-md font-medium truncate w-full block">
+                                {prod.name}
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                No variants
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="py-4 px-6">{prod.category.name}</td>
+                        <td className="py-4 px-6">{formatMoney(2400)}</td>
+                        <td className="py-4 px-6">
+                          {generateSKU({
+                            name: "Kerena",
+                            brand: "ryo",
+                            variant: "large",
+                            category: "",
+                            color: "Green",
+                          })}
+                        </td>
+                        <td className="py-4 px-6">8</td>
+                        <td className="py-4 px-6">04-21-25</td>
+                        <td className="py-4 px-6">Dan</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
               {/* PAGINATION & ROW NUMBERS */}
@@ -154,15 +156,9 @@ export default function ProductList() {
       </div>
 
       {openAddProduct && (
-        <ProductModal
+        <AddProduct
           isOpen={openAddProduct}
           onClose={() => setOpenAddProduct(!openAddProduct)}
-        />
-      )}
-      {viewProductDetails && (
-        <ProductDetails
-          isOpen={viewProductDetails}
-          onClose={() => setViewProductDetails(!viewProductDetails)}
         />
       )}
     </>

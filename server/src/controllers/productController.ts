@@ -118,17 +118,9 @@ export const getOneProduct = async (req: any, res: any) => {
             imageUrl: true,
           },
         },
-        ProductVariant: {
-          select: {
-            id: true,
-            price: true,
-            stock: true,
-            variantName: true,
-            createdAt: true,
-          },
-        },
+        ProductVariant: true,
       },
-    });
+    })
 
     if (!getProduct)
       return res.status(404).json({ error: "Product not found" });
