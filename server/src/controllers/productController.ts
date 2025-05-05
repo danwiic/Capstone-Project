@@ -120,12 +120,62 @@ export const getOneProduct = async (req: any, res: any) => {
         },
         ProductVariant: true,
       },
-    })
+    });
 
     if (!getProduct)
       return res.status(404).json({ error: "Product not found" });
 
     return res.status(200).json(getProduct);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getDetailedProduct = async (req: any, res: any) => {
+  const { id } = req.params;
+
+  try {
+    const product = await prisma.product
+      .findUnique({
+        where: { id },
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          brand: {
+            select: {
+              name: true,
+            },
+          },
+          ProductImage: true,
+          ProductVariant: {
+            include: {
+              batches: true,
+              logs: true,
+            },
+          },
+          logs: true,
+        },
+      })
+      .then(async (product) => {
+        if (!product || !product.ProductVariant) return [];
+        const totalStock = await prisma.productVariant.aggregate({
+          where: { productId: product.id },
+          _sum: { stock: true },
+        });
+        return {
+          ...product,
+          totalStock: totalStock?._sum?.stock || 0,
+        };
+      });
+
+    if (!product) return res.status(404).json([]);
+
+    return res.status(200).json(product);
   } catch (error) {
     console.error("Error fetching product:", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -198,3 +248,97 @@ export const getAllProducts = async (req: any, res: any) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// ======================== Product Variant ======================== //
+export const updateVariant = async (req: any, res: any) => {
+  const { userId, id, sku, variantName, price, reOrderLevel } = req.body;
+
+  try {
+    const currentVariant = await prisma.productVariant.findUnique({
+      where: { id },
+    });
+
+    if (!currentVariant) {
+      return res.status(404).json({ error: "Variant not found" });
+    }
+
+    const dataToUpdate: any = {};
+    const changes: {
+      field: string;
+      oldValue: string | number;
+      newValue: string | number;
+    }[] = [];
+
+    if (sku !== undefined && sku !== currentVariant.sku) {
+      dataToUpdate.sku = sku;
+      changes.push({
+        field: "sku",
+        oldValue: currentVariant.sku ?? "",
+        newValue: sku,
+      });
+    }
+    if (
+      variantName !== undefined &&
+      variantName !== currentVariant.variantName
+    ) {
+      dataToUpdate.variantName = variantName;
+      changes.push({
+        field: "variantName",
+        oldValue: currentVariant.variantName,
+        newValue: variantName,
+      });
+    }
+    if (price !== undefined && price !== currentVariant.price) {
+      dataToUpdate.price = price;
+      changes.push({
+        field: "price",
+        oldValue: currentVariant.price.toString(),
+        newValue: price,
+      });
+    }
+    if (
+      reOrderLevel !== undefined &&
+      reOrderLevel !== currentVariant.reOrderLevel
+    ) {
+      dataToUpdate.reOrderLevel = reOrderLevel;
+      changes.push({
+        field: "reOrderLevel",
+        oldValue: currentVariant.reOrderLevel ?? 0,
+        newValue: reOrderLevel,
+      });
+    }
+
+    // Skip update if nothing has changed
+    if (Object.keys(dataToUpdate).length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No changes detected", variant: currentVariant });
+    }
+
+    const updatedVariant = await prisma.productVariant.update({
+      where: { id },
+      data: dataToUpdate,
+    });
+
+    for (const change of changes) {
+      await prisma.productAuditLog.create({
+        data: {
+          productId: updatedVariant.productId,
+          variantId: updatedVariant.id,
+          action: "update",
+          field: change.field,
+          oldValue: change.oldValue.toString(),
+          newValue: change.newValue.toString(),
+          userId,
+        },
+      });
+    }
+
+    return res.status(200).json(updatedVariant);
+  } catch (error) {
+    console.error("Error updating product variant:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const updateStock = async (req: any, res: any) => {};

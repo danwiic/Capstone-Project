@@ -26,7 +26,7 @@ model User {
   ProductVariant ProductVariant[]
   WishList       WishList[]
   Cart           Cart[]
-  InventoryLogs  InventoryLogs[]
+  logs           ProductAuditLog[]
 
   @@map("users")
 }
@@ -56,21 +56,20 @@ model Product {
   reOrderLevel Int?     @default(0)
   categoryId   String
   brandId      String
-  createdById  String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   createdBy    String?  @default("73f65300-8dcf-4929-af45-dce69467a90f")
 
-  brand          ProductBrand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  category       ProductCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  user           User?            @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  brand          ProductBrand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category       ProductCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user           User?             @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   ProductImage   ProductImage[]
   review         Review[]
   ProductVariant ProductVariant[]
   WishList       WishList[]
   CartItem       CartItem[]
   batches        ProductBatch[]
-  logs           InventoryLogs[]
+  logs           ProductAuditLog[]
 }
 
 model ProductVariant {
@@ -85,11 +84,11 @@ model ProductVariant {
   updatedAt    DateTime @updatedAt
   updatedBy    String?
 
-  product  Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user     User?           @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+  product  Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user     User?             @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
   CartItem CartItem[]
   batches  ProductBatch[]
-  logs     InventoryLogs[]
+  logs     ProductAuditLog[]
 }
 
 model ProductBatch {
@@ -101,17 +100,19 @@ model ProductBatch {
   receivedAt     DateTime
   expirationDate DateTime?
 
-  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  logs    InventoryLogs[]
+  variant ProductVariant?   @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  product Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  logs    ProductAuditLog[]
 }
 
-model InventoryLogs {
+model ProductAuditLog {
   id        String   @id @default(uuid())
   productId String
-  variantId String?
+  variantId String? 
   batchId   String?
-  quantity  Int
+  field     String
+  oldValue  String?
+  newValue  String?
   action    String
   reason    String?
   userId    String

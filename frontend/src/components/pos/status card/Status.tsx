@@ -21,6 +21,7 @@ type StatusValue =
   | "IN STOCK"
   | "On Hold"
   | "ON HOLD";
+  
 type Props = {
   status: StatusValue;
 };
@@ -55,7 +56,7 @@ export default function Status({ status }: Props) {
           : normalizedStatus === "in stock"
           ? "bg-green-100 text-green-800"
           : ""
-      } px-2 py-1 rounded-md text-sm font-medium w-auto text-center`}
+      } py-1 px-2 rounded-md text-sm font-medium w-fit`}
     >
       {displayStatus}
     </div>
