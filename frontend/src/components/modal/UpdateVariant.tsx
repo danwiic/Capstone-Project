@@ -5,20 +5,16 @@ import { updateVariant } from "../../services/products";
 interface UpdateVariantProps {
   isOpen: boolean;
   onclose: () => void;
-  variantId: string;
-  variantDetails?: {
-    sku: string;
-    variantName: string;
-    price: number;
-    reOrderLevel: number;
-  };
+  //   variantId: string;
+  //   variantDetails?: {
+  //     sku: string;
+  //     variantName: string;
+  //     price: number;
+  //     reOrderLevel: number;
+  //   };
 }
 
-export default function UpdateVariant({
-  isOpen,
-  onclose,
-  variantId,
-}: UpdateVariantProps) {
+export default function UpdateVariant({ isOpen, onclose }: UpdateVariantProps) {
   const [sku, setSku] = useState("");
   const [variantName, setVariantName] = useState("");
   const [price, setPrice] = useState<number | "">("");
@@ -26,19 +22,19 @@ export default function UpdateVariant({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await updateVariant(
-        variantId,
-        "73f65300-8dcf-4929-af45-dce69467a90f", // Replace with actual user ID
-        sku,
-        variantName,
-        Number(price),
-        Number(reOrderLevel)
-      );
-      onclose(); // Optionally close modal after success
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   await updateVariant(
+    //     variantId,
+    //     "73f65300-8dcf-4929-af45-dce69467a90f", // Replace with actual user ID
+    //     sku,
+    //     variantName,
+    //     Number(price),
+    //     Number(reOrderLevel)
+    //   );
+    //   onclose();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   if (!isOpen) return null;

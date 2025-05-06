@@ -32,13 +32,16 @@ model User {
 }
 
 model DeliverAddress {
-  id       String  @id @default(uuid())
-  address  String?
-  province String?
-  city     String?
-  barangay String?
-  zipCode  String?
-  userId   String
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  address   String?
+  province  String?
+  zipCode   String?
+  city      String?
+  phone     String?
+  isDefault Boolean @default(false)
+  userId    String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -108,7 +111,7 @@ model ProductBatch {
 model ProductAuditLog {
   id        String   @id @default(uuid())
   productId String
-  variantId String? 
+  variantId String?
   batchId   String?
   field     String
   oldValue  String?

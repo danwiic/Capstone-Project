@@ -10,7 +10,7 @@ export default function UpdateStock({ isOpen, onClose }: UpdateStockProps) {
   const [formData, setFormData] = useState({
     batchNumber: "",
     quantity: "",
-    action: "in", // Default to 'stock in'
+    action: "in", 
     reason: "",
     receivedDate: "",
     expirationDate: "",

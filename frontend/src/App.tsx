@@ -24,6 +24,7 @@ import Settings from "./pages/pos/Settings";
 import CartComponent from "./components/Cart/Cart";
 import Wishlist from "./pages/Wishlist";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import Checkout from "./pages/Checkout";
 
 export default function App() {
   return (
@@ -57,6 +58,7 @@ export default function App() {
                   />
                 }
               />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/products" element={<Brand />} />

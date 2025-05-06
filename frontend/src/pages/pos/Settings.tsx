@@ -11,7 +11,7 @@ export default function Settings() {
 
         <div className="bg-white rounded-lg shadow">
           {/* Tabs */}
-          <div className="flex border-b">
+          <div className="flex border-b border-gray-200">
             <button
               onClick={() => setActiveTab("discount")}
               className={`py-4 px-6 font-medium ${
@@ -59,7 +59,6 @@ function DiscountSettings() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Add new discount to the list
     const newDiscount = {
       id: discounts.length + 1,
       name: discountName,
@@ -69,7 +68,6 @@ function DiscountSettings() {
     };
     setDiscounts([...discounts, newDiscount]);
 
-    // Reset form
     setDiscountName("");
     setDiscountValue("");
   };
@@ -88,7 +86,6 @@ function DiscountSettings() {
     <div>
       <h2 className="text-xl font-semibold mb-4">Discount Management</h2>
 
-      {/* Add new discount form */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 bg-gray-50 p-4 rounded-lg"
@@ -304,7 +301,6 @@ function ShippingSettings() {
         Free Shipping Coupon Generator
       </h2>
 
-      {/* Generate coupon form */}
       <form onSubmit={handleSubmit} className="mb-8 bg-gray-50 p-4 rounded-lg flex flex-col gap-4">
         <h3 className="font-medium mb-3">Create New Free Shipping Coupon</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

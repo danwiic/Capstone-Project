@@ -103,7 +103,7 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
                                 alt={prod.name}
                               />
                             </span>
-                            <div className="flex flex-col gap-1 items-start w-11/12">
+                            <div className="flex flex-col gap-1 items-start w-[15rem]">
                               <span className="text-md font-medium truncate w-full block">
                                 {prod.name}
                               </span>

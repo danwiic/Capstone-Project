@@ -352,7 +352,6 @@ export default function ProductDetails({
         <UpdateVariant
           isOpen={openUpdateVariant}
           onclose={() => setOpenUpdateVariant(false)}
-          variantId={selectedVariant}
         />
       )}
 
