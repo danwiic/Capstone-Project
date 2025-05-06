@@ -1,8 +1,22 @@
 import { useState } from "react";
 import CheckoutNav from "../components/Nav/CheckoutNav";
 import { formatMoney } from "../utils/formatMoney";
+import Loading from "../components/loader/Loading";
+import { useLocation } from "react-router-dom";
 
-export default function Checkout() {
+interface Props {
+  productId: string;
+  productName?: string;
+  variantId?: string;
+  quantity: number;
+  price: number;
+}
+
+interface CheckoutProps {
+  product: Props[];
+}
+
+export default function Checkout({ product: propProduct }: any) {
   const [selectPayment, setSelectPayment] = useState<string | null>("paymongo");
   const [selectBilling, setSelectBilling] = useState<string | null>("same");
 
@@ -15,6 +29,25 @@ export default function Checkout() {
     { label: "Same as delivery address", value: "same" },
     { label: "Use a different billing address", value: "different" },
   ];
+
+  const location = useLocation();
+  const product = propProduct || location.state?.product || [];
+
+  console.log("Product from location:", product);
+
+  function getTotalPrice() {
+    return product.reduce((total: number, item: any) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  }
+
+  function totalWithTaxAndShipping() {
+    const shipping = 200;
+    const tax = getTotalPrice() / 10;
+    return getTotalPrice() + shipping + tax;
+  }
+
+  if (!product) return <Loading />;
   return (
     <CheckoutNav>
       <div className="grid sm:grid-cols-1 lg:grid-cols-2">
@@ -438,25 +471,26 @@ export default function Checkout() {
           <div className=" sticky top-10">
             <div className="flex flex-col gap-4 w-full ">
               <span className="font-bold text-xl">Order Summary</span>
-              <div className="flex gap-4 justify-between">
-                <span className="flex gap-2 items-center w-full">
-                  <img
-                    src="https://res.cloudinary.com/dvexdyqea/image/upload/v1745226259/Spyder_Strike__NDPPNK_-_4_095_mobt10.png"
-                    alt="img"
-                    className="w-auto h-15"
-                  />
-                  <span className="break-words w-[15rem]">
-                    Gille Helmet na Pink
+              {product?.map((prod: any, i: number) => (
+                <div key={i} className="flex gap-4 justify-between">
+                  <span className="flex gap-2 items-center w-full">
+                    <img
+                      src={prod.product.ProductImage[0].imageUrl || ""}
+                      alt="img"
+                      className="w-auto h-15"
+                    />
+                    <span className="break-words w-[15rem]">
+                      {prod.productName || prod.product.name}
+                    </span>
                   </span>
-                </span>
-                <span className="flex flex-col justify-center">
-                  <span>{formatMoney(2400)}</span>
-                  <span className="text-sm scale-90 font-medium">
-                    Quantity: 1
+                  <span className="flex flex-col w-fit justify-center items-end">
+                    <span>{formatMoney(prod.price)}</span>
+                    <span className="text-sm scale-90 font-medium text-nowrap">
+                      Quantity: {prod.quantity}
+                    </span>
                   </span>
-                </span>
-              </div>
-
+                </div>
+              ))}
               <div className="flex justify-between gap-4">
                 <div className="relative w-full">
                   <input
@@ -490,7 +524,7 @@ export default function Checkout() {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between gap-4">
                   <span className="text-gray-500">Subtotal</span>
-                  <span>{formatMoney(2400)}</span>
+                  <span>{formatMoney(getTotalPrice())}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-gray-500">Shipping</span>
@@ -498,13 +532,13 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-gray-500">Tax</span>
-                  <span>{formatMoney(2400 / 10)}</span>
+                  <span>{formatMoney(getTotalPrice() / 10)}</span>
                 </div>
                 <div className="flex justify-between text-xl gap-4">
                   <span className="text-gray-700">Total</span>
                   <span className="flex gap-2 items-center">
                     <span className="text-gray-500 text-sm">PHP</span>
-                    {formatMoney(2840)}
+                    {formatMoney(totalWithTaxAndShipping())}
                   </span>
                 </div>
               </div>

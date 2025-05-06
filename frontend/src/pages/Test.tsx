@@ -1,491 +1,35 @@
-
-
-
-
-
-
-
-
-
-import { useState, useEffect } from 'react';
-import { Search, ArrowDown, ArrowUp, Tag, Truck, AlertCircle, Archive, CheckCircle2 } from 'lucide-react';
-
-// Mock data for product variants
-const initialVariants = [
-  {
-    id: 1,
-    sku: 'SHT-BLU-M-001',
-    name: 'Blue Shirt - Medium',
-    color: 'Blue',
-    size: 'M',
-    currentStock: 15,
-    reorderPoint: 10,
-    batches: [
-      { id: 'B001', quantity: 8, expiryDate: '2025-08-15', receivedDate: '2025-04-20' },
-      { id: 'B002', quantity: 7, expiryDate: '2025-09-30', receivedDate: '2025-04-25' }
-    ],
-    stockMovement: [
-      { date: '2025-05-01', type: 'Stock In', quantity: 7, batchId: 'B002' },
-      { date: '2025-04-30', type: 'Sale', quantity: -2, batchId: 'B001' },
-      { date: '2025-04-25', type: 'Stock In', quantity: 10, batchId: 'B001' }
-    ]
-  },
-  {
-    id: 2,
-    sku: 'SHT-BLU-L-001',
-    name: 'Blue Shirt - Large',
-    color: 'Blue',
-    size: 'L',
-    currentStock: 8,
-    reorderPoint: 10,
-    batches: [
-      { id: 'B003', quantity: 8, expiryDate: '2025-08-15', receivedDate: '2025-04-15' }
-    ],
-    stockMovement: [
-      { date: '2025-04-29', type: 'Sale', quantity: -3, batchId: 'B003' },
-      { date: '2025-04-15', type: 'Stock In', quantity: 11, batchId: 'B003' }
-    ]
-  },
-  {
-    id: 3,
-    sku: 'SHT-RED-M-001',
-    name: 'Red Shirt - Medium',
-    color: 'Red',
-    size: 'M',
-    currentStock: 20,
-    reorderPoint: 8,
-    batches: [
-      { id: 'B004', quantity: 12, expiryDate: '2025-09-10', receivedDate: '2025-04-10' },
-      { id: 'B005', quantity: 8, expiryDate: '2025-10-05', receivedDate: '2025-04-20' }
-    ],
-    stockMovement: [
-      { date: '2025-04-20', type: 'Stock In', quantity: 8, batchId: 'B005' },
-      { date: '2025-04-18', type: 'Sale', quantity: -3, batchId: 'B004' },
-      { date: '2025-04-10', type: 'Stock In', quantity: 15, batchId: 'B004' }
-    ]
-  },
-  {
-    id: 4,
-    sku: 'SHT-RED-L-001',
-    name: 'Red Shirt - Large',
-    color: 'Red',
-    size: 'L',
-    currentStock: 5,
-    reorderPoint: 8,
-    batches: [
-      { id: 'B006', quantity: 5, expiryDate: '2025-09-15', receivedDate: '2025-04-05' }
-    ],
-    stockMovement: [
-      { date: '2025-04-25', type: 'Sale', quantity: -2, batchId: 'B006' },
-      { date: '2025-04-20', type: 'Sale', quantity: -3, batchId: 'B006' },
-      { date: '2025-04-05', type: 'Stock In', quantity: 10, batchId: 'B006' }
-    ]
-  }
-];
-
 export default function Test() {
-  const [variants, setVariants] = useState(initialVariants);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('name');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [selectedVariant, setSelectedVariant] = useState(null);
-  const [showBatches, setShowBatches] = useState(false);
-  const [showStockMovement, setShowStockMovement] = useState(false);
+  const iframe = document.querySelector("iframe");
 
-  // Filter variants based on search term
-  const filteredVariants = variants.filter(variant => 
-    variant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    variant.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    variant.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    variant.size.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleResize = (height) => {
+    iframe.style.height = height + "px";
+  };
 
-  // Sort variants
-  const sortedVariants = [...filteredVariants].sort((a, b) => {
-    if (sortOrder === 'asc') {
-      return a[sortBy] > b[sortBy] ? 1 : -1;
-    } else {
-      return a[sortBy] < b[sortBy] ? 1 : -1;
+  window.addEventListener("message", (event) => {
+    const { type, height } = event.data;
+
+    if (type === "resize") {
+      handleResize(height);
+    } else if (type === "init") {
+      handleResize(height);
     }
   });
 
-  // Handle sorting
-  const handleSort = (column) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(column);
-      setSortOrder('asc');
-    }
-  };
-
-  // Handle variant selection
-  const handleVariantSelect = (variant) => {
-    if (selectedVariant && selectedVariant.id === variant.id) {
-      setSelectedVariant(null);
-      setShowBatches(false);
-      setShowStockMovement(false);
-    } else {
-      setSelectedVariant(variant);
-      setShowBatches(false);
-      setShowStockMovement(false);
-    }
-  };
-
   return (
-    <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-6">Product Variants</h1>
-      
-      {/* Search Bar */}
-      <div className="mb-6 relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by SKU, name, color, or size"
-          className="pl-10 pr-4 py-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      
-      {/* Variants Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr className="bg-gray-50">
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                <button className="flex items-center" onClick={() => handleSort('name')}>
-                  Name
-                  {sortBy === 'name' && (
-                    sortOrder === 'asc' ? 
-                    <ArrowUp className="h-4 w-4 ml-1" /> : 
-                    <ArrowDown className="h-4 w-4 ml-1" />
-                  )}
-                </button>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                <button className="flex items-center" onClick={() => handleSort('sku')}>
-                  SKU
-                  {sortBy === 'sku' && (
-                    sortOrder === 'asc' ? 
-                    <ArrowUp className="h-4 w-4 ml-1" /> : 
-                    <ArrowDown className="h-4 w-4 ml-1" />
-                  )}
-                </button>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                <button className="flex items-center" onClick={() => handleSort('color')}>
-                  Color
-                  {sortBy === 'color' && (
-                    sortOrder === 'asc' ? 
-                    <ArrowUp className="h-4 w-4 ml-1" /> : 
-                    <ArrowDown className="h-4 w-4 ml-1" />
-                  )}
-                </button>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                <button className="flex items-center" onClick={() => handleSort('size')}>
-                  Size
-                  {sortBy === 'size' && (
-                    sortOrder === 'asc' ? 
-                    <ArrowUp className="h-4 w-4 ml-1" /> : 
-                    <ArrowDown className="h-4 w-4 ml-1" />
-                  )}
-                </button>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                <button className="flex items-center" onClick={() => handleSort('currentStock')}>
-                  Current Stock
-                  {sortBy === 'currentStock' && (
-                    sortOrder === 'asc' ? 
-                    <ArrowUp className="h-4 w-4 ml-1" /> : 
-                    <ArrowDown className="h-4 w-4 ml-1" />
-                  )}
-                </button>
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                Batches
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {sortedVariants.map((variant) => (
-              <tr 
-                key={variant.id} 
-                className={`hover:bg-gray-50 cursor-pointer ${selectedVariant && selectedVariant.id === variant.id ? 'bg-blue-50' : ''}`}
-                onClick={() => handleVariantSelect(variant)}
-              >
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {variant.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <Tag className="h-4 w-4 mr-2 text-gray-400" />
-                    {variant.sku}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <div 
-                      className="w-4 h-4 rounded-full mr-2" 
-                      style={{ backgroundColor: variant.color.toLowerCase() }}
-                    ></div>
-                    {variant.color}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {variant.size}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <span className={`font-medium ${variant.currentStock <= variant.reorderPoint ? 'text-red-600' : 'text-green-600'}`}>
-                    {variant.currentStock}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {variant.currentStock <= 0 ? (
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      Out of Stock
-                    </span>
-                  ) : variant.currentStock <= variant.reorderPoint ? (
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                      Low Stock
-                    </span>
-                  ) : (
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      In Stock
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {variant.batches.length} {variant.batches.length === 1 ? 'batch' : 'batches'}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Variant Details */}
-      {selectedVariant && (
-        <div className="mt-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">{selectedVariant.name}</h2>
-            <div className="space-x-2">
-              <button 
-                className={`px-4 py-2 text-sm font-medium rounded-md ${showBatches ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                onClick={() => {
-                  setShowBatches(!showBatches);
-                  if (!showBatches) setShowStockMovement(false);
-                }}
-              >
-                {showBatches ? 'Hide Batches' : 'Show Batches'}
-              </button>
-              <button 
-                className={`px-4 py-2 text-sm font-medium rounded-md ${showStockMovement ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                onClick={() => {
-                  setShowStockMovement(!showStockMovement);
-                  if (!showStockMovement) setShowBatches(false);
-                }}
-              >
-                {showStockMovement ? 'Hide Stock Movement' : 'Show Stock Movement'}
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-md border border-gray-200">
-              <div className="text-sm text-gray-500 mb-1">SKU</div>
-              <div className="font-medium flex items-center">
-                <Tag className="h-4 w-4 mr-2 text-gray-400" />
-                {selectedVariant.sku}
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-md border border-gray-200">
-              <div className="text-sm text-gray-500 mb-1">Current Stock</div>
-              <div className={`font-medium ${selectedVariant.currentStock <= selectedVariant.reorderPoint ? 'text-red-600' : 'text-green-600'}`}>
-                {selectedVariant.currentStock} units
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-md border border-gray-200">
-              <div className="text-sm text-gray-500 mb-1">Reorder Point</div>
-              <div className="font-medium">{selectedVariant.reorderPoint} units</div>
-            </div>
-          </div>
-
-          {/* Batches Section */}
-          {showBatches && (
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-4">Batch Information</h3>
-              <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Batch ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Quantity</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Received Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Expiry Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {selectedVariant.batches.map((batch) => {
-                      const today = new Date();
-                      const expiryDate = new Date(batch.expiryDate);
-                      const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-                      
-                      return (
-                        <tr key={batch.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{batch.id}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{batch.quantity}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{batch.receivedDate}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{batch.expiryDate}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {daysUntilExpiry <= 0 ? (
-                              <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                <AlertCircle className="h-3 w-3 mr-1" />
-                                Expired
-                              </span>
-                            ) : daysUntilExpiry <= 30 ? (
-                              <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                <AlertCircle className="h-3 w-3 mr-1" />
-                                Expiring Soon ({daysUntilExpiry} days)
-                              </span>
-                            ) : (
-                              <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                <CheckCircle2 className="h-3 w-3 mr-1" />
-                                Valid
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Stock Movement Section */}
-          {showStockMovement && (
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-4">Stock Movement History</h3>
-              <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Type</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Quantity</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Batch ID</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {selectedVariant.stockMovement.map((movement, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{movement.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {movement.type === 'Stock In' ? (
-                            <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                              <Truck className="h-3 w-3 mr-1" />
-                              Stock In
-                            </span>
-                          ) : movement.type === 'Sale' ? (
-                            <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                              <Archive className="h-3 w-3 mr-1" />
-                              Sale
-                            </span>
-                          ) : (
-                            <span className="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                              {movement.type}
-                            </span>
-                          )}
-                        </td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${movement.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {movement.quantity > 0 ? '+' : ''}{movement.quantity}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{movement.batchId}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+    <div className="max-w-6xl h-fit mx-auto p-4 bg-white rounded-lg shadow">
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://danbalagbag2o.trackingmore.org/?page=tracking-page&mode=iframe"
+      ></iframe>
     </div>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // export default function Test() {
 //   const [view, setView] = useState('dashboard'); // dashboard, productDetail
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const products = [
 //     {
 //       id: 1,
@@ -620,14 +164,14 @@ export default function Test() {
 //           </button>
 //         </div>
 //       </div>
-      
+
 //       {/* Search and Filter Bar */}
 //       <div className="flex justify-between items-center p-4 bg-white">
 //         <div className="flex items-center w-1/2 bg-gray-100 rounded-md px-3 py-2">
 //           <Search size={20} className="text-gray-500" />
-//           <input 
-//             type="text" 
-//             placeholder="Search products..." 
+//           <input
+//             type="text"
+//             placeholder="Search products..."
 //             className="bg-transparent border-none focus:outline-none ml-2 w-full"
 //           />
 //         </div>
@@ -650,7 +194,7 @@ export default function Test() {
 //           </button>
 //         </div>
 //       </div>
-      
+
 //       {/* Alert Bar - Low Stock */}
 //       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 flex items-center justify-between">
 //         <div className="flex items-center">
@@ -659,7 +203,7 @@ export default function Test() {
 //         </div>
 //         <button className="text-indigo-600 text-sm font-medium">View All Alerts</button>
 //       </div>
-      
+
 //       {/* Product List */}
 //       <div className="flex-grow overflow-auto">
 //         <table className="min-w-full bg-white">
@@ -675,9 +219,9 @@ export default function Test() {
 //           </thead>
 //           <tbody className="divide-y divide-gray-200">
 //             {products.map(product => (
-//               <tr 
-//                 key={product.id} 
-//                 className="hover:bg-gray-50 cursor-pointer" 
+//               <tr
+//                 key={product.id}
+//                 className="hover:bg-gray-50 cursor-pointer"
 //                 onClick={() => handleProductClick(product)}
 //               >
 //                 <td className="py-4 px-4">
@@ -722,7 +266,7 @@ export default function Test() {
 //           </tbody>
 //         </table>
 //       </div>
-      
+
 //       {/* Quick Stats */}
 //       <div className="grid grid-cols-4 gap-4 p-4 bg-gray-50 border-t">
 //         <div className="bg-white p-4 rounded-lg shadow-sm">
@@ -752,13 +296,13 @@ export default function Test() {
 //   // Product Detail View
 //   const renderProductDetail = () => {
 //     if (!selectedProduct) return null;
-    
+
 //     return (
 //       <div className="h-full flex flex-col">
 //         {/* Header */}
 //         <div className="flex justify-between items-center p-4 border-b">
 //           <div className="flex items-center">
-//             <button 
+//             <button
 //               onClick={handleBackToDashboard}
 //               className="mr-4 p-2 rounded-md hover:bg-gray-100"
 //             >
@@ -775,7 +319,7 @@ export default function Test() {
 //             </button>
 //           </div>
 //         </div>
-        
+
 //         {/* Product Summary */}
 //         <div className="grid grid-cols-4 gap-6 p-6 bg-white border-b">
 //           <div className="col-span-1">
@@ -818,7 +362,7 @@ export default function Test() {
 //                 <div className="font-medium mt-1">May 1, 2025</div>
 //               </div>
 //             </div>
-            
+
 //             {/* Quick Actions */}
 //             <div className="mt-6 flex gap-4">
 //               <button className="flex items-center text-sm text-gray-600 hover:text-indigo-600">
@@ -836,7 +380,7 @@ export default function Test() {
 //             </div>
 //           </div>
 //         </div>
-        
+
 //         {/* Tabs */}
 //         <div className="flex border-b">
 //           <button className="py-3 px-6 border-b-2 border-indigo-600 text-indigo-600 font-medium">
@@ -849,13 +393,13 @@ export default function Test() {
 //             Orders
 //           </button>
 //         </div>
-        
+
 //         {/* Variants Section */}
 //         <div className="flex-grow overflow-auto p-6">
 //           <div className="mb-4 flex justify-between items-center">
 //             <h2 className="text-lg font-medium">
-//               {selectedProduct.hasVariants 
-//                 ? `${selectedProduct.variants.length} Variants` 
+//               {selectedProduct.hasVariants
+//                 ? `${selectedProduct.variants.length} Variants`
 //                 : 'Product Details'}
 //             </h2>
 //             {selectedProduct.hasVariants && (
@@ -864,7 +408,7 @@ export default function Test() {
 //               </button>
 //             )}
 //           </div>
-          
+
 //           {selectedProduct.hasVariants ? (
 //             <table className="min-w-full bg-white border rounded-lg overflow-hidden">
 //               <thead className="bg-gray-50">
@@ -950,7 +494,7 @@ export default function Test() {
 //               </div>
 //             </div>
 //           )}
-          
+
 //           {/* Activity Logs */}
 //           <div className="mt-8">
 //             <div className="mb-4 flex justify-between items-center">
@@ -959,7 +503,7 @@ export default function Test() {
 //                 <FileText size={16} className="mr-1" /> View All Logs
 //               </button>
 //             </div>
-            
+
 //             <div className="bg-white border rounded-lg overflow-hidden">
 //               <ul className="divide-y divide-gray-200">
 //                 {selectedProduct.logs.map((log, index) => (
@@ -1020,7 +564,7 @@ export default function Test() {
 //             <Settings size={20} />
 //           </button>
 //         </div>
-        
+
 //         {/* Main Content */}
 //         <div className="flex-grow">
 //           {view === 'dashboard' && renderDashboard()}
@@ -1030,67 +574,6 @@ export default function Test() {
 //     </div>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useReducer } from "react";
 // export default function Test() {

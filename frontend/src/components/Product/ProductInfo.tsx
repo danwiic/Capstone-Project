@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useUserContext } from "../../context/userContext";
 import LoginModal from "../modal/LoginModal";
 import { useCartContext } from "../../context/cartContext";
+import { useNavigate } from "react-router";
 
 interface props {
   id: string;
@@ -19,13 +20,13 @@ interface props {
 export default function ProductInfo({ id, name, price, variants = [] }: props) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [showLoginModal, setShowLoginModal] = useState(false); // 👈 modal control
-
-  const { user } = useUserContext(); // 👈 assuming you have user context
-  const { addToCart } = useCartContext(); // 👈 assuming you have cart context
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useUserContext();
+  const { addToCart } = useCartContext();
   const handleAddToCart = async () => {
     if (!user || !user.id) {
-      setShowLoginModal(true); // 👈 open the modal
+      setShowLoginModal(true);
       return;
     }
 
@@ -40,6 +41,22 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout", {
+      state: {
+        product: [
+          {
+            productId: id,
+            productName: name,
+            variantId: variants[selectedVariantIndex]?.id || "",
+            quantity: quantity,
+            price: variants[selectedVariantIndex]?.price || price,
+          },
+        ],
+      },
+    });
   };
 
   return (
@@ -116,7 +133,10 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
               Add to cart
             </Button>
 
-            <Button className="bg-red-500 hover:bg-red-400 rounded-xs">
+            <Button
+              onClick={handleCheckout}
+              className="bg-red-500 hover:bg-red-400 rounded-xs"
+            >
               Buy it now
             </Button>
           </div>

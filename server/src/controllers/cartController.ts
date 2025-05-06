@@ -59,7 +59,7 @@ export const getUserCart = async (req: any, res: any) => {
 
   try {
     const cart = await prisma.cart.findFirst({
-      where: { id },
+      where: { userId: id },
       include: {
         items: {
           include: {

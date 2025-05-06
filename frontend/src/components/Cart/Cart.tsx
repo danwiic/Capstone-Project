@@ -6,7 +6,7 @@ import React from "react";
 import { formatMoney } from "../../utils/formatMoney";
 import Navbar from "../Nav/Navbar";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 interface CartProps {
   children?: React.ReactNode;
@@ -21,8 +21,7 @@ export function CartModal({
   cartPosition,
 }: CartProps) {
   const { cart } = useContext(CartContext);
-
-  console.log(cart);
+  const navigate = useNavigate();
 
   const calculateTotal = useMemo(() => {
     let total = 0;
@@ -32,6 +31,13 @@ export function CartModal({
     return total.toFixed(2);
   }, [cart]);
 
+  const handleToCheckout = () => {
+    navigate("/checkout", {
+      state: {
+        product: cart,
+      },
+    });
+  };
   return (
     <div
       className={`${cartPosition} absolute top-5 -right-10 z-50 shadow-1  
@@ -70,7 +76,10 @@ export function CartModal({
                 <Link to="/cart" className="w-full">
                   <Button className="rounded-xs">View Cart</Button>
                 </Link>
-                <Button className="bg-mayormoto-pink hover:bg-mayormoto-pink/80 rounded-xs">
+                <Button
+                  onClick={handleToCheckout}
+                  className="bg-red-500 hover:bg-red-400 rounded-xs"
+                >
                   Checkout
                 </Button>
               </div>
@@ -99,8 +108,7 @@ React.memo(CartModal);
 export default function CartComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const { cart, updateCartQuantity, removeFromCart } = useCartContext();
-
-  console.log(cart);
+  const navigate = useNavigate();
 
   const calculateTotal = useMemo(() => {
     let total = 0;
@@ -109,6 +117,14 @@ export default function CartComponent() {
     });
     return total.toFixed(2);
   }, [cart]);
+
+  const handleToCheckout = () => {
+    navigate("/checkout", {
+      state: {
+        product: cart,
+      },
+    });
+  };
 
   const handleQuantityChange = (cartId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -240,6 +256,7 @@ export default function CartComponent() {
                   Shipping is already calculated at checkout
                 </span>
                 <button
+                  onClick={handleToCheckout}
                   className="py-4 font-semibold text-sm 
               bg-mayormoto-pink text-white w-full
               cursor-pointer hover:bg-mayormoto-pink/80 rounded-sm"
