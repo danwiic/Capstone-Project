@@ -1,8 +1,9 @@
+import Navbar from "../components/Nav/Navbar";
 
 export default function MyOrders() {
   return (
-    <div>
-      
-    </div>
+    <Navbar>
+      <span>My Orders</span>
+    </Navbar>
   )
 }

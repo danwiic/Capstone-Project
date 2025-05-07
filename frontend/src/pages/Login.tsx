@@ -80,21 +80,51 @@ export default function Login() {
         email,
         password,
       });
-
       setUser(response.data.user);
       console.log("Login successful:", response.data.user);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-
-      // Show OTP modal after successful login
       setIsModalOpen(true);
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (error: any) {
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 404) {
+          dispatch({
+            type: "SET_EMAIL_ERROR",
+            payload: data.error || "User not found. Please sign up.",
+          });
+        } else if (status === 406) {
+          const errorMsg = data.error || "Invalid credentials";
+
+          if (errorMsg.toLowerCase().includes("email")) {
+            dispatch({ type: "SET_EMAIL_ERROR", payload: errorMsg });
+          } else if (
+            errorMsg.toLowerCase().includes("password") ||
+            errorMsg.toLowerCase().includes("credentials")
+          ) {
+            dispatch({ type: "SET_PASSWORD_ERROR", payload: errorMsg });
+          } else {
+            dispatch({ type: "SET_PASSWORD_ERROR", payload: errorMsg });
+          }
+        }
+      } else if (error.request) {
+        dispatch({
+          type: "SET_PASSWORD_ERROR",
+          payload: "Network error. Please try again later.",
+        });
+      } else {
+        dispatch({
+          type: "SET_PASSWORD_ERROR",
+          payload: "An unexpected error occurred. Please try again.",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const closeModal = () => setIsModalOpen(false);
+
   if (user?.role === "admin") return <Navigate to="/pos/dashboard" />;
   if (user?.role === "employee") return <Navigate to="/pos/terminal" />;
   if (user) return <Navigate to="/" />;

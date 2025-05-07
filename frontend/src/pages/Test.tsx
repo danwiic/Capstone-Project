@@ -16,10 +16,10 @@ export default function Test() {
   });
 
   return (
-    <div className="max-w-6xl h-fit mx-auto p-4 bg-white rounded-lg shadow">
+    <div className="max-w-6xl h-full mx-auto p-4 bg-white rounded-lg shadow">
       <iframe
-        width="100%"
-        height="100%"
+        width="800px"
+        height="500px"
         src="https://danbalagbag2o.trackingmore.org/?page=tracking-page&mode=iframe"
       ></iframe>
     </div>

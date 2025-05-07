@@ -53,19 +53,23 @@ function NavItems() {
   const navItems = user
     ? user.role === "admin"
       ? [
-          { name: "Dashboard", path: "/pos/dashboard" },
           { name: "Home", path: "/" },
           { name: "Products", path: "/products" },
+          { name: "My Order", path: "/orders" },
+          { name: "Track my Order", path: "/track" },
           { name: "Wishlist", path: "/wishlist" },
         ]
       : [
           { name: "Home", path: "/" },
           { name: "Products", path: "/products" },
+          { name: "My Order", path: "/orders" },
+          { name: "Track my Order", path: "/track" },
           { name: "Wishlist", path: "/wishlist" },
         ]
     : [
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
+        { name: "Track my Order", path: "/track" },
       ];
 
   const loc = useLocation();

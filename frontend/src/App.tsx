@@ -25,6 +25,7 @@ import CartComponent from "./components/Cart/Cart";
 import Wishlist from "./pages/Wishlist";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Checkout from "./pages/Checkout";
+import MyOrders from "./pages/MyOrders";
 
 export default function App() {
   return (
@@ -62,6 +63,7 @@ export default function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/products" element={<Brand />} />
+              <Route path="/orders" element={<MyOrders />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/pos">
