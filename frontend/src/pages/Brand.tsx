@@ -14,7 +14,10 @@ interface Product {
     id: string;
     name: string;
   };
-  categoryId: string; // Make sure this matches your actual API response
+  category: {
+    id: string;
+    name: string;
+  };
   ProductImage: {
     imageUrl: string;
   }[];
@@ -38,6 +41,7 @@ export default function Brand() {
   const [originalTotalPages, setOriginalTotalPages] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [limit, setLimit] = useState<number>(16);
 
   // Debug log to check data structure
   useEffect(() => {
@@ -50,7 +54,7 @@ export default function Brand() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/product/all?page=${currentPage}&limit=16`
+          `http://localhost:3000/product/all?page=${currentPage}&limit=${limit}`
         );
         console.log("Response data:", response.data);
         setProducts(response.data.products);
@@ -79,8 +83,9 @@ export default function Brand() {
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((product) =>
-        selectedCategories.includes(product.categoryId)
+        selectedCategories.includes(product.category.id)
       );
+      setLimit(products.length);
     }
 
     if (selectedBrands.length > 0) {

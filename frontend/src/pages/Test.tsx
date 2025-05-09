@@ -1,30 +1,385 @@
+import { useState } from 'react';
+import { Search, ShoppingBag, Package, Bell, Heart, User, Truck, Clock, X, Check, Menu, ArrowRight } from 'lucide-react';
+
+// Define custom Tailwind theme extension
+// Note: In a real project, you would define this in your tailwind.config.js file
+// tailwind.config.js example:
+// module.exports = {
+//   theme: {
+//     extend: {
+//       colors: {
+//         'mayormoto-pink': '#ff4e50', // Replace with your actual brand color
+//       },
+//     },
+//   },
+// };
+
 export default function Test() {
-  const iframe = document.querySelector("iframe");
-
-  const handleResize = (height) => {
-    iframe.style.height = height + "px";
-  };
-
-  window.addEventListener("message", (event) => {
-    const { type, height } = event.data;
-
-    if (type === "resize") {
-      handleResize(height);
-    } else if (type === "init") {
-      handleResize(height);
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Sample order data
+  const orders = [
+    {
+      id: '#ORD123456',
+      date: 'May 5, 2025',
+      items: [
+        {
+          id: 1,
+          name: 'Wireless Earbuds Pro',
+          image: '/api/placeholder/80/80',
+          price: 89.99,
+          quantity: 1,
+          color: 'Space Gray'
+        },
+        {
+          id: 2,
+          name: 'Fast Charging Cable 6ft',
+          image: '/api/placeholder/80/80',
+          price: 14.99,
+          quantity: 2,
+          color: 'White'
+        }
+      ],
+      total: 119.97,
+      status: 'Delivered',
+      deliveryDate: 'Delivered on May 8, 2025',
+      trackingNumber: 'TRK789012345'
+    },
+    {
+      id: '#ORD789012',
+      date: 'May 3, 2025',
+      items: [
+        {
+          id: 3,
+          name: 'Classic T-Shirt',
+          image: '/api/placeholder/80/80',
+          price: 24.99,
+          quantity: 2,
+          color: 'Navy Blue',
+          size: 'L'
+        }
+      ],
+      total: 49.98,
+      status: 'Processing',
+      estimatedDelivery: 'Estimated delivery: May 12-14'
+    },
+    {
+      id: '#ORD456789',
+      date: 'Apr 29, 2025',
+      items: [
+        {
+          id: 4,
+          name: 'Smart LED Bulb Pack',
+          image: '/api/placeholder/80/80',
+          price: 34.99,
+          quantity: 3,
+          color: 'White'
+        },
+        {
+          id: 5,
+          name: 'Kitchen Knife Set',
+          image: '/api/placeholder/80/80',
+          price: 59.99,
+          quantity: 1
+        }
+      ],
+      total: 164.96,
+      status: 'Shipping',
+      trackingNumber: 'TRK456789012',
+      estimatedDelivery: 'Arriving on May 10'
+    },
+    {
+      id: '#ORD345678',
+      date: 'Apr 22, 2025',
+      items: [
+        {
+          id: 6,
+          name: 'The Art of Programming',
+          image: '/api/placeholder/80/80',
+          price: 39.99,
+          quantity: 1
+        }
+      ],
+      total: 39.99,
+      status: 'Delivered',
+      deliveryDate: 'Delivered on Apr 25, 2025',
+      trackingNumber: 'TRK123456789'
     }
-  });
-
+  ];
+  
+  const filters = ['All', 'To Pay', 'To Ship', 'To Receive', 'Completed', 'Cancelled'];
+  
+  // Add the custom color to the beginning of the component
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Delivered':
+        return 'text-green-600';
+      case 'Processing':
+        return 'text-blue-600';
+      case 'Shipping':
+        return 'text-orange-500';
+      case 'Cancelled':
+        return 'text-red-600';
+      default:
+        return 'text-mayormoto-pink';
+    }
+  };
+  
+  const getStatusIcon = (status) => {
+    switch(status) {
+      case 'Delivered':
+        return <Check className="w-4 h-4" />;
+      case 'Processing':
+        return <Clock className="w-4 h-4" />;
+      case 'Shipping':
+        return <Truck className="w-4 h-4" />;
+      case 'Cancelled':
+        return <X className="w-4 h-4" />;
+      default:
+        return null;
+    }
+  };
+  
+  const filteredOrders = activeFilter === 'All' 
+    ? orders 
+    : orders.filter(order => {
+        if (activeFilter === 'To Pay') return order.status === 'To Pay';
+        if (activeFilter === 'To Ship') return order.status === 'Processing';
+        if (activeFilter === 'To Receive') return order.status === 'Shipping';
+        if (activeFilter === 'Completed') return order.status === 'Delivered';
+        if (activeFilter === 'Cancelled') return order.status === 'Cancelled';
+        return true;
+      });
+      
+  const searchedOrders = searchQuery 
+    ? filteredOrders.filter(order => 
+        order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.items.some(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : filteredOrders;
+  
   return (
-    <div className="max-w-6xl h-full mx-auto p-4 bg-white rounded-lg shadow">
-      <iframe
-        width="800px"
-        height="500px"
-        src="https://danbalagbag2o.trackingmore.org/?page=tracking-page&mode=iframe"
-      ></iframe>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center space-x-4">
+              <Menu className="w-6 h-6 text-gray-600 md:hidden" />
+              <a href="#" className="text-xl font-bold text-mayormoto-pink">Your Store</a>
+            </div>
+            
+            <div className="hidden md:flex flex-1 mx-10">
+              <div className="relative w-full">
+                <input 
+                  type="text" 
+                  placeholder="Search for products..." 
+                  className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
+                />
+                <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-6">
+              <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+                <Bell className="w-6 h-6" />
+                <span className="text-xs mt-1">Notifications</span>
+              </a>
+              <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+                <Heart className="w-6 h-6" />
+                <span className="text-xs mt-1">Wishlist</span>
+              </a>
+              <a href="#" className="flex flex-col items-center text-mayormoto-pink">
+                <ShoppingBag className="w-6 h-6" />
+                <span className="text-xs mt-1">Orders</span>
+              </a>
+              <a href="#" className="flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+                <User className="w-6 h-6" />
+                <span className="text-xs mt-1">Account</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto py-6 px-4">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
+          <div className="relative md:hidden">
+            <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+            <input 
+              type="text" 
+              placeholder="Search orders..." 
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        
+        {/* Order Filters */}
+        <div className="overflow-x-auto pb-2 mb-6">
+          <div className="flex space-x-2 min-w-max">
+            {filters.map((filter, index) => (
+              <button
+                onClick={() => setActiveFilter(filter)}
+                key={index}
+                className={`bg-white rounded-full text-sm border border-gray-200
+              font-semibold py-2 px-4 outline-none transition duration-200 ease-in-out
+               ${
+                 activeFilter === filter
+                   ? " bg-mayormoto-pink text-white border-transparent "
+                   : " "
+               } `}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* Search Orders - Desktop */}
+        <div className="relative mb-6 hidden md:block">
+          <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+          <input 
+            type="text" 
+            placeholder="Search by order number, product, or shop..." 
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        
+        {/* Orders List */}
+        <div className="space-y-4">
+          {searchedOrders.length > 0 ? (
+            searchedOrders.map(order => (
+              <div key={order.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              {/* Order Header */}
+                <div className="flex justify-between items-center p-4 border-b border-gray-100">
+                  <div className="flex items-center space-x-2">
+                    <Package className="w-5 h-5 text-gray-500" />
+                    <span className="font-medium text-gray-600">Order {order.id}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className={`flex items-center space-x-1 ${getStatusColor(order.status)}`}>
+                      {getStatusIcon(order.status)}
+                      <span className="font-medium">{order.status}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Order Items */}
+                {order.items.map(item => (
+                  <div key={item.id} className="flex p-4 border-b border-gray-100">
+                    <div className="flex-shrink-0">
+                      <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+                    </div>
+                    <div className="ml-4 flex-1">
+                      <h3 className="font-medium text-gray-800 line-clamp-2">{item.name}</h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {item.color && `Color: ${item.color}`} 
+                        {item.size && `, Size: ${item.size}`}
+                      </p>
+                      <div className="flex justify-between items-end mt-2">
+                        <span className="text-mayormoto-pink font-medium">${item.price.toFixed(2)}</span>
+                        <span className="text-gray-500">Qty: {item.quantity}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Order Footer */}
+                <div className="p-4 bg-gray-50">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-gray-500">{order.id} • {order.date}</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {order.deliveryDate || order.estimatedDelivery}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-500">Order Total</p>
+                      <p className="text-lg font-bold text-mayormoto-pink">${order.total.toFixed(2)}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end space-x-3 mt-4">
+                    {order.status === 'Delivered' && (
+                      <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
+                        Write Review
+                      </button>
+                    )}
+                    <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
+                      Order Details
+                    </button>
+                    {['Processing', 'Shipping'].includes(order.status) && (
+                      <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
+                        Track Order
+                      </button>
+                    )}
+                    {order.status === 'Delivered' && (
+                      <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
+                        Buy Again
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-lg p-8 text-center">
+              <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-800">No orders found</h3>
+              <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
+              <button className="mt-4 px-4 py-2 bg-mayormoto-pink text-white rounded-full hover:opacity-90 transition duration-200 inline-flex items-center">
+                Start Shopping <ArrowRight className="ml-2 w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+// export default function Test() {
+//   const iframe = document.querySelector("iframe");
+
+//   const handleResize = (height) => {
+//     iframe.style.height = height + "px";
+//   };
+
+//   window.addEventListener("message", (event) => {
+//     const { type, height } = event.data;
+
+//     if (type === "resize") {
+//       handleResize(height);
+//     } else if (type === "init") {
+//       handleResize(height);
+//     }
+//   });
+
+//   return (
+//     <div className="max-w-6xl h-full mx-auto p-4 bg-white rounded-lg shadow">
+//       <iframe
+//         width="800px"
+//         height="500px"
+//         src="https://danbalagbag2o.trackingmore.org/?page=tracking-page&mode=iframe"
+//       ></iframe>
+//     </div>
+//   );
+// }
 
 // export default function Test() {
 //   const [view, setView] = useState('dashboard'); // dashboard, productDetail
