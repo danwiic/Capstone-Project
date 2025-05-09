@@ -106,10 +106,6 @@ export default function OrderDetails() {
                 <span className="text-gray-600">Change</span>
                 <span className="font-medium">{formatMoney(800)}</span>
               </div>
-              <div className="flex justify-between text-sm items-center">
-                <span className="text-gray-600">Payment Method</span>
-                <span className="font-medium">Cash</span>
-              </div>
               <div className="flex justify-between text-lg font-medium items-center">
                 <span>Grand Total</span>
                 <span className="font-medium">{formatMoney(4200)}</span>

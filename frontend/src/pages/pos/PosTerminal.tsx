@@ -1,10 +1,34 @@
+import { useEffect, useState } from "react";
 import PosProduct from "../../components/pos/cards/PosProduct";
 import Categories from "../../components/pos/categories/Categories";
 import Layout from "../../components/pos/nav/Layout";
 import OrderDetails from "../../components/pos/order_details/OrderDetails";
 import { IoSearchSharp } from "react-icons/io5";
+import { getTwo } from "../../services/products";
 
 export default function PosTerminal() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const categories = await getTwo();
+
+        // Flatten and filter out empty product arrays
+        const flattened = categories
+          .filter((cat: any) => cat.products.length > 0)
+          .flatMap((cat: any) => cat.products);
+
+        setProducts(flattened);
+        console.log("flattened data:", flattened);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <Layout>
       <div className="flex h-[calc(100vh-20px)] gap-4 ">
@@ -30,8 +54,19 @@ export default function PosTerminal() {
             className="grid grid-cols-4 gap-2  overflow-y-auto scrollbar-thin 
         scrollbar-thumb-rounded-xl"
           >
-            {Array.from({ length: 20 }, (_, index) => (
-              <PosProduct key={index} />
+            {products.map((pr: any) => (
+              <PosProduct
+                key={pr.id}
+                product={{
+                  productName: pr.name || "",
+                  productCategory: pr.category?.name || "",
+                  productImage: pr.ProductImage?.[0]?.imageUrl || "",
+                  productPrice:
+                    pr.price != null
+                      ? Number(pr.price)
+                      : pr.ProductVariant?.[0]?.price || 0,
+                }}
+              />
             ))}
           </div>
         </div>

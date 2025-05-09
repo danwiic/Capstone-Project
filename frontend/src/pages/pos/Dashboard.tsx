@@ -18,9 +18,39 @@ import {
 import StockCard from "../../components/pos/cards/StockCard";
 import Status from "../../components/pos/status card/Status";
 import { Link } from "react-router-dom";
-import { LuPhilippinePeso } from "react-icons/lu";
-import { GrTransaction } from "react-icons/gr";
-import { RiAlignItemBottomFill } from "react-icons/ri";
+
+const tableData = [
+  {
+    name: "Gille Helmet Green",
+    quantity: 2,
+    price: 2457,
+    status: "pending",
+  },
+  {
+    name: "SMOK Tomahawk Side Mirror",
+    quantity: 1,
+    price: 1000,
+    status: "pending",
+  },
+  {
+    name: "BOSCH Horn Set",
+    quantity: 3,
+    price: 8400,
+    status: "pending",
+  },
+  {
+    name: "Yamaha Disc Lock",
+    quantity: 1,
+    price: 750,
+    status: "pending",
+  },
+  {
+    name: "Motowolf Gloves Black",
+    quantity: 2,
+    price: 1900,
+    status: "pending",
+  },
+];
 
 export default function Dashboard() {
   return (
@@ -87,14 +117,14 @@ export default function Dashboard() {
                   </Table.TableRow>
                 </Table.TableHead>
                 <Table.TableBody>
-                  {Array.from({ length: 5 }).map((_, i) => (
+                  {tableData.map((item, i) => (
                     <Table.TableRow key={i}>
                       <Table.Data>{i + 1}</Table.Data>
-                      <Table.Data>Gille Helmet Green</Table.Data>
-                      <Table.Data>{formatNumber(2)}</Table.Data>
-                      <Table.Data>{formatMoney(2457)}</Table.Data>
+                      <Table.Data>{item.name}</Table.Data>
+                      <Table.Data>{formatNumber(item.quantity)}</Table.Data>
+                      <Table.Data>{formatMoney(item.price)}</Table.Data>
                       <Table.Data>
-                        <Status status="pending" />
+                        <Status status={item.status} />
                       </Table.Data>
                     </Table.TableRow>
                   ))}
@@ -153,36 +183,6 @@ export default function Dashboard() {
         </div>
         {/* FOR ADDING NEW SECTION */}
         <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
-            <Card
-              title="Overall Sales"
-              subtitle=""
-              icon={<LuPhilippinePeso />}
-              numberValue={103000}
-              moneyFormat
-            />
-            <Card
-              title="Average Order Value"
-              subtitle=""
-              icon={<GiMoneyStack />}
-              numberValue={10000}
-              moneyFormat
-            />
-            <Card
-              title="Overall Transactions"
-              subtitle=""
-              icon={<GrTransaction />}
-              numberValue={10000}
-              moneyFormat
-            />
-            <Card
-              title="Total Products Sold"
-              subtitle=""
-              icon={<RiAlignItemBottomFill />}
-              numberValue={10000}
-              moneyFormat
-            />
-          </div>
           <div className="grid grid-cols-6 gap-4">
             <div className="bg-white col-span-3 px-4 py-6 rounded shadow-1 flex flex-col gap-2">
               <div className="flex justify-between items-center px-4 pt-">

@@ -107,7 +107,7 @@ export default function AddVariant({ isOpen, onClose }: AddVariantProps) {
                       errors.name ? "border-red-300" : "border-gray-300"
                     } rounded focus:outline-none focus:ring-mayormoto-blue 
                      focus:border-mayormoto-blue sm:text-sm`}
-                    placeholder="e.g. Red, XL, 500mL"
+                    placeholder="e.g. Color, Size "
                   />
                   {errors.name && (
                     <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -120,7 +120,7 @@ export default function AddVariant({ isOpen, onClose }: AddVariantProps) {
                     htmlFor="variant-price"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Price (₱)
+                    Price
                   </label>
                   <input
                     type="number"
@@ -128,12 +128,11 @@ export default function AddVariant({ isOpen, onClose }: AddVariantProps) {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     min="0"
-                    step="0.01"
                     className={`block w-full px-3 py-2 border ${
                       errors.price ? "border-red-300" : "border-gray-300"
                     } rounded focus:outline-none focus:ring-mayormoto-blue 
                      focus:border-mayormoto-blue sm:text-sm`}
-                    placeholder="0.00"
+                    placeholder="0"
                   />
                   {errors.price && (
                     <p className="mt-1 text-sm text-red-600">{errors.price}</p>

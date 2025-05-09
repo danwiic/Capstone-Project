@@ -17,6 +17,7 @@ import Products from "./pages/pos/Products";
 import Orders from "./pages/pos/Orders";
 import History from "./pages/pos/History";
 import Employee from "./pages/pos/Employee";
+import Sales from "./pages/pos/Sales";
 import User from "./pages/pos/User";
 import ScrollToTop from "./utils/scrollToTop";
 import Settings from "./pages/pos/Settings";
@@ -72,6 +73,7 @@ export default function App() {
               <Route path="/pos">
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="terminal" element={<PosTerminal />} />
+                <Route path="sales" element={<Sales />} />
                 <Route path="forecast" element={<SalesForecast />} />
                 <Route path="products" element={<Products />} />
                 <Route path="orders" element={<Orders />} />

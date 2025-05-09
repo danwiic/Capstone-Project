@@ -337,3 +337,17 @@ export const updateVariant = async (req: any, res: any) => {
 };
 
 export const updateStock = async (req: any, res: any) => {};
+
+export const deleteProduct = async (req: any, res: any) => {
+  const { id } = req.params;
+
+  try {
+    const deletedProduct = await prisma.product.delete({
+      where: { id },
+    });
+    return res.status(200).json(deletedProduct);
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -1,31 +1,36 @@
 import { formatMoney } from "../../../utils/formatMoney";
 
-export default function PosProduct() {
+interface Props {
+  product: {
+    productImage: string;
+    productName: string;
+    productCategory: string;
+    productPrice: number;
+  };
+}
+
+export default function PosProduct({ product }: any) {
   return (
     <div className="py-4 bg-white rounded shadow-1 w-full h-auto flex flex-col gap-2 ">
       <div className="w-full flex items-center justify-center">
-        <div className="flex justify-center w-full  h-32">
+        <div className="flex justify-center w-20 h-30">
           <img
-            src="https://res.cloudinary.com/dvexdyqea/image/upload/v1744769418/EVO_RX-7_Magenta_-_2_800_xeiiow.png"
+            src={product.productImage || "/placeholder"}
             alt="/"
-            className="w-28 h-full  scale-110"
+            className="w-auto h-auto scale-80"
           />
         </div>
       </div>
       <div className="text-sm flex flex-col gap-2 px-4">
-        <div className="flex flex-col gap">
-          <span className="text-gray-500">Helmet</span>
-          <span className="font-medium">Helmet Zebra 432</span>
+        <div className="flex flex-col gap-1">
+          <span className="text-gray-500">
+            {product.productCategory || "Category"}
+          </span>
+          <span className="font-medium">{product.productName || "Name"}</span>
         </div>
         <div className="flex flex-col justify-center gap-1">
-          <span className="font-medium text-red-500">{formatMoney(2199)}</span>
-          <span>
-            <button
-              className="cursor-pointer p-2 py-2.5 bg-mayormoto-blue rounded-sm
-            text-white  text-sm w-full hover:bg-mayormoto-blue-hover transition-colors duration-200 "
-            >
-              ADD
-            </button>
+          <span className="font-medium text-red-500">
+            {formatMoney(product.productPrice || 0)}
           </span>
         </div>
       </div>

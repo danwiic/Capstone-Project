@@ -169,7 +169,7 @@ export default function ProductDetails({
 
               <div className="flex flex-col gap-1">
                 <span className="text-gray-500">Description</span>
-                <p>{product?.description}</p>
+                <p className="text-sm">No description available.</p>
               </div>
 
               <div className="flex gap-4 mt-4">
@@ -342,7 +342,7 @@ export default function ProductDetails({
                 </thead>
                 <tbody>
                   <tr className="border-b border-gray-200">
-                    <td className="px-6 py-4">11-21-24</td>
+                    <td className="px-6 py-4">112124</td>
                     <td className="p-6 py-4">
                       <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full w-fit">
                         Stock in
@@ -350,9 +350,9 @@ export default function ProductDetails({
                     </td>
                     <td className="px-6 py-4">Items running low</td>
                     <td className="px-6 py-4">+8</td>
-                    <td className="px-6 py-4">Kangkong</td>
-                    <td className="px-6 py-4">04-21-25</td>
-                    <td className="px-6 py-4">04-21-28</td>
+                    <td className="px-6 py-4">Dan</td>
+                    <td className="px-6 py-4">{formatDate("04-21-25")}</td>
+                    <td className="px-6 py-4">{formatDate("02-21-28")}</td>
                     <td className="p-6 py-4">
                       <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full w-fit">
                         Valid
@@ -381,8 +381,8 @@ export default function ProductDetails({
                     <td className="px-6 py-4">05-01-25</td>
                     <td className="px-6 py-4">ORD-12345</td>
                     <td className="px-6 py-4">2</td>
-                    <td className="px-6 py-4">Jane Doe</td>
-                    <td className="px-6 py-4">$4,000</td>
+                    <td className="px-6 py-4">Dan Doe</td>
+                    <td className="px-6 py-4">{formatMoney(4800)}</td>
                   </tr>
                 </tbody>
               </table>
