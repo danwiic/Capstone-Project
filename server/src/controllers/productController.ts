@@ -198,12 +198,7 @@ export const getAllProducts = async (req: any, res: any) => {
   try {
     const products = await prisma.product
       .findMany({
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          price: true,
-          stock: true,
+        include: {
           category: { select: { id: true, name: true } },
           brand: { select: { id: true, name: true } },
           ProductImage: { select: { imageUrl: true } },

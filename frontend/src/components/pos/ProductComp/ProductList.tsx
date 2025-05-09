@@ -4,6 +4,7 @@ import generateSKU from "../../../utils/skuGenerator";
 import AddProduct from "../../modal/AddProduct";
 import { formatMoney } from "../../../utils/formatMoney";
 import { getAllProducts } from "../../../services/products.ts";
+import formatDate from "../../../utils/formatDate.ts";
 interface ProductListProps {
   onProductSelect: (productId: string) => void;
 }
@@ -108,25 +109,44 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
                                 {prod.name}
                               </span>
                               <span className="text-xs text-gray-500">
-                                No variants
+                                {prod?.ProductVariant?.length > 0 ? (
+                                  <span>
+                                    Variant: {prod.ProductVariant?.length}
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-500 text-xs">
+                                    No variants available
+                                  </span>
+                                )}
                               </span>
                             </div>
                           </div>
                         </td>
 
                         <td className="py-4 px-6">{prod.category.name}</td>
-                        <td className="py-4 px-6">{formatMoney(2400)}</td>
+                        <td className="py-4 px-6">
+                          {formatMoney(
+                            prod.price || prod.ProductVariant[0].price
+                          )}
+                        </td>
                         <td className="py-4 px-6">
                           {generateSKU({
-                            name: "Kerena",
-                            brand: "ryo",
-                            variant: "large",
-                            category: "",
-                            color: "Green",
+                            brand: prod.brand.name,
+                            category: prod.category.name,
+                            id: prod.id,
                           })}
                         </td>
-                        <td className="py-4 px-6">8</td>
-                        <td className="py-4 px-6">04-21-25</td>
+                        <td className="py-4 px-6">
+                          {prod?.stock < 0
+                            ? 0
+                            : prod?.stock |
+                              prod?.ProductVariant.map((variant: any) => {
+                                variant.stock + variant.stock;
+                              })}
+                        </td>
+                        <td className="py-4 px-6">
+                          {formatDate(prod.createdAt)}
+                        </td>
                         <td className="py-4 px-6">Dan</td>
                       </tr>
                     ))}

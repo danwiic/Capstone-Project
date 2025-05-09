@@ -28,7 +28,6 @@ export default function LoginNav() {
 
   return (
     <>
-
       <div ref={ref}>
         {user ? (
           <div className="flex flex-col font-medium text-start">
@@ -52,22 +51,24 @@ export default function LoginNav() {
         )}
 
         {viewSettings && (
-          <div
-            className="z-50 sticky -bottom-10 bg-white w-full animate-fade animate-once animate-duration-[300ms] animate-ease"
-          >
+          <div className="z-50 sticky -bottom-10 bg-white w-full animate-fade animate-once animate-duration-[300ms] animate-ease">
             <AccountModal.Body
               cartPosition="right-30"
               setter={setViewSettings}
               className="after:right-4.5"
             >
-              <AccountModal.Items>My Orders</AccountModal.Items>
-              <AccountModal.Items>My Addresses</AccountModal.Items>
-              <AccountModal.Items onClick={handleLogout}>Logout</AccountModal.Items>
+              <AccountModal.Items>
+                <Link className="w-full" to={"/address"}>
+                  My Address
+                </Link>
+              </AccountModal.Items>
+              <AccountModal.Items onClick={handleLogout}>
+                Logout
+              </AccountModal.Items>
             </AccountModal.Body>
           </div>
         )}
       </div>
-   
     </>
   );
 }

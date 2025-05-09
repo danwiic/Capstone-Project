@@ -24,42 +24,10 @@ export default function MyOrders() {
       orderItems: [
         {
           productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 1",
-          productPrice: 50,
-          productQuantity: 2,
-          productVariant: "Variant 1",
-        },
-        {
-          productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 1",
-          productPrice: 50,
-          productQuantity: 2,
-          productVariant: "Variant 1",
-        },
-      ],
-    },
-    {
-      orderId: "143423",
-      orderStatus: "To Ship",
-      orderDate: "2023-10-01",
-      orderTotal: 100,
-      orderItems: [
-        {
-          productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 2",
-          productPrice: 50,
-          productQuantity: 2,
-          productVariant: "Variant 1",
-        },
-        {
-          productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 1",
-          productPrice: 50,
-          productQuantity: 2,
+            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745594064/Sphinx_Motorcycle_Gloves_V-001__Black_-999__stock-_M-2_XL-2_xe7dp5.png",
+          productName: "Sphinx Motorcycly Gloves",
+          productPrice: 999,
+          productQuantity: 1,
           productVariant: "Variant 1",
         },
       ],
@@ -72,17 +40,17 @@ export default function MyOrders() {
       orderItems: [
         {
           productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 3",
-          productPrice: 50,
-          productQuantity: 2,
+            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745207280/EVO_RX-7__Yellow_-_2_800_qyezku.png",
+          productName: "EVO RX-7 Yellow",
+          productPrice: 2800,
+          productQuantity: 1,
           productVariant: "Variant 1",
         },
         {
           productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 1",
-          productPrice: 50,
+            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745586769/SMOK_Handle_Grip__Blue__stock-1_au2dqp.png",
+          productName: "SMOK Handle Grip Blue",
+          productPrice: 450,
           productQuantity: 2,
           productVariant: "Variant 1",
         },
@@ -96,17 +64,9 @@ export default function MyOrders() {
       orderItems: [
         {
           productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 4",
-          productPrice: 50,
-          productQuantity: 2,
-          productVariant: "Variant 1",
-        },
-        {
-          productImage:
-            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745225825/Gille_Stripe_M-Grey_-_4_295_bgbdce.png",
-          productName: "Product 1",
-          productPrice: 50,
+            "https://res.cloudinary.com/dvexdyqea/image/upload/v1745586303/Arjhen_Jet_Spray_CVT_FI_-_320__stock-2_w3ur3h.png",
+          productName: "Arjhen Jet Spray CVT FI",
+          productPrice: 320,
           productQuantity: 2,
           productVariant: "Variant 1",
         },

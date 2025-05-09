@@ -1,5 +1,5 @@
 import logo from "../../images/mayormoto-logo-removebg-preview.png";
-import Search from "../ui/Search.tsx";
+// import Search from "../ui/Search.tsx";
 import Cart from "../Cart/index.tsx";
 import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
@@ -9,7 +9,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
     <>
       <div className="flex justify-center sticky top-0 z-50">
-        <div className="flex-1 flex flex-col shadow-md">
+        <div className="flex-1 flex flex-col shadow-sm">
           <div
             className="bg-body p-1 px-30 border-b border-gray-300 py-2
         flex justify-center
@@ -22,8 +22,10 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
                 </Link>
               </div>
 
-              <div className="w-2/4">
-                <Search />
+              <div className="w-fit">
+                <div className=" w-full flex-1 flex gap-6 items-center">
+                  <NavItems />
+                </div>
               </div>
 
               <div className="flex gap-6 items-center">
@@ -32,11 +34,11 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
               </div>
             </div>
           </div>
-          <div className="bg-light-gray px-30  flex justify-center">
+          {/* <div className="bg-light-gray px-30  flex justify-center">
             <div className="max-w-[100rem] w-full flex-1 flex gap-6 items-center">
               <NavItems />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex justify-center w-full">
@@ -55,7 +57,7 @@ function NavItems() {
       ? [
           { name: "Home", path: "/" },
           { name: "Products", path: "/products" },
-          { name: "My Order", path: "/orders" },
+          { name: "My Orders", path: "/orders" },
           { name: "Track my Order", path: "/track" },
           { name: "Wishlist", path: "/wishlist" },
         ]
@@ -74,12 +76,12 @@ function NavItems() {
 
   const loc = useLocation();
 
-  const isActive = `text-mayormoto-pink relative after:absolute after:h-0.5 
+  const isActive = `text-mayormoto-pink relative after:absolute after:h-1 
   after:w-full after:bottom-0 after:left-0 after:transition-all after:duration-200 
     after:ease-in-out hover:text-mayormoto-pink after:bg-mayormoto-pink 
    after:bottom-0 after:left-0 after:rounded-full `;
   const isNotActive = `text-gray-500 hover:text-mayormoto-pink transition-all duration-200 
-  after:w-0 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-mayormoto-pink
+  after:w-0 relative after:absolute after:bottom-0 after:left-0 after:h-1 after:bg-mayormoto-pink
   after:transition-all after:duration-200 after:ease-in-out after:rounded-full hover:after:w-full`;
 
   const isActiveLink = (path: string) => {
@@ -90,7 +92,7 @@ function NavItems() {
       {navItems.map((item, i) => (
         <Link
           to={item.path}
-          className={`py-3 text-sm ${isActiveLink(item.path)}`}
+          className={`py-3 text-sm font-bold uppercase ${isActiveLink(item.path)}`}
           key={i}
         >
           <span>{item.name}</span>

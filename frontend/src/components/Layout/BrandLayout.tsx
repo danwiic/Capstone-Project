@@ -23,13 +23,13 @@ type Brand = {
   name: string;
 };
 
-export default function BrandLayout({ 
-  children, 
+export default function BrandLayout({
+  children,
   pagination,
   selectedCategories,
   selectedBrands,
   onCategoryChange,
-  onBrandChange
+  onBrandChange,
 }: BrandLayout) {
   const [collapseCategories, setCollapseCategories] = useState(false);
   const [collapseBrands, setCollapseBrands] = useState(true);
@@ -56,7 +56,7 @@ export default function BrandLayout({
     const updatedSelection = selectedCategories.includes(categoryId)
       ? selectedCategories.filter((id) => id !== categoryId)
       : [...selectedCategories, categoryId];
-    
+
     onCategoryChange(updatedSelection);
   };
 
@@ -64,11 +64,13 @@ export default function BrandLayout({
     const updatedSelection = selectedBrands.includes(brandId)
       ? selectedBrands.filter((id) => id !== brandId)
       : [...selectedBrands, brandId];
-    
+
     onBrandChange(updatedSelection);
   };
 
-  const handleAllCategoriesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAllCategoriesChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.checked) {
       onCategoryChange([]);
     }
@@ -85,14 +87,15 @@ export default function BrandLayout({
     onBrandChange([]);
   };
 
-  const areFiltersActive = selectedCategories.length > 0 || selectedBrands.length > 0;
+  const areFiltersActive =
+    selectedCategories.length > 0 || selectedBrands.length > 0;
 
   return (
     <div className="flex justify-center px-20">
       <div className="max-w-[100rem] w-full flex flex-row gap-10">
         {/* STICKY CONTAINER */}
-        <div>
-          <div className="sticky top-45 flex flex-col gap-6">
+        <div className="relative">
+          <div className="sticky top-33.5 flex flex-col gap-6">
             {/* CATEGORIES */}
             <div className="bg-white flex flex-col rounded-md shadow-sm max-w-full w-[16rem]">
               <div
@@ -274,18 +277,20 @@ export default function BrandLayout({
 
         {/* MAIN CONTENT */}
         <div className="flex-1 flex flex-col gap-6">
-          <div className="filter-badges w-full h-fit flex gap-4">
-            {areFiltersActive ? (
-              <div className="rounded-full px-4 py-1 flex items-center gap-2 text-mayormoto-pink bg-mayormoto-pink/10">
-                <span>Filters Applied</span>
-                <RxCross2 onClick={clearFilters} className="cursor-pointer" />
-              </div>
-            ) : (
-              <div className="rounded-full px-4 py-1 flex items-center gap-2 opacity-0 text-mayormoto-pink bg-mayormoto-pink/10">
-                <span>All</span>
-              </div>
-            )}
-          </div>
+          {areFiltersActive && (
+            <div className="filter-badges w-full h-fit flex gap-4">
+              {areFiltersActive ? (
+                <div className="rounded-full px-4 py-1 flex items-center gap-2 text-mayormoto-pink bg-mayormoto-pink/10">
+                  <span>Filters Applied</span>
+                  <RxCross2 onClick={clearFilters} className="cursor-pointer" />
+                </div>
+              ) : (
+                <div className="rounded-full px-4 py-1 flex items-center gap-2 opacity-0 text-mayormoto-pink bg-mayormoto-pink/10">
+                  <span>All</span>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="flex items-center justify-between text-gray-500 text-sm">
             {areFiltersActive && <span>Showing filtered results</span>}

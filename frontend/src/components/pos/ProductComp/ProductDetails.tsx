@@ -7,6 +7,9 @@ import formatDate from "../../../utils/formatDate";
 import Status from "../status card/Status";
 import UpdateVariant from "../../modal/UpdateVariant";
 import UpdateStock from "../../modal/UpdateStock";
+import SpinningLoader from "../../loader/SpinningLoader";
+import generateSKU from "../../../utils/skuGenerator";
+import AddVariant from "../../modal/AddVariant";
 
 interface ProductDetailViewProps {
   productId: string;
@@ -52,6 +55,7 @@ export default function ProductDetails({
   const [openUpdateVariant, setOpenUpdateVariant] = useState(false);
   const [openUpdateStock, setUpdateStock] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const [openAddVariant, setOpenAddVariant] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -69,8 +73,8 @@ export default function ProductDetails({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <span className="text-lg">Loading product details...</span>
+      <div className="relative flex items-center justify-center w-full">
+        <SpinningLoader />
       </div>
     );
   }
@@ -111,9 +115,16 @@ export default function ProductDetails({
                   )}
                 </p>
                 <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full w-fit">
-                  {(product?.totalStock ?? 0) < 0
-                    ? 0
-                    : product?.totalStock ?? 0}{" "}
+                  {(() => {
+                    const baseStock = product?.stock ?? 0;
+                    const variantStock =
+                      product?.ProductVariant?.reduce(
+                        (sum, variant) => sum + (variant.stock ?? 0),
+                        0
+                      ) ?? 0;
+                    const totalStock = Math.max(0, baseStock + variantStock);
+                    return totalStock;
+                  })()}{" "}
                   total stock
                 </span>
               </div>
@@ -121,7 +132,14 @@ export default function ProductDetails({
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500">SKU</span>
-                  <span className="font-medium">{product?.sku}</span>
+                  <span className="font-medium">
+                    {product &&
+                      generateSKU({
+                        brand: product.brand.name,
+                        category: product.category.name,
+                        id: product.id,
+                      })}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500">Category</span>
@@ -183,7 +201,16 @@ export default function ProductDetails({
         {/*============================ VARIANT LIST ========================== */}
         {product?.ProductVariant && product?.ProductVariant?.length > 0 ? (
           <div className="flex flex-col gap-4">
-            <span className="text-lg font-medium">Product Variant</span>
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-medium">Product Variant</span>
+              <button
+                onClick={() => setOpenAddVariant((prev) => !prev)}
+                className="px-3 py-2 text-white rounded bg-mayormoto-blue 
+              hover:bg-mayormoto-blue-hover text-sm"
+              >
+                Add Variant
+              </button>
+            </div>
             <div className="bg-white rounded shadow-1">
               <table className="w-full text-sm text-left">
                 <thead className="text-xs tracking-wider text-gray-500 border-b border-gray-200 font-medium uppercase bg-gray-100">
@@ -213,7 +240,14 @@ export default function ProductDetails({
                         </td>
                         <td className="p-6 py-4">{variant.stock}</td>
                         <td className="p-6 py-4">{variant.reOrderLevel}</td>
-                        <td className="p-6 py-4">{variant.sku}</td>
+                        <td className="p-6 py-4">
+                          {generateSKU({
+                            brand: product.brand.name,
+                            category: product.category.name,
+                            id: product.id,
+                            variant: variant.variantName,
+                          })}
+                        </td>
                         <td className="p-6 py-4">
                           <Status
                             status={
@@ -249,9 +283,17 @@ export default function ProductDetails({
           </div>
         ) : (
           <>
-            <div className="flex flex-col justify-center items-center">
-              <span>No variants yet.</span>
-              <button>Add Variants</button>
+            <div className="flex flex-col justify-center items-center gap-4">
+              <span className="text-lg font-medium">
+                No variants available.
+              </span>
+              <button
+                onClick={() => setOpenAddVariant((prev) => !prev)}
+                className="px-3 py-2 text-white rounded bg-mayormoto-blue 
+              hover:bg-mayormoto-blue-hover text-sm"
+              >
+                Add Variant
+              </button>
             </div>
           </>
         )}
@@ -359,6 +401,13 @@ export default function ProductDetails({
         <UpdateStock
           isOpen={openUpdateStock}
           onClose={() => setUpdateStock(false)}
+        />
+      )}
+
+      {openAddVariant && (
+        <AddVariant
+          isOpen={openAddVariant}
+          onClose={() => setOpenAddVariant((prev) => !prev)}
         />
       )}
     </>

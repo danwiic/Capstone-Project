@@ -6,6 +6,7 @@ import BrandCard from "../components/Card/BrandCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loading from "../components/loader/Loading";
+import { Link } from "react-router-dom";
 
 type FiveProducts = {
   id: string;
@@ -69,12 +70,12 @@ function Home() {
                 className="h-full w-full object-cover cursor-pointer "
               />
               <span className="absolute top-[70%] left-8">
-                <button
+                <Link to="/products"
                   className="bg-mayormoto-pink text-white text-sm
                   px-4 py-2 rounded cursor-pointer hover:bg-mayormoto-blue"
                 >
                   SHOP NOW
-                </button>
+                </Link>
               </span>
             </div>
             <div className="px-30 flex flex-col items-center ">

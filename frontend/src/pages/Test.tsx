@@ -1,357 +1,1010 @@
-import { useState } from 'react';
-import { Search, ShoppingBag, Package, Bell, Heart, User, Truck, Clock, X, Check, Menu, ArrowRight } from 'lucide-react';
+import { useState } from "react";
+import {
+  Plus,
+  Check,
+  X,
+  Edit,
+  Trash,
+  MapPin,
+  Home,
+  Building,
+  Briefcase,
+} from "lucide-react";
 
-// Define custom Tailwind theme extension
-// Note: In a real project, you would define this in your tailwind.config.js file
-// tailwind.config.js example:
-// module.exports = {
-//   theme: {
-//     extend: {
-//       colors: {
-//         'mayormoto-pink': '#ff4e50', // Replace with your actual brand color
-//       },
-//     },
-//   },
-// };
+// Sample address data
+const initialAddresses = [
+  {
+    id: 1,
+    name: "John Doe",
+    street: "123 Main Street",
+    city: "New York",
+    state: "NY",
+    zip: "10001",
+    country: "United States",
+    phone: "(212) 555-1234",
+    type: "home",
+    isDefault: true,
+  },
+  {
+    id: 2,
+    name: "John Doe",
+    street: "456 Market Avenue",
+    city: "San Francisco",
+    state: "CA",
+    zip: "94103",
+    country: "United States",
+    phone: "(415) 555-6789",
+    type: "work",
+    isDefault: false,
+  },
+];
+
+// Address type options
+const addressTypes = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "work", label: "Work", icon: Briefcase },
+  { id: "other", label: "Other", icon: Building },
+];
+
+// Empty address template
+const emptyAddress = {
+  id: null,
+  name: "",
+  street: "",
+  city: "",
+  state: "",
+  zip: "",
+  country: "",
+  phone: "",
+  type: "home",
+  isDefault: false,
+};
 
 export default function Test() {
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  // Sample order data
-  const orders = [
-    {
-      id: '#ORD123456',
-      date: 'May 5, 2025',
-      items: [
-        {
-          id: 1,
-          name: 'Wireless Earbuds Pro',
-          image: '/api/placeholder/80/80',
-          price: 89.99,
-          quantity: 1,
-          color: 'Space Gray'
-        },
-        {
-          id: 2,
-          name: 'Fast Charging Cable 6ft',
-          image: '/api/placeholder/80/80',
-          price: 14.99,
-          quantity: 2,
-          color: 'White'
-        }
-      ],
-      total: 119.97,
-      status: 'Delivered',
-      deliveryDate: 'Delivered on May 8, 2025',
-      trackingNumber: 'TRK789012345'
-    },
-    {
-      id: '#ORD789012',
-      date: 'May 3, 2025',
-      items: [
-        {
-          id: 3,
-          name: 'Classic T-Shirt',
-          image: '/api/placeholder/80/80',
-          price: 24.99,
-          quantity: 2,
-          color: 'Navy Blue',
-          size: 'L'
-        }
-      ],
-      total: 49.98,
-      status: 'Processing',
-      estimatedDelivery: 'Estimated delivery: May 12-14'
-    },
-    {
-      id: '#ORD456789',
-      date: 'Apr 29, 2025',
-      items: [
-        {
-          id: 4,
-          name: 'Smart LED Bulb Pack',
-          image: '/api/placeholder/80/80',
-          price: 34.99,
-          quantity: 3,
-          color: 'White'
-        },
-        {
-          id: 5,
-          name: 'Kitchen Knife Set',
-          image: '/api/placeholder/80/80',
-          price: 59.99,
-          quantity: 1
-        }
-      ],
-      total: 164.96,
-      status: 'Shipping',
-      trackingNumber: 'TRK456789012',
-      estimatedDelivery: 'Arriving on May 10'
-    },
-    {
-      id: '#ORD345678',
-      date: 'Apr 22, 2025',
-      items: [
-        {
-          id: 6,
-          name: 'The Art of Programming',
-          image: '/api/placeholder/80/80',
-          price: 39.99,
-          quantity: 1
-        }
-      ],
-      total: 39.99,
-      status: 'Delivered',
-      deliveryDate: 'Delivered on Apr 25, 2025',
-      trackingNumber: 'TRK123456789'
+  const [addresses, setAddresses] = useState(initialAddresses);
+  const [showForm, setShowForm] = useState(false);
+  const [currentAddress, setCurrentAddress] = useState(emptyAddress);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentAddress((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle address type selection
+  const handleTypeSelect = (type) => {
+    setCurrentAddress((prev) => ({
+      ...prev,
+      type,
+    }));
+  };
+
+  // Set an address as default
+  const setAsDefault = (id) => {
+    setAddresses(
+      addresses.map((address) => ({
+        ...address,
+        isDefault: address.id === id,
+      }))
+    );
+  };
+
+  // Add a new address
+  const addAddress = () => {
+    // If this is the first address, make it default
+    const shouldBeDefault = addresses.length === 0 || currentAddress.isDefault;
+
+    const newAddress = {
+      ...currentAddress,
+      id: Date.now(), // Generate unique ID
+      isDefault: shouldBeDefault,
+    };
+
+    const updatedAddresses = shouldBeDefault
+      ? addresses.map((a) => ({ ...a, isDefault: false })).concat(newAddress)
+      : [...addresses, newAddress];
+
+    setAddresses(updatedAddresses);
+    setCurrentAddress(emptyAddress);
+    setShowForm(false);
+  };
+
+  // Update existing address
+  const updateAddress = () => {
+    const wasDefault = addresses.find(
+      (a) => a.id === currentAddress.id
+    )?.isDefault;
+
+    // If this was the default address and we're changing that, we need a new default
+    const needNewDefault = wasDefault && !currentAddress.isDefault;
+
+    let updatedAddresses = addresses.map((address) => {
+      if (address.id === currentAddress.id) {
+        return currentAddress;
+      }
+      // If we're setting this address as default, unset others
+      if (currentAddress.isDefault) {
+        return { ...address, isDefault: false };
+      }
+      return address;
+    });
+
+    // If we removed the default flag from the only default address,
+    // make the first address the default
+    if (needNewDefault && !updatedAddresses.some((a) => a.isDefault)) {
+      updatedAddresses = updatedAddresses.map((address, index) =>
+        index === 0 ? { ...address, isDefault: true } : address
+      );
     }
-  ];
-  
-  const filters = ['All', 'To Pay', 'To Ship', 'To Receive', 'Completed', 'Cancelled'];
-  
-  // Add the custom color to the beginning of the component
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'Delivered':
-        return 'text-green-600';
-      case 'Processing':
-        return 'text-blue-600';
-      case 'Shipping':
-        return 'text-orange-500';
-      case 'Cancelled':
-        return 'text-red-600';
-      default:
-        return 'text-mayormoto-pink';
+
+    setAddresses(updatedAddresses);
+    setCurrentAddress(emptyAddress);
+    setShowForm(false);
+    setIsEditing(false);
+  };
+
+  // Edit an address
+  const editAddress = (address) => {
+    setCurrentAddress(address);
+    setIsEditing(true);
+    setShowForm(true);
+  };
+
+  // Delete an address
+  const deleteAddress = (id) => {
+    const addressToDelete = addresses.find((a) => a.id === id);
+    const isDefaultAddress = addressToDelete.isDefault;
+
+    let filteredAddresses = addresses.filter((address) => address.id !== id);
+
+    // If we deleted the default address and have other addresses, make the first one default
+    if (isDefaultAddress && filteredAddresses.length > 0) {
+      filteredAddresses = filteredAddresses.map((address, index) =>
+        index === 0 ? { ...address, isDefault: true } : address
+      );
+    }
+
+    setAddresses(filteredAddresses);
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (isEditing) {
+      updateAddress();
+    } else {
+      addAddress();
     }
   };
-  
-  const getStatusIcon = (status) => {
-    switch(status) {
-      case 'Delivered':
-        return <Check className="w-4 h-4" />;
-      case 'Processing':
-        return <Clock className="w-4 h-4" />;
-      case 'Shipping':
-        return <Truck className="w-4 h-4" />;
-      case 'Cancelled':
-        return <X className="w-4 h-4" />;
-      default:
-        return null;
-    }
+
+  // Cancel form and reset
+  const cancelForm = () => {
+    setShowForm(false);
+    setCurrentAddress(emptyAddress);
+    setIsEditing(false);
   };
-  
-  const filteredOrders = activeFilter === 'All' 
-    ? orders 
-    : orders.filter(order => {
-        if (activeFilter === 'To Pay') return order.status === 'To Pay';
-        if (activeFilter === 'To Ship') return order.status === 'Processing';
-        if (activeFilter === 'To Receive') return order.status === 'Shipping';
-        if (activeFilter === 'Completed') return order.status === 'Delivered';
-        if (activeFilter === 'Cancelled') return order.status === 'Cancelled';
-        return true;
-      });
-      
-  const searchedOrders = searchQuery 
-    ? filteredOrders.filter(order => 
-        order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.items.some(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-      )
-    : filteredOrders;
-  
+
+  // Render icon based on address type
+  const renderTypeIcon = (type) => {
+    const TypeIcon = addressTypes.find((t) => t.id === type)?.icon || Building;
+    return <TypeIcon className="h-5 w-5" />;
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-4">
-              <Menu className="w-6 h-6 text-gray-600 md:hidden" />
-              <a href="#" className="text-xl font-bold text-mayormoto-pink">Your Store</a>
-            </div>
-            
-            <div className="hidden md:flex flex-1 mx-10">
-              <div className="relative w-full">
-                <input 
-                  type="text" 
-                  placeholder="Search for products..." 
-                  className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
-                />
-                <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+    <div className="max-w-4xl mx-auto p-4">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Delivery Addresses</h1>
+        <p className="text-gray-600">
+          Manage your delivery addresses for faster checkout
+        </p>
+      </div>
+
+      {/* Address List */}
+      {addresses.length > 0 ? (
+        <div className="space-y-4 mb-6">
+          {addresses.map((address) => (
+            <div
+              key={address.id}
+              className={`p-4 border rounded-lg ${
+                address.isDefault
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex items-start space-x-3">
+                  <div className="mt-1 p-1 rounded-full bg-gray-100">
+                    {renderTypeIcon(address.type)}
+                  </div>
+                  <div>
+                    <div className="flex items-center">
+                      <span className="font-medium">{address.name}</span>
+                      {address.isDefault && (
+                        <span className="ml-2 text-sm bg-blue-100 text-blue-800 py-0.5 px-2 rounded-full flex items-center">
+                          <Check className="h-3 w-3 mr-1" />
+                          Default
+                        </span>
+                      )}
+                      <span className="ml-2 text-sm bg-gray-100 text-gray-800 py-0.5 px-2 rounded-full capitalize">
+                        {address.type}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 mt-1">{address.street}</p>
+                    <p className="text-gray-600">
+                      {address.city}, {address.state} {address.zip}
+                    </p>
+                    <p className="text-gray-600">{address.country}</p>
+                    <p className="text-gray-600 mt-1">{address.phone}</p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  {!address.isDefault && (
+                    <button
+                      onClick={() => setAsDefault(address.id)}
+                      className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                      aria-label="Set as default"
+                      title="Set as default"
+                    >
+                      <MapPin className="h-5 w-5" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => editAddress(address)}
+                    className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                    aria-label="Edit address"
+                    title="Edit address"
+                  >
+                    <Edit className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => deleteAddress(address.id)}
+                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                    aria-label="Delete address"
+                    title="Delete address"
+                  >
+                    <Trash className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-6">
-              <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
-                <Bell className="w-6 h-6" />
-                <span className="text-xs mt-1">Notifications</span>
-              </a>
-              <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
-                <Heart className="w-6 h-6" />
-                <span className="text-xs mt-1">Wishlist</span>
-              </a>
-              <a href="#" className="flex flex-col items-center text-mayormoto-pink">
-                <ShoppingBag className="w-6 h-6" />
-                <span className="text-xs mt-1">Orders</span>
-              </a>
-              <a href="#" className="flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
-                <User className="w-6 h-6" />
-                <span className="text-xs mt-1">Account</span>
-              </a>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-10">
+          <MapPin className="h-12 w-12 mx-auto text-gray-400" />
+          <h3 className="mt-2 text-lg font-medium text-gray-900">
+            No addresses yet
+          </h3>
+          <p className="mt-1 text-gray-500">
+            Add your first delivery address to get started
+          </p>
+        </div>
+      )}
+
+      {/* Add Button or Form */}
+      {!showForm ? (
+        <button
+          onClick={() => setShowForm(true)}
+          className="flex items-center justify-center w-full md:w-auto px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <Plus className="h-5 w-5 mr-1" />
+          Add New Address
+        </button>
+      ) : (
+        <>
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium text-gray-900">
+                {isEditing ? "Edit Address" : "Add New Address"}
+              </h2>
+              <button
+                onClick={cancelForm}
+                className="p-2 text-gray-500 hover:text-gray-700 rounded-full"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={currentAddress.name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <span className="block text-sm font-medium text-gray-700 mb-2">
+                Address Type
+              </span>
+              <div className="flex space-x-2">
+                {addressTypes.map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => handleTypeSelect(type.id)}
+                    className={`flex items-center px-3 py-2 rounded-md border ${
+                      currentAddress.type === type.id
+                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        : "border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <type.icon className="h-4 w-4 mr-1" />
+                    {type.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center mb-4">
+              <input
+                type="checkbox"
+                id="isDefault"
+                checked={currentAddress.isDefault}
+                onChange={() =>
+                  setCurrentAddress((prev) => ({
+                    ...prev,
+                    isDefault: !prev.isDefault,
+                  }))
+                }
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="isDefault"
+                className="ml-2 block text-sm text-gray-700"
+              >
+                Set as default address
+              </label>
+            </div>
+
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={cancelForm}
+                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                {isEditing ? "Update Address" : "Save Address"}
+              </button>
             </div>
           </div>
-        </div>
-      </header>
-      
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto py-6 px-4">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
-          <div className="relative md:hidden">
-            <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search orders..." 
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={currentAddress.phone}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-        </div>
-        
-        {/* Order Filters */}
-        <div className="overflow-x-auto pb-2 mb-6">
-          <div className="flex space-x-2 min-w-max">
-            {filters.map((filter, index) => (
-              <button
-                onClick={() => setActiveFilter(filter)}
-                key={index}
-                className={`bg-white rounded-full text-sm border border-gray-200
-              font-semibold py-2 px-4 outline-none transition duration-200 ease-in-out
-               ${
-                 activeFilter === filter
-                   ? " bg-mayormoto-pink text-white border-transparent "
-                   : " "
-               } `}
-              >
-                {filter}
-              </button>
-            ))}
+
+          <div className="md:col-span-2">
+            <label
+              htmlFor="street"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Street Address
+            </label>
+            <input
+              type="text"
+              id="street"
+              name="street"
+              value={currentAddress.street}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
           </div>
-        </div>
-        
-        {/* Search Orders - Desktop */}
-        <div className="relative mb-6 hidden md:block">
-          <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-          <input 
-            type="text" 
-            placeholder="Search by order number, product, or shop..." 
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        
-        {/* Orders List */}
-        <div className="space-y-4">
-          {searchedOrders.length > 0 ? (
-            searchedOrders.map(order => (
-              <div key={order.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-              {/* Order Header */}
-                <div className="flex justify-between items-center p-4 border-b border-gray-100">
-                  <div className="flex items-center space-x-2">
-                    <Package className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium text-gray-600">Order {order.id}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className={`flex items-center space-x-1 ${getStatusColor(order.status)}`}>
-                      {getStatusIcon(order.status)}
-                      <span className="font-medium">{order.status}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Order Items */}
-                {order.items.map(item => (
-                  <div key={item.id} className="flex p-4 border-b border-gray-100">
-                    <div className="flex-shrink-0">
-                      <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
-                    </div>
-                    <div className="ml-4 flex-1">
-                      <h3 className="font-medium text-gray-800 line-clamp-2">{item.name}</h3>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {item.color && `Color: ${item.color}`} 
-                        {item.size && `, Size: ${item.size}`}
-                      </p>
-                      <div className="flex justify-between items-end mt-2">
-                        <span className="text-mayormoto-pink font-medium">${item.price.toFixed(2)}</span>
-                        <span className="text-gray-500">Qty: {item.quantity}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {/* Order Footer */}
-                <div className="p-4 bg-gray-50">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm text-gray-500">{order.id} • {order.date}</p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {order.deliveryDate || order.estimatedDelivery}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Order Total</p>
-                      <p className="text-lg font-bold text-mayormoto-pink">${order.total.toFixed(2)}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-end space-x-3 mt-4">
-                    {order.status === 'Delivered' && (
-                      <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
-                        Write Review
-                      </button>
-                    )}
-                    <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
-                      Order Details
-                    </button>
-                    {['Processing', 'Shipping'].includes(order.status) && (
-                      <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
-                        Track Order
-                      </button>
-                    )}
-                    {order.status === 'Delivered' && (
-                      <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
-                        Buy Again
-                      </button>
-                    )}
-                  </div>
-                </div>
+
+          <div>
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              City
+            </label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={currentAddress.city}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="state"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              State / Province
+            </label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              value={currentAddress.state}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="zip"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              ZIP / Postal Code
+            </label>
+            <input
+              type="text"
+              id="zip"
+              name="zip"
+              value={currentAddress.zip}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="country"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Country
+            </label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              value={currentAddress.country}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            // ...existing code...
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={currentAddress.name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
               </div>
-            ))
-          ) : (
-            <div className="bg-white rounded-lg p-8 text-center">
-              <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-800">No orders found</h3>
-              <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
-              <button className="mt-4 px-4 py-2 bg-mayormoto-pink text-white rounded-full hover:opacity-90 transition duration-200 inline-flex items-center">
-                Start Shopping <ArrowRight className="ml-2 w-4 h-4" />
+
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={currentAddress.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="street"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Street Address
+                </label>
+                <input
+                  type="text"
+                  id="street"
+                  name="street"
+                  value={currentAddress.street}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="city"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  City
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  value={currentAddress.city}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="state"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  State / Province
+                </label>
+                <input
+                  type="text"
+                  id="state"
+                  name="state"
+                  value={currentAddress.state}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="zip"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  ZIP / Postal Code
+                </label>
+                <input
+                  type="text"
+                  id="zip"
+                  name="zip"
+                  value={currentAddress.zip}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="country"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Country
+                </label>
+                <input
+                  type="text"
+                  id="country"
+                  name="country"
+                  value={currentAddress.country}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <span className="block text-sm font-medium text-gray-700 mb-2">
+                Address Type
+              </span>
+              <div className="flex space-x-2">
+                {addressTypes.map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => handleTypeSelect(type.id)}
+                    className={`flex items-center px-3 py-2 rounded-md border ${
+                      currentAddress.type === type.id
+                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        : "border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <type.icon className="h-4 w-4 mr-1" />
+                    {type.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center mb-4">
+              <input
+                type="checkbox"
+                id="isDefault"
+                checked={currentAddress.isDefault}
+                onChange={() =>
+                  setCurrentAddress((prev) => ({
+                    ...prev,
+                    isDefault: !prev.isDefault,
+                  }))
+                }
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="isDefault"
+                className="ml-2 block text-sm text-gray-700"
+              >
+                Set as default address
+              </label>
+            </div>
+            <div className="flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={cancelForm}
+                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                {isEditing ? "Update Address" : "Save Address"}
               </button>
             </div>
-          )}
-        </div>
-      </main>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+// export default function Test() {
+//   const [activeFilter, setActiveFilter] = useState('All');
+//   const [searchQuery, setSearchQuery] = useState('');
 
+//   // Sample order data
+//   const orders = [
+//     {
+//       id: '#ORD123456',
+//       date: 'May 5, 2025',
+//       items: [
+//         {
+//           id: 1,
+//           name: 'Wireless Earbuds Pro',
+//           image: '/api/placeholder/80/80',
+//           price: 89.99,
+//           quantity: 1,
+//           color: 'Space Gray'
+//         },
+//         {
+//           id: 2,
+//           name: 'Fast Charging Cable 6ft',
+//           image: '/api/placeholder/80/80',
+//           price: 14.99,
+//           quantity: 2,
+//           color: 'White'
+//         }
+//       ],
+//       total: 119.97,
+//       status: 'Delivered',
+//       deliveryDate: 'Delivered on May 8, 2025',
+//       trackingNumber: 'TRK789012345'
+//     },
+//     {
+//       id: '#ORD789012',
+//       date: 'May 3, 2025',
+//       items: [
+//         {
+//           id: 3,
+//           name: 'Classic T-Shirt',
+//           image: '/api/placeholder/80/80',
+//           price: 24.99,
+//           quantity: 2,
+//           color: 'Navy Blue',
+//           size: 'L'
+//         }
+//       ],
+//       total: 49.98,
+//       status: 'Processing',
+//       estimatedDelivery: 'Estimated delivery: May 12-14'
+//     },
+//     {
+//       id: '#ORD456789',
+//       date: 'Apr 29, 2025',
+//       items: [
+//         {
+//           id: 4,
+//           name: 'Smart LED Bulb Pack',
+//           image: '/api/placeholder/80/80',
+//           price: 34.99,
+//           quantity: 3,
+//           color: 'White'
+//         },
+//         {
+//           id: 5,
+//           name: 'Kitchen Knife Set',
+//           image: '/api/placeholder/80/80',
+//           price: 59.99,
+//           quantity: 1
+//         }
+//       ],
+//       total: 164.96,
+//       status: 'Shipping',
+//       trackingNumber: 'TRK456789012',
+//       estimatedDelivery: 'Arriving on May 10'
+//     },
+//     {
+//       id: '#ORD345678',
+//       date: 'Apr 22, 2025',
+//       items: [
+//         {
+//           id: 6,
+//           name: 'The Art of Programming',
+//           image: '/api/placeholder/80/80',
+//           price: 39.99,
+//           quantity: 1
+//         }
+//       ],
+//       total: 39.99,
+//       status: 'Delivered',
+//       deliveryDate: 'Delivered on Apr 25, 2025',
+//       trackingNumber: 'TRK123456789'
+//     }
+//   ];
 
+//   const filters = ['All', 'To Pay', 'To Ship', 'To Receive', 'Completed', 'Cancelled'];
 
+//   // Add the custom color to the beginning of the component
+//   const getStatusColor = (status) => {
+//     switch(status) {
+//       case 'Delivered':
+//         return 'text-green-600';
+//       case 'Processing':
+//         return 'text-blue-600';
+//       case 'Shipping':
+//         return 'text-orange-500';
+//       case 'Cancelled':
+//         return 'text-red-600';
+//       default:
+//         return 'text-mayormoto-pink';
+//     }
+//   };
 
+//   const getStatusIcon = (status) => {
+//     switch(status) {
+//       case 'Delivered':
+//         return <Check className="w-4 h-4" />;
+//       case 'Processing':
+//         return <Clock className="w-4 h-4" />;
+//       case 'Shipping':
+//         return <Truck className="w-4 h-4" />;
+//       case 'Cancelled':
+//         return <X className="w-4 h-4" />;
+//       default:
+//         return null;
+//     }
+//   };
 
+//   const filteredOrders = activeFilter === 'All'
+//     ? orders
+//     : orders.filter(order => {
+//         if (activeFilter === 'To Pay') return order.status === 'To Pay';
+//         if (activeFilter === 'To Ship') return order.status === 'Processing';
+//         if (activeFilter === 'To Receive') return order.status === 'Shipping';
+//         if (activeFilter === 'Completed') return order.status === 'Delivered';
+//         if (activeFilter === 'Cancelled') return order.status === 'Cancelled';
+//         return true;
+//       });
 
+//   const searchedOrders = searchQuery
+//     ? filteredOrders.filter(order =>
+//         order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//         order.items.some(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+//       )
+//     : filteredOrders;
 
+//   return (
+//     <div className="min-h-screen bg-gray-100">
+//       {/* Header */}
+//       <header className="bg-white shadow-sm sticky top-0 z-10">
+//         <div className="max-w-6xl mx-auto">
+//           <div className="flex items-center justify-between p-4">
+//             <div className="flex items-center space-x-4">
+//               <Menu className="w-6 h-6 text-gray-600 md:hidden" />
+//               <a href="#" className="text-xl font-bold text-mayormoto-pink">Your Store</a>
+//             </div>
 
+//             <div className="hidden md:flex flex-1 mx-10">
+//               <div className="relative w-full">
+//                 <input
+//                   type="text"
+//                   placeholder="Search for products..."
+//                   className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
+//                 />
+//                 <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+//               </div>
+//             </div>
+
+//             <div className="flex items-center space-x-6">
+//               <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+//                 <Bell className="w-6 h-6" />
+//                 <span className="text-xs mt-1">Notifications</span>
+//               </a>
+//               <a href="#" className="hidden md:flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+//                 <Heart className="w-6 h-6" />
+//                 <span className="text-xs mt-1">Wishlist</span>
+//               </a>
+//               <a href="#" className="flex flex-col items-center text-mayormoto-pink">
+//                 <ShoppingBag className="w-6 h-6" />
+//                 <span className="text-xs mt-1">Orders</span>
+//               </a>
+//               <a href="#" className="flex flex-col items-center text-gray-600 hover:text-mayormoto-pink">
+//                 <User className="w-6 h-6" />
+//                 <span className="text-xs mt-1">Account</span>
+//               </a>
+//             </div>
+//           </div>
+//         </div>
+//       </header>
+
+//       {/* Main Content */}
+//       <main className="max-w-6xl mx-auto py-6 px-4">
+//         <div className="flex justify-between items-center mb-6">
+//           <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
+//           <div className="relative md:hidden">
+//             <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+//             <input
+//               type="text"
+//               placeholder="Search orders..."
+//               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent text-sm"
+//               value={searchQuery}
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//             />
+//           </div>
+//         </div>
+
+//         {/* Order Filters */}
+//         <div className="overflow-x-auto pb-2 mb-6">
+//           <div className="flex space-x-2 min-w-max">
+//             {filters.map((filter, index) => (
+//               <button
+//                 onClick={() => setActiveFilter(filter)}
+//                 key={index}
+//                 className={`bg-white rounded-full text-sm border border-gray-200
+//               font-semibold py-2 px-4 outline-none transition duration-200 ease-in-out
+//                ${
+//                  activeFilter === filter
+//                    ? " bg-mayormoto-pink text-white border-transparent "
+//                    : " "
+//                } `}
+//               >
+//                 {filter}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Search Orders - Desktop */}
+//         <div className="relative mb-6 hidden md:block">
+//           <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+//           <input
+//             type="text"
+//             placeholder="Search by order number, product, or shop..."
+//             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mayormoto-pink focus:border-transparent"
+//             value={searchQuery}
+//             onChange={(e) => setSearchQuery(e.target.value)}
+//           />
+//         </div>
+
+//         {/* Orders List */}
+//         <div className="space-y-4">
+//           {searchedOrders.length > 0 ? (
+//             searchedOrders.map(order => (
+//               <div key={order.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+//               {/* Order Header */}
+//                 <div className="flex justify-between items-center p-4 border-b border-gray-100">
+//                   <div className="flex items-center space-x-2">
+//                     <Package className="w-5 h-5 text-gray-500" />
+//                     <span className="font-medium text-gray-600">Order {order.id}</span>
+//                   </div>
+//                   <div className="flex items-center space-x-2">
+//                     <div className={`flex items-center space-x-1 ${getStatusColor(order.status)}`}>
+//                       {getStatusIcon(order.status)}
+//                       <span className="font-medium">{order.status}</span>
+//                     </div>
+//                   </div>
+//                 </div>
+
+//                 {/* Order Items */}
+//                 {order.items.map(item => (
+//                   <div key={item.id} className="flex p-4 border-b border-gray-100">
+//                     <div className="flex-shrink-0">
+//                       <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+//                     </div>
+//                     <div className="ml-4 flex-1">
+//                       <h3 className="font-medium text-gray-800 line-clamp-2">{item.name}</h3>
+//                       <p className="text-sm text-gray-500 mt-1">
+//                         {item.color && `Color: ${item.color}`}
+//                         {item.size && `, Size: ${item.size}`}
+//                       </p>
+//                       <div className="flex justify-between items-end mt-2">
+//                         <span className="text-mayormoto-pink font-medium">${item.price.toFixed(2)}</span>
+//                         <span className="text-gray-500">Qty: {item.quantity}</span>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+
+//                 {/* Order Footer */}
+//                 <div className="p-4 bg-gray-50">
+//                   <div className="flex justify-between items-center">
+//                     <div>
+//                       <p className="text-sm text-gray-500">{order.id} • {order.date}</p>
+//                       <p className="text-sm text-gray-500 mt-1">
+//                         {order.deliveryDate || order.estimatedDelivery}
+//                       </p>
+//                     </div>
+//                     <div className="text-right">
+//                       <p className="text-sm text-gray-500">Order Total</p>
+//                       <p className="text-lg font-bold text-mayormoto-pink">${order.total.toFixed(2)}</p>
+//                     </div>
+//                   </div>
+
+//                   <div className="flex justify-end space-x-3 mt-4">
+//                     {order.status === 'Delivered' && (
+//                       <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
+//                         Write Review
+//                       </button>
+//                     )}
+//                     <button className="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50">
+//                       Order Details
+//                     </button>
+//                     {['Processing', 'Shipping'].includes(order.status) && (
+//                       <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
+//                         Track Order
+//                       </button>
+//                     )}
+//                     {order.status === 'Delivered' && (
+//                       <button className="px-4 py-2 text-sm rounded-full bg-mayormoto-pink text-white hover:opacity-90 transition duration-200">
+//                         Buy Again
+//                       </button>
+//                     )}
+//                   </div>
+//                 </div>
+//               </div>
+//             ))
+//           ) : (
+//             <div className="bg-white rounded-lg p-8 text-center">
+//               <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+//               <h3 className="text-lg font-medium text-gray-800">No orders found</h3>
+//               <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
+//               <button className="mt-4 px-4 py-2 bg-mayormoto-pink text-white rounded-full hover:opacity-90 transition duration-200 inline-flex items-center">
+//                 Start Shopping <ArrowRight className="ml-2 w-4 h-4" />
+//               </button>
+//             </div>
+//           )}
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }
 
 // export default function Test() {
 //   const iframe = document.querySelector("iframe");

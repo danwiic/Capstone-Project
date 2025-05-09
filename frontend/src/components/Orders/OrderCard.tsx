@@ -110,7 +110,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
           >
             <div className="flex flex-col gap-1">
               <span>Placed on: {formatDate(orders.orderDate)}</span>
-              {orders.orderStatus !== "Completed" && (
+              {orders.orderStatus !== "Completed" && orders.orderStatus !== "Cancelled" && (
                 <span>
                   Estimated Delivery: {formatDate(orders.orderDate + 2)}
                 </span>
@@ -151,7 +151,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
                 </button>
               </>
             )}
-            {orders.orderStatus !== "Completed" && (
+            {orders.orderStatus !== "Completed" && orders.orderStatus !== "Cancelled" && (
               <button
                 className="py-2 px-4 text-sm font-semibold text-white rounded-full
            bg-mayormoto-pink hover:bg-mayormoto-pink/80 transition 

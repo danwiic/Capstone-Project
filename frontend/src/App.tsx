@@ -18,7 +18,6 @@ import Orders from "./pages/pos/Orders";
 import History from "./pages/pos/History";
 import Employee from "./pages/pos/Employee";
 import User from "./pages/pos/User";
-import Insight from "./pages/pos/Insight";
 import ScrollToTop from "./utils/scrollToTop";
 import Settings from "./pages/pos/Settings";
 import CartComponent from "./components/Cart/Cart";
@@ -26,6 +25,8 @@ import Wishlist from "./pages/Wishlist";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Checkout from "./pages/Checkout";
 import MyOrders from "./pages/MyOrders";
+import TrackOrder from "./pages/TrackOrder";
+import Address from "./pages/Address";
 
 export default function App() {
   return (
@@ -64,6 +65,8 @@ export default function App() {
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/products" element={<Brand />} />
               <Route path="/orders" element={<MyOrders />} />
+              <Route path="/track" element={<TrackOrder />} />
+              <Route path="/address" element={<Address />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/pos">
@@ -75,7 +78,6 @@ export default function App() {
                 <Route path="history" element={<History />} />
                 <Route path="employees" element={<Employee />} />
                 <Route path="user" element={<User />} />
-                <Route path="insight" element={<Insight />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
             </Routes>

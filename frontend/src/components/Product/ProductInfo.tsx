@@ -44,6 +44,10 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
   };
 
   const handleCheckout = () => {
+    if (!user || !user.id) {
+      setShowLoginModal(true);
+      return;
+    }
     navigate("/checkout", {
       state: {
         product: [

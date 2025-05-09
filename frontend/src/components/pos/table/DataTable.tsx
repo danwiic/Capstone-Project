@@ -1,3 +1,5 @@
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
 export default function DataTable({
   children,
   status,
@@ -90,31 +92,47 @@ export default function DataTable({
         </div>
       </div>
       <table className="w-full">{children}</table>
-      <div className="flex justify-between items-center">
-        <span className="text-sm">Showing 5 entries</span>
-        <div className="flex justify-between gap-20 text-sm">
-          <button disabled>Previous</button>
-          <div className="flex gap-1">
-            <span
-              className="w-6 h-6 text-white flex items-center justify-center 
-            bg-mayormoto-blue rounded cursor-pointer"
-            >
-              1
-            </span>
-            <span
-              className="w-6 h-6  flex items-center justify-center 
-            hover:bg-gray-300 rounded cursor-pointer"
-            >
-              2
-            </span>
-            <span
-              className="w-6 h-6  flex items-center justify-center 
-            hover:bg-gray-300 rounded cursor-pointer"
-            >
-              3
-            </span>
+      <div className="flex items-center justify-between border-t border-gray-200 bg-gray-50 px-4 py-3 sm:px-6">
+        <div className="flex flex-1 justify-between sm:hidden">
+          <button className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+            Previous
+          </button>
+          <button className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+            Next
+          </button>
+        </div>
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm text-gray-700">
+              Showing <span className="font-medium">1</span> to{" "}
+              <span className="font-medium">5</span> of{" "}
+              <span className="font-medium">20</span> results
+            </p>
           </div>
-          <button className="cursor-pointer">Next</button>
+          <div>
+            <nav
+              className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+              aria-label="Pagination"
+            >
+              <button className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                <span className="sr-only">Previous</span>
+                <FiChevronLeft className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button className="relative inline-flex items-center border border-gray-300 bg-mayormoto-blue px-4 py-2 text-sm font-medium text-white focus:z-20">
+                1
+              </button>
+              <button className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                2
+              </button>
+              <button className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                3
+              </button>
+              <button className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                <span className="sr-only">Next</span>
+                <FiChevronRight className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </nav>
+          </div>
         </div>
       </div>
     </div>

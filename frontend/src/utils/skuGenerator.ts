@@ -1,9 +1,7 @@
 function slugify(text: string, length = 4): string {
   const noVowels =
     text.length <= 3
-      ? text
-          .toUpperCase()
-          .slice(0, length)
+      ? text.toUpperCase().slice(0, length)
       : text
           .replace(/[aeiou]/gi, "")
           .toUpperCase()
@@ -67,7 +65,7 @@ function getColorCode(color?: string | null): string | null {
 }
 
 type skuProps = {
-  name: string;
+  name?: string;
   brand: string;
   variant?: string | null;
   category?: string | null;
@@ -84,18 +82,19 @@ export default function generateSKU({
   id,
 }: skuProps): string {
   const brandCode = slugify(brand, 5);
-  const nameCode = slugify(name, 4);
+  // const nameCode = slugify(name, 4);
   const categoryCode = category ? slugify(category, 5) : null;
   const colorCode = getColorCode(color);
   const variantCode = getSizeCode(variant);
   const idCode = id ? id.slice(0, 4).toUpperCase() : null;
 
-  const parts: string[] = [brandCode, nameCode];
+  const parts: string[] = [brandCode];
 
   if (categoryCode) parts.push(categoryCode);
+  if (name) parts.push(slugify(name, 4));
   if (colorCode) parts.push(colorCode);
-  if (variantCode) parts.push(variantCode);
   if (idCode) parts.push(idCode);
-  
+  if (variantCode) parts.push(variantCode);
+
   return parts.join("-");
 }

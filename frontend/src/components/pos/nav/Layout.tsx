@@ -25,6 +25,7 @@ import FullscreenButton from "../button/FSButton";
 import Calculator from "../calculator/Calculator";
 import { CiUser } from "react-icons/ci";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { RiCashLine } from "react-icons/ri";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -193,8 +194,9 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
 
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
-    { name: "Insight", icon: <MdOutlineBarChart />, path: "/pos/insight" },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
+    { name: "Sales", icon: <RiCashLine />, path: "/pos/sales" },
+
     {
       name: "Forecast",
       icon: <MdOnlinePrediction />,

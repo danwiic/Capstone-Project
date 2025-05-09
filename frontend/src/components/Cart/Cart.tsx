@@ -7,6 +7,8 @@ import { formatMoney } from "../../utils/formatMoney";
 import Navbar from "../Nav/Navbar";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import LoginModal from "../modal/LoginModal";
+import { useUserContext } from "../../context/userContext";
 
 interface CartProps {
   children?: React.ReactNode;
@@ -108,6 +110,7 @@ React.memo(CartModal);
 export default function CartComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const { cart, updateCartQuantity, removeFromCart } = useCartContext();
+  const { user } = useUserContext();
   const navigate = useNavigate();
 
   const calculateTotal = useMemo(() => {
@@ -119,6 +122,7 @@ export default function CartComponent() {
   }, [cart]);
 
   const handleToCheckout = () => {
+    if (!user) return <LoginModal onClose={() => false} />;
     navigate("/checkout", {
       state: {
         product: cart,

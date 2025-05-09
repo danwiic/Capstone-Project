@@ -4,7 +4,7 @@ const API_URL = "http://localhost:3000";
 
 export const getAllProducts = async () => {
   try {
-    const res = await axios.get(`${API_URL}/product/all`);
+    const res = await axios.get(`${API_URL}/product/all?limit=10`);
     return res.data.products;
   } catch (error) {
     console.log("Error fetching products:", error);

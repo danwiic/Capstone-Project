@@ -20,8 +20,8 @@ type StatusValue =
   | "In Stock"
   | "IN STOCK"
   | "On Hold"
-  | "ON HOLD";
-  
+  | "ON HOLD"
+
 type Props = {
   status: StatusValue;
 };
