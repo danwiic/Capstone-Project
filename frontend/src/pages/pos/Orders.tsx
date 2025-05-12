@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IoSearchSharp, IoFilter, IoCalendarOutline } from "react-icons/io5";
 import { TfiExport } from "react-icons/tfi";
 import { HiOutlineRefresh } from "react-icons/hi";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiFilter } from "react-icons/fi";
 import KebabMenu from "../../components/pos/menu/Kebab";
 import Layout from "../../components/pos/nav/Layout";
 import Table from "../../components/pos/table";
@@ -22,7 +22,6 @@ export default function Orders() {
     "cancelled",
   ];
 
-  // Mock data - replace with your actual data fetching
   const mockOrders = [
     {
       id: 1,
@@ -76,6 +75,21 @@ export default function Orders() {
     },
   ];
 
+  const filterStatus = orderStatuses.filter((status) => {
+    const filterResult =
+      status.toLowerCase() === "all" ||
+      status.toLowerCase().includes(selectedFilter.toLowerCase());
+
+    const searchResult = mockOrders.filter(
+      (order) =>
+        order.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.products.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.id.toString().includes(searchQuery.toLowerCase())
+    );
+
+    return filterResult && searchResult.length > 0;
+  });
+
   return (
     <div>
       <Layout>
@@ -100,41 +114,30 @@ export default function Orders() {
             </div>
           </div>
 
-          {/* Filter and search section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-            <div className="flex flex-col lg:flex-row justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <IoFilter />
-                  <span>Filter by:</span>
-                </div>
-                <div className="flex gap-1 overflow-x-auto pb-1">
-                  {orderStatuses.map((status) => (
-                    <button
-                      key={status}
-                      onClick={() => setSelectedFilter(status)}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap ${
+          {/* Orders table */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div className="flex h-fit border-b border-gray-200">
+              {orderStatuses.map((status) => (
+                <div
+                  onClick={() => setSelectedFilter(status)}
+                  className={`p-4 px-6 h-full cursor-pointer text-sm
+                      ${
                         selectedFilter === status
-                          ? "bg-mayormoto-blue text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          ? "border-b border-mayormoto-blue text-mayormoto-blue font-medium"
+                          : ""
                       }`}
-                    >
-                      {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </button>
-                  ))}
+                  key={status}
+                >
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="relative flex items-center">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <IoCalendarOutline className="text-gray-400" />
-                  </div>
-                  <input
-                    type="date"
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-mayormoto-blue focus:border-mayormoto-blue"
-                  />
-                </div>
-                <div className="relative flex-grow">
+              ))}
+            </div>
+            <div
+              className="flex items-center justify-between gap-4  
+            p-4 py-2 border-b border-gray-200 w-full"
+            >
+              <div className="flex gap-3 items-center w-full">
+                <div className="relative flex-grow w-full">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <IoSearchSharp className="text-gray-400" />
                   </div>
@@ -142,16 +145,23 @@ export default function Orders() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md text-sm focus:ring-mayormoto-blue focus:border-mayormoto-blue"
+                    className="pl-10 pr-4 py-2 w-1/3 border border-gray-300 
+                    rounded-sm text-sm outline-0"
                     placeholder="Search orders by customer, products or ID..."
                   />
                 </div>
               </div>
+              <div className="flex gap-3">
+                <button className="bg-white border border-gray-300 px-3 py-2 rounded flex items-center gap-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <FiFilter />
+                  <span>Filter</span>
+                </button>
+                <button className="bg-white border border-gray-300 px-3 py-2 rounded flex items-center gap-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <TfiExport />
+                  <span>Export</span>
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Orders table */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <Table.DataTable>
                 <Table.TableHead>
@@ -168,74 +178,91 @@ export default function Orders() {
                   </Table.TableRow>
                 </Table.TableHead>
                 <Table.TableBody>
-                  {mockOrders.map((order) => (
-                    <Table.TableRow key={order.id}>
-                      <Table.Data>
-                        #{order.id.toString().padStart(5, "0")}
-                      </Table.Data>
-                      <Table.Data>
-                        <div className="flex flex-col">
-                          <span className="font-medium text-gray-900">
-                            {order.customer}
-                          </span>
-                        </div>
-                      </Table.Data>
-                      <Table.Data>
-                        <div
-                          className="max-w-xs truncate"
-                          title={order.products}
-                        >
-                          {order.products}
-                        </div>
-                      </Table.Data>
-                      <Table.Data>{formatMoney(order.price)}</Table.Data>
-                      <Table.Data>
-                        <div
-                          className="max-w-xs truncate"
-                          title={order.address}
-                        >
-                          {order.address}
-                        </div>
-                      </Table.Data>
-                      <Table.Data>{order.contact}</Table.Data>
-                      <Table.Data>
-                        <Status status={order.status.toString()} />
-                      </Table.Data>
-                      <Table.Data>{order.date}</Table.Data>
-                      <Table.Data>
-                        <KebabMenu
-                          items={[
-                            {
-                              label: "View Order Details",
-                              onClick: () =>
-                                console.log(`View order ${order.id}`),
-                            },
-                            {
-                              label: "Update Status",
-                              onClick: () =>
-                                console.log(`Update status ${order.id}`),
-                            },
-                            {
-                              label: "Print Invoice",
-                              onClick: () =>
-                                console.log(`Print invoice ${order.id}`),
-                            },
-                            {
-                              label: "Archive Order",
-                              onClick: () =>
-                                console.log(`Archive order ${order.id}`),
-                            },
-                          ]}
-                        />
-                      </Table.Data>
-                    </Table.TableRow>
-                  ))}
+                  {mockOrders
+                    .filter((order) => {
+                      const matchesStatus =
+                        selectedFilter.toLowerCase() === "all" ||
+                        order.status.toLowerCase() ===
+                          selectedFilter.toLowerCase();
+
+                      const matchesSearch =
+                        order.customer
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        order.products
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()) ||
+                        order.id.toString().includes(searchQuery.toLowerCase());
+
+                      return matchesStatus && matchesSearch;
+                    })
+                    .map((order) => (
+                      <Table.TableRow key={order.id}>
+                        <Table.Data>
+                          #{order.id.toString().padStart(5, "0")}
+                        </Table.Data>
+                        <Table.Data>
+                          <div className="flex flex-col">
+                            <span className="font-medium text-gray-900">
+                              {order.customer}
+                            </span>
+                          </div>
+                        </Table.Data>
+                        <Table.Data>
+                          <div
+                            className="max-w-xs truncate"
+                            title={order.products}
+                          >
+                            {order.products}
+                          </div>
+                        </Table.Data>
+                        <Table.Data>{formatMoney(order.price)}</Table.Data>
+                        <Table.Data>
+                          <div
+                            className="max-w-xs truncate"
+                            title={order.address}
+                          >
+                            {order.address}
+                          </div>
+                        </Table.Data>
+                        <Table.Data>{order.contact}</Table.Data>
+                        <Table.Data>
+                          <Status status={order.status} />
+                        </Table.Data>
+                        <Table.Data>{order.date}</Table.Data>
+                        <Table.Data>
+                          <KebabMenu
+                            items={[
+                              {
+                                label: "View Order Details",
+                                onClick: () =>
+                                  console.log(`View order ${order.id}`),
+                              },
+                              {
+                                label: "Update Status",
+                                onClick: () =>
+                                  console.log(`Update status ${order.id}`),
+                              },
+                              {
+                                label: "Print Invoice",
+                                onClick: () =>
+                                  console.log(`Print invoice ${order.id}`),
+                              },
+                              {
+                                label: "Archive Order",
+                                onClick: () =>
+                                  console.log(`Archive order ${order.id}`),
+                              },
+                            ]}
+                          />
+                        </Table.Data>
+                      </Table.TableRow>
+                    ))}
                 </Table.TableBody>
               </Table.DataTable>
             </div>
 
             {/* Pagination */}
-        
           </div>
         </div>
       </Layout>

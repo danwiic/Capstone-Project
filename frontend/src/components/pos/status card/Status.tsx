@@ -20,10 +20,10 @@ type StatusValue =
   | "In Stock"
   | "IN STOCK"
   | "On Hold"
-  | "ON HOLD"
+  | "ON HOLD";
 
 type Props = {
-  status: StatusValue;
+  status: StatusValue | string; // Allow any string value
 };
 
 export default function Status({ status }: Props) {
