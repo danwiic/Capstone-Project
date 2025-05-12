@@ -8,6 +8,9 @@ import { getTwo } from "../../services/products";
 
 export default function PosTerminal() {
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,6 +32,24 @@ export default function PosTerminal() {
     fetchProducts();
   }, []);
 
+  const filteredProducts = products.filter((product: any) => {
+    const productName = product.name.toLowerCase();
+    const searchTerms = searchTerm.toLowerCase();
+    const productCategory = product.category?.name.toLowerCase();
+  
+    const matchesSearch = productName.includes(searchTerms);
+    const matchesCategory =
+      selectedCategory.toLowerCase() === "all" ||
+      productCategory === selectedCategory.toLowerCase();
+  
+    return matchesSearch && matchesCategory;
+  });
+  
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+  };
+
   return (
     <Layout>
       <div className="flex h-[calc(100vh-20px)] gap-4 ">
@@ -40,6 +61,8 @@ export default function PosTerminal() {
                 className="outline-none px-4 py-2 text-sm text-gray-600 w-full"
                 placeholder="Search products..."
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button className="px-4 py-2">
                 <IoSearchSharp />
@@ -47,14 +70,14 @@ export default function PosTerminal() {
             </div>
           </div>
           <div>
-            <Categories />
+            <Categories  selectCategory={setSelectedCategory}/>
           </div>
 
           <div
             className="grid grid-cols-4 gap-2  overflow-y-auto scrollbar-thin 
         scrollbar-thumb-rounded-xl"
           >
-            {products.map((pr: any) => (
+            {filteredProducts.map((pr: any) => (
               <PosProduct
                 key={pr.id}
                 product={{

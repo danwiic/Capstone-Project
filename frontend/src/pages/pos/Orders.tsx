@@ -83,7 +83,7 @@ export default function Orders() {
           {/* Header section */}
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="font-semibold text-2xl text-gray-800">Orders</h1>
+              <h1 className="font-semibold text-xl text-gray-800">Orders</h1>
               <p className="text-sm text-gray-500 mt-1">
                 Manage and track all customer orders
               </p>
@@ -153,7 +153,7 @@ export default function Orders() {
           {/* Orders table */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
-              <Table.DataTable status>
+              <Table.DataTable>
                 <Table.TableHead>
                   <Table.TableRow>
                     <Table.Header>Order ID</Table.Header>

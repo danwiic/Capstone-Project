@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Categories() {
+export default function Categories({ selectCategory }: any) {
   const [categories, setCategories] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   useEffect(() => {
@@ -17,6 +17,7 @@ export default function Categories() {
       <button
         onClick={() => {
           setSelectedCategory("All");
+          selectCategory("All");
         }}
         className={`px-4 py-2 rounded-full 
           hover:bg-mayormoto-blue  hover:text-white cursor-pointer 
@@ -33,6 +34,7 @@ export default function Categories() {
         <button
           onClick={() => {
             setSelectedCategory(cat.name);
+            selectCategory(cat.name);
           }}
           className={`px-4 py-2 rounded-full 
           hover:bg-mayormoto-blue  hover:text-white cursor-pointer 

@@ -73,7 +73,7 @@ export default function ProductDetails({
 
   if (loading) {
     return (
-      <div className="relative flex items-center justify-center w-full">
+      <div className="relative h-[40rem] flex items-center justify-center w-full">
         <SpinningLoader />
       </div>
     );

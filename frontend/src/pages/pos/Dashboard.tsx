@@ -91,7 +91,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-5 grid-rows-2 gap-4">
           <div
             className="col-span-3 flex flex-col gap-2 bg-white
-          shadow-1 px-4 py-6 rounded row-span-2"
+          border border-gray-200 px-4 py-6 rounded row-span-2"
           >
             <div className="flex justify-between items-center px-4">
               <span className="font-bold text-gray-600 text-sm">
@@ -135,14 +135,14 @@ export default function Dashboard() {
 
           <div
             className=" bg-white col-span-2 
-          shadow-1 p-4 rounded flex flex-col gap-1"
+          border border-gray-200 p-4 rounded flex flex-col gap-1"
           >
             <div className="flex items-center justify-between">
               <span className="font-medium">Top 5 Selling Products</span>
               <div className="flex gap-2 items-center">
                 <span className="text-gray-500 text-sm">Filter by</span>
                 <select
-                  className="border rounded border-gray-300 
+                  className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                 >
                   <option>Today</option>
@@ -158,7 +158,7 @@ export default function Dashboard() {
           </div>
 
           <div
-            className="col-span-2 bg-white shadow-1 p-4 rounded 
+            className="col-span-2 bg-white border border-gray-200 p-4 rounded 
           flex flex-col justify-between"
           >
             <div className="flex justify-between items-center">
@@ -166,7 +166,7 @@ export default function Dashboard() {
               <div className="flex gap-3 items-center">
                 <span className="text-gray-500 text-sm">Filter by</span>
                 <select
-                  className="border rounded border-gray-300 
+                  className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                 >
                   <option>Today</option>
@@ -184,12 +184,12 @@ export default function Dashboard() {
         {/* FOR ADDING NEW SECTION */}
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-6 gap-4">
-            <div className="bg-white col-span-3 px-4 py-6 rounded shadow-1 flex flex-col gap-2">
+            <div className="bg-white col-span-3 px-4 py-6 rounded border border-gray-200 flex flex-col gap-2">
               <div className="flex justify-between items-center px-4 pt-">
                 <span className="font-medium">Sales Analytics</span>
                 <div className="flex gap-3 items-center">
                   <select
-                    className="border rounded border-gray-300 
+                    className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                   >
                     <option>Today</option>
@@ -201,12 +201,12 @@ export default function Dashboard() {
               </div>
               <SalesLast7DaysChart data={datad} />
             </div>
-            <div className="col-span-3 bg-white shadow-1 px-4 py-6">
+            <div className="col-span-3 bg-white border border-gray-200 px-4 py-6">
               <div className="flex justify-between items-center px-4">
                 <span className="font-medium">Sales per Category</span>
                 <div className="flex gap-3 items-center">
                   <select
-                    className="border rounded border-gray-300 
+                    className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                   >
                     <option>Today</option>
@@ -219,12 +219,12 @@ export default function Dashboard() {
               <SalesByCategoryBarChart data={categorySalesData} />
             </div>
 
-            <div className="col-span-3 bg-white shadow-1 rounded px-4 py-6">
+            <div className="col-span-3 bg-white border border-gray-200 rounded px-4 py-6">
               <div className="flex justify-between items-center px-4">
                 <span>Transaction Comparison</span>
                 <div className="flex gap-3 items-center">
                   <select
-                    className="border rounded border-gray-300 
+                    className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                   >
                     <option>Today</option>
@@ -237,12 +237,12 @@ export default function Dashboard() {
               <TransactionComparisonLineChart data={transacData} />
             </div>
 
-            <div className="col-span-3 bg-white shadow-1 rounded px-4 py-6">
+            <div className="col-span-3 bg-white border border-gray-200 rounded px-4 py-6">
               <div className="flex justify-between items-center px-4">
                 <span>Sales Growth</span>
                 <div className="flex gap-3 items-center">
                   <select
-                    className="border rounded border-gray-300 
+                    className="border rounded border-gray-200 
                 text-sm p-1 text-center text-gray-600"
                     defaultValue={"This Year"}
                   >

@@ -18,7 +18,10 @@ export default function Card({
   numberValue = 0,
 }: CardProps) {
   return (
-    <div className="bg-white rounded shadow-1 p-4 w-full flex flex-col gap-4">
+    <div
+      className="bg-white rounded border border-gray-200
+     p-4 w-full flex flex-col gap-4"
+    >
       <div className="flex justify-between gap-6 items-center">
         <div className="flex flex-col">
           <span>{title}</span>

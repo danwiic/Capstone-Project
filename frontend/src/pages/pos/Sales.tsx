@@ -90,7 +90,7 @@ export default function Sales() {
     <Layout>
       <div className=" w-full flex flex-col gap-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div className="text-sm flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-xl font-bold text-gray-800">Sales Dashboard</h1>
             <p className="text-gray-500 text-sm">
@@ -147,7 +147,7 @@ export default function Sales() {
 
         {/* Stats Cards */}
         <div className="flex gap-4">
-          <div className="bg-white w-full rounded-sm border-1 p-6 border border-gray-200">
+          <div className="bg-white w-full rounded-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">
@@ -171,7 +171,7 @@ export default function Sales() {
             </div>
           </div>
 
-          <div className="bg-white w-full rounded-sm border-1 p-6 border border-gray-200">
+          <div className="bg-white w-full rounded-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">
@@ -193,7 +193,7 @@ export default function Sales() {
             </div>
           </div>
 
-          <div className="bg-white w-full rounded-sm border-1 p-6 border border-gray-200">
+          <div className="bg-white w-full rounded-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">
@@ -221,7 +221,7 @@ export default function Sales() {
             </div>
           </div>
 
-          <div className="bg-white w-full rounded-sm border-1 p-6  border-gray-200">
+          <div className="bg-white w-full rounded-sm p-6  border-gray-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">
