@@ -32,11 +32,13 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [imageUrls, setImageUrls] = useState<string[]>([""]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [hasVariants, setHasVariants] = useState(false);
   const [variants, setVariants] = useState<Variant[]>([
     { id: "variant-1", sku: "", variantName: "", price: 0, stock: 0 },
   ]);
+
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -61,6 +63,8 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
     fetchBrands();
     fetchCategories();
   }, []);
+
+  console.log(imageUrls, "imageUrls");
 
   const addVariant = () => {
     setVariants([
@@ -87,24 +91,6 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
         variant.id === id ? { ...variant, [field]: value } : variant
       )
     );
-  };
-
-  const addImageUrl = () => {
-    setImageUrls([...imageUrls, ""]);
-  };
-
-  const removeImageUrl = (index: number) => {
-    if (imageUrls.length > 1) {
-      const newImageUrls = [...imageUrls];
-      newImageUrls.splice(index, 1);
-      setImageUrls(newImageUrls);
-    }
-  };
-
-  const updateImageUrl = (index: number, value: string) => {
-    const newImageUrls = [...imageUrls];
-    newImageUrls[index] = value;
-    setImageUrls(newImageUrls);
   };
 
   if (!isOpen) return null;
@@ -156,6 +142,37 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
       ]);
     }
   }, [isOpen]);
+
+  const handleImageUpload = async (files: FileList | null) => {
+    if (!files) return;
+
+    const uploadedUrls: string[] = [];
+
+    for (const file of Array.from(files)) {
+      const formData = new FormData();
+      formData.append("images", file); // Change "file" to "images" to match the backend
+
+      try {
+        const res = await axios.post(
+          "http://localhost:3000/image/upload",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        uploadedUrls.push(...res.data.urls);
+      } catch (error) {
+        console.error("Image upload failed", error);
+      }
+    }
+
+    setImageUrls((prev) => [...prev, ...uploadedUrls]);
+  };
+
+  const handleImageRemove = (url: string) => {
+    setImageUrls((prev) => prev.filter((imageUrl) => imageUrl !== url));
+  };
 
   return (
     <div
@@ -293,52 +310,38 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
               </div>
 
               {/* Image URLs Section */}
-              <div className="col-span-2">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Product Images<span className="text-red-600">*</span>
+              <div className="col-span-2 flex flex-col gap-3">
+                <div className="mb-2">
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">
+                    Upload Image Files
                   </label>
-                  <button
-                    type="button"
-                    onClick={addImageUrl}
-                    className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-                  >
-                    <Plus className="h-4 w-4 mr-1" /> Add Image
-                  </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleImageUpload(e.target.files)}
+                    className="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100"
+                  />
                 </div>
-
-                <div className="flex flex-col gap-2">
-                  {imageUrls.map((url, index) => (
-                    <div key={index} className="flex mb-2 items-center gap-2">
-                      <div className="flex-grow relative flex flex-col gap-1">
-                        <input
-                          type="url"
-                          value={url}
-                          onChange={(e) =>
-                            updateImageUrl(index, e.target.value)
-                          }
-                          placeholder="Enter image URL"
-                          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          required
+                <div className="flex gap-3 flex-wrap mt-2">
+                  {imageUrls.length > 0 &&
+                    imageUrls.map((url, i) => (
+                      <div key={i} className="relative w-16">
+                        <img src={url} className="h-auto w-full" />
+                        <X
+                          size={25}
+                          onClick={() => handleImageRemove(url)}
+                          className="absolute -top-2 -right-2
+                        bg-gray-200 rounded-full text-gray-500 p-1 cursor-pointer"
                         />
                       </div>
-                      {imageUrls.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeImageUrl(index)}
-                          className="text-red-500 hover:text-red-700"
-                          aria-label="Remove image URL"
-                        >
-                          <Trash className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    ))}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Add URLs for product images. The first image will be used as
-                  the main display image.
-                </p>
               </div>
 
               {/* Variant Checkbox */}

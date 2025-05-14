@@ -8,6 +8,7 @@ export default function ProductGallery({
   const imgRef = useRef(null);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [showZoom, setShowZoom] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
 
   const handleMouseMove = (e: any) => {
     const bounds = imgRef.current.getBoundingClientRect();
@@ -22,7 +23,13 @@ export default function ProductGallery({
         {images.map((img, i) => (
           <div
             key={i}
-            className="w-16 h-16 flex justify-center items-center border rounded overflow-hidden"
+            onClick={() => setCurrentImage(i)}
+            className={`${
+              currentImage === i
+                ? "outline-mayormoto-pink outline-3"
+                : "hover:outline-mayormoto-pink hover:outline-2"
+            } w-16 h-16 flex justify-center 
+            items-center outline p-2 rounded overflow-hidden cursor-pointer`}
           >
             <img src={img.imageUrl} className="w-auto h-full " />
           </div>
@@ -34,10 +41,11 @@ export default function ProductGallery({
           onMouseEnter={() => setShowZoom(true)}
           onMouseLeave={() => setShowZoom(false)}
           ref={imgRef}
-          className="w-full h-96 flex justify-center items-center overflow-hidden relative z-20 cursor-zoom-in"
+          className="w-full h-96 flex justify-center
+           items-center overflow-hidden relative z-20 cursor-zoom-in"
         >
           <img
-            src={images[0].imageUrl}
+            src={images[currentImage].imageUrl}
             className="h-full object-contain rounded-md"
           />
         </div>

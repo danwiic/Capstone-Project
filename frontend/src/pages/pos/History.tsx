@@ -92,13 +92,7 @@ export default function History() {
     }
   };
 
-  // Count by status
-  const statusCounts = {
-    all: transactions.length,
-    completed: transactions.filter((t) => t.status === "completed").length,
-    pending: transactions.filter((t) => t.status === "pending").length,
-    cancelled: transactions.filter((t) => t.status === "cancelled").length,
-  };
+ 
 
   const filteredTransactions = transactions.filter((transaction) => {
     const matchesSearch =
@@ -160,9 +154,6 @@ export default function History() {
                   }`}
                 >
                   <span className="capitalize">{status}</span>
-                  <span className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
-                    {statusCounts[status]}
-                  </span>
                 </div>
               )
             )}

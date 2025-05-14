@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { TfiExport } from "react-icons/tfi";
-import {
-  FiEdit,
-  FiFilter,
-  FiCheckCircle,
-  FiXCircle,
-} from "react-icons/fi";
+import { FiEdit, FiFilter, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import { BsThreeDotsVertical, BsArchive, BsTrash, BsEye } from "react-icons/bs";
 import { MdOutlineVerified, MdOutlineBlock } from "react-icons/md";
 import Layout from "../../components/pos/nav/Layout";
 import Table from "../../components/pos/table";
 import KebabMenu from "../../components/pos/menu/Kebab";
+import { formatMoney } from "../../utils/formatMoney";
+import { User2Icon } from "lucide-react";
 
 export default function User() {
   const [activeTab, setActiveTab] = useState("all");
@@ -31,8 +28,8 @@ export default function User() {
       status: "active",
       createdOn: "April 16, 2025",
       lastLogin: "May 10, 2025",
-      orderCount: 12,
-      totalSpent: "$1,346.87",
+      orderCount: 1,
+      totalSpent: "1346.87",
     },
     {
       id: 2,
@@ -44,8 +41,8 @@ export default function User() {
       status: "inactive",
       createdOn: "March 22, 2025",
       lastLogin: "April 28, 2025",
-      orderCount: 5,
-      totalSpent: "$456.30",
+      orderCount: 2,
+      totalSpent: "456.30",
     },
     {
       id: 3,
@@ -54,11 +51,11 @@ export default function User() {
       address: "78 Rizal Street, Quezon City",
       email: "miguel.s@example.com",
       contact: "09234567890",
-      status: "pending",
+      status: "inactive",
       createdOn: "May 5, 2025",
       lastLogin: "-",
       orderCount: 0,
-      totalSpent: "$0.00",
+      totalSpent: "0.00",
     },
     {
       id: 4,
@@ -70,8 +67,8 @@ export default function User() {
       status: "active",
       createdOn: "January 12, 2025",
       lastLogin: "May 11, 2025",
-      orderCount: 31,
-      totalSpent: "$4,287.65",
+      orderCount: 2,
+      totalSpent: "4287.65",
     },
     {
       id: 5,
@@ -84,7 +81,7 @@ export default function User() {
       createdOn: "February 8, 2025",
       lastLogin: "March 15, 2025",
       orderCount: 2,
-      totalSpent: "$123.45",
+      totalSpent: "2123.45",
     },
   ];
 
@@ -94,8 +91,6 @@ export default function User() {
         return "bg-green-100 text-green-800";
       case "inactive":
         return "bg-gray-100 text-gray-800";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
       case "blocked":
         return "bg-red-100 text-red-800";
       default:
@@ -119,7 +114,7 @@ export default function User() {
   };
 
   // Function to open user details modal
-  const handleViewUser = (user : any) => {
+  const handleViewUser = (user: any) => {
     setUserDetails(user);
     setShowUserModal(true);
   };
@@ -129,6 +124,8 @@ export default function User() {
     activeTab === "all"
       ? users
       : users.filter((user) => user.status === activeTab);
+
+  const filters = ["All", "Active", "Inactive", "Blocked"];
 
   return (
     <Layout>
@@ -154,30 +151,30 @@ export default function User() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
+          <div className="bg-white p-4 rounded  border border-gray-200">
             <div className="text-gray-500 text-sm mb-1">Total Users</div>
             <div className="text-2xl font-semibold">854</div>
             <div className="text-xs text-green-600 mt-2">
               ↑ 12% from last month
             </div>
           </div>
-          <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
+          <div className="bg-white p-4 rounded  border border-gray-200">
             <div className="text-gray-500 text-sm mb-1">Active Users</div>
             <div className="text-2xl font-semibold">732</div>
             <div className="text-xs text-green-600 mt-2">
               ↑ 8% from last month
             </div>
           </div>
-          <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
+          <div className="bg-white p-4 rounded  border border-gray-200">
             <div className="text-gray-500 text-sm mb-1">New This Month</div>
             <div className="text-2xl font-semibold">43</div>
             <div className="text-xs text-red-600 mt-2">
               ↓ 5% from last month
             </div>
           </div>
-          <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
-            <div className="text-gray-500 text-sm mb-1">VIP Customers</div>
-            <div className="text-2xl font-semibold">28</div>
+          <div className="bg-white p-4 rounded  border border-gray-200">
+            <div className="text-gray-500 text-sm mb-1">Repeat Customers</div>
+            <div className="text-2xl font-semibold">6</div>
             <div className="text-xs text-green-600 mt-2">
               ↑ 2% from last month
             </div>
@@ -185,60 +182,22 @@ export default function User() {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white shadow-sm rounded">
-          {/* Tabs */}
+        <div className="bg-white border border-gray-200  rounded">
+          {/* 2abs */}
           <div className="border-b border-gray-200">
             <div className="flex gap-6 px-6">
-              <button
-                className={`py-4 px-1 text-sm font-medium ${
-                  activeTab === "all"
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab("all")}
-              >
-                All Users
-              </button>
-              <button
-                className={`py-4 px-1 text-sm font-medium ${
-                  activeTab === "active"
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab("active")}
-              >
-                Active
-              </button>
-              <button
-                className={`py-4 px-1 text-sm font-medium ${
-                  activeTab === "inactive"
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab("inactive")}
-              >
-                Inactive
-              </button>
-              <button
-                className={`py-4 px-1 text-sm font-medium ${
-                  activeTab === "pending"
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab("pending")}
-              >
-                Pending
-              </button>
-              <button
-                className={`py-4 px-1 text-sm font-medium ${
-                  activeTab === "blocked"
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-                onClick={() => setActiveTab("blocked")}
-              >
-                Blocked
-              </button>
+              {filters.map((filter) => (
+                <button
+                  className={`py-4 px-1 text-sm font-medium ${
+                    activeTab === filter.toLowerCase()
+                      ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                  onClick={() => setActiveTab(filter.toLowerCase())}
+                >
+                  {filter}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -318,139 +277,9 @@ export default function User() {
           )}
 
           {/* User Table */}
-          <div className="overflow-x-auto">
-            <Table.DataTable>
-              <Table.TableHead>
-                <Table.TableRow>
-                  <Table.Header>
-                    <input
-                      type="checkbox"
-                      className="rounded border-gray-300"
-                    />
-                  </Table.Header>
-                  <Table.Header position="left">User</Table.Header>
-                  <Table.Header position="left">Contact Info</Table.Header>
-                  <Table.Header position="left">Status</Table.Header>
-                  <Table.Header position="left">Orders</Table.Header>
-                  <Table.Header position="left">Joined</Table.Header>
-                  <Table.Header position="center">Actions</Table.Header>
-                </Table.TableRow>
-              </Table.TableHead>
-              <Table.TableBody>
-                {filteredUsers.map((user) => (
-                  <Table.TableRow key={user.id}>
-                    <Table.Data>
-                      <input
-                        type="checkbox"
-                        className="rounded border-gray-300"
-                      />
-                    </Table.Data>
-                    <Table.Data>
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">
-                            {user.name}
-                          </div>
-                          <div className="text-xs text-gray-500 truncate max-w-xs">
-                            {user.address}
-                          </div>
-                        </div>
-                      </div>
-                    </Table.Data>
-                    <Table.Data>
-                      <div>
-                        <div className="text-gray-900">{user.email}</div>
-                        <div className="text-sm text-gray-500">
-                          {user.contact}
-                        </div>
-                      </div>
-                    </Table.Data>
-                    <Table.Data>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                          user.status
-                        )}`}
-                      >
-                        {getStatusIcon(user.status)}
-                        {user.status.charAt(0).toUpperCase() +
-                          user.status.slice(1)}
-                      </span>
-                    </Table.Data>
-
-                    <Table.Data>
-                      <div>
-                        <div className="font-medium">
-                          {user.orderCount} orders
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {user.totalSpent}
-                        </div>
-                      </div>
-                    </Table.Data>
-                    <Table.Data>
-                      <div>
-                        <div>{user.createdOn}</div>
-                        <div className="text-xs text-gray-500">
-                          Last active: {user.lastLogin}
-                        </div>
-                      </div>
-                    </Table.Data>
-                    <Table.Data>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleViewUser(user)}
-                          className="text-gray-500 hover:text-mayormoto-blue p-1"
-                          title="View Details"
-                        >
-                          <BsEye />
-                        </button>
-                        <button
-                          className="text-gray-500 hover:text-mayormoto-blue p-1"
-                          title="Edit User"
-                        >
-                          <FiEdit />
-                        </button>
-                        <KebabMenu
-                          items={[
-                            {
-                              label: "Send Password Reset",
-                              onClick: () => console.log("Send reset"),
-                            },
-                            {
-                              label:
-                                user.status === "blocked"
-                                  ? "Unblock User"
-                                  : "Block User",
-                              onClick: () => console.log("Block/Unblock"),
-                            },
-                            {
-                              label: "Archive Account",
-                              onClick: () => console.log("Archive"),
-                            },
-                            {
-                              label: "Delete Account",
-                              onClick: () => console.log("Delete"),
-                              className: "text-red-600",
-                            },
-                          ]}
-                        />
-                      </div>
-                    </Table.Data>
-                  </Table.TableRow>
-                ))}
-              </Table.TableBody>
-            </Table.DataTable>
-          </div>
 
           {/* Empty state (shown when no users match filter) */}
-          {filteredUsers.length === 0 && (
+          {filteredUsers.length < 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="h-24 w-24 text-gray-300 mb-4">
                 <svg
@@ -481,18 +310,139 @@ export default function User() {
                 Clear Filters
               </button>
             </div>
-          )}
+          ) : (
+            <div className="overflow-x-auto">
+              <Table.DataTable>
+                <Table.TableHead>
+                  <Table.TableRow>
+                    <Table.Header>
+                      <input
+                        type="checkbox"
+                        className="rounded border-gray-300"
+                      />
+                    </Table.Header>
+                    <Table.Header position="left">User</Table.Header>
+                    <Table.Header position="left">Contact Info</Table.Header>
+                    <Table.Header position="left">Status</Table.Header>
+                    <Table.Header position="left">Orders</Table.Header>
+                    <Table.Header position="left">Joined</Table.Header>
+                    <Table.Header position="center">Actions</Table.Header>
+                  </Table.TableRow>
+                </Table.TableHead>
+                <Table.TableBody>
+                  {filteredUsers.map((user) => (
+                    <Table.TableRow key={user.id}>
+                      <Table.Data>
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300"
+                        />
+                      </Table.Data>
+                      <Table.Data>
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="h-10 w-10 rounded-full
+                         bg-gray-200 overflow-hidden flex items-center justify-center"
+                          >
+                            {/* <img
+                            src={user.avatar}
+                            alt={user.name}
+                            className="h-full w-full object-cover"
+                          /> */}
 
-          {/* Footer with summary */}
-          <div className="px-6 py-4 border-t border-gray-200 flex justify-between items-center text-sm text-gray-500">
-            <div>
-              {filteredUsers.length > 0
-                ? `Showing ${filteredUsers.length} ${
-                    filteredUsers.length === 1 ? "user" : "users"
-                  }`
-                : "No users found"}
+                            <User2Icon size={30} />
+                          </div>
+                          <div>
+                            <div className="font-medium text-gray-900">
+                              {user.name}
+                            </div>
+                            <div className="text-xs text-gray-500 truncate max-w-xs">
+                              {user.address}
+                            </div>
+                          </div>
+                        </div>
+                      </Table.Data>
+                      <Table.Data>
+                        <div>
+                          <div className="text-gray-900">{user.email}</div>
+                          <div className="text-sm text-gray-500">
+                            {user.contact}
+                          </div>
+                        </div>
+                      </Table.Data>
+                      <Table.Data>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                            user.status
+                          )}`}
+                        >
+                          {getStatusIcon(user.status)}
+                          {user.status.charAt(0).toUpperCase() +
+                            user.status.slice(1)}
+                        </span>
+                      </Table.Data>
+
+                      <Table.Data>
+                        <div>
+                          <div className="font-medium">
+                            {user.orderCount} orders
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {formatMoney(user.totalSpent)}
+                          </div>
+                        </div>
+                      </Table.Data>
+                      <Table.Data>
+                        <div>
+                          <div>{user.createdOn}</div>
+                          <div className="text-xs text-gray-500">
+                            Last active: {user.lastLogin}
+                          </div>
+                        </div>
+                      </Table.Data>
+                      <Table.Data>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleViewUser(user)}
+                            className="text-gray-500 hover:text-mayormoto-blue p-1"
+                            title="View Details"
+                          >
+                            <BsEye />
+                          </button>
+                          <button
+                            className="text-gray-500 hover:text-mayormoto-blue p-1"
+                            title="Edit User"
+                          >
+                            <FiEdit />
+                          </button>
+                          <KebabMenu
+                            items={[
+                              {
+                                label:
+                                  user.status === "blocked"
+                                    ? "Unblock User"
+                                    : "Block User",
+                                onClick: () => console.log("Block/Unblock"),
+                              },
+                              {
+                                label: "Archive Account",
+                                onClick: () => console.log("Archive"),
+                              },
+                              {
+                                label: "Delete Account",
+                                onClick: () => console.log("Delete"),
+                                className: "text-red-600",
+                              },
+                            ]}
+                          />
+                        </div>
+                      </Table.Data>
+                    </Table.TableRow>
+                  ))}
+                </Table.TableBody>
+              </Table.DataTable>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

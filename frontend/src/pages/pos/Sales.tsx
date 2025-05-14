@@ -40,7 +40,13 @@ const topProducts = [
   { id: 1, name: "Helmet", sales: 145, revenue: 72500, growth: 12.3 },
   { id: 2, name: "Top Box", sales: 237, revenue: 21330, growth: 8.7 },
   { id: 3, name: "Safety Gear", sales: 58, revenue: 69600, growth: 5.2 },
-  { id: 4, name: "Accessories & Electronics", sales: 129, revenue: 32250, growth: -2.4 },
+  {
+    id: 4,
+    name: "Accessories & Electronics",
+    sales: 129,
+    revenue: 32250,
+    growth: -2.4,
+  },
   { id: 5, name: "Lubricant & Oils", sales: 89, revenue: 8010, growth: 15.8 },
 ];
 
@@ -221,7 +227,7 @@ export default function Sales() {
             </div>
           </div>
 
-          <div className="bg-white w-full rounded-sm p-6  border-gray-200">
+          <div className="bg-white w-full rounded-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">

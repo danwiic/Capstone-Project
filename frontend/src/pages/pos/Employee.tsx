@@ -110,14 +110,6 @@ export default function Employee() {
     setShowViewModal(true);
   };
 
-  // Count by status
-  const statusCounts = {
-    all: employees.length,
-    active: employees.filter((emp) => emp.status === "active").length,
-    inactive: employees.filter((emp) => emp.status === "inactive").length,
-    "on leave": employees.filter((emp) => emp.status === "on leave").length,
-  };
-
   const filterEmployees = employees.filter((emp) => {
     const filterResult =
       selectedFilter === "all" || emp.status === selectedFilter;
@@ -178,9 +170,6 @@ export default function Employee() {
                 }`}
               >
                 <span className="capitalize">{status}</span>
-                <span className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
-                  {statusCounts[status]}
-                </span>
               </div>
             ))}
           </div>
@@ -212,7 +201,7 @@ export default function Employee() {
                 <span>Filters</span>
               </button>
               <button
-               className="flex items-center gap-2 px-4 py-2 bg-mayormoto-blue text-white rounded-lg
+                className="flex items-center gap-2 px-4 py-2 bg-mayormoto-blue text-white rounded-lg
                hover:bg-mayormoto-blue-hover text-sm"
               >
                 <TfiExport size={16} />
@@ -401,32 +390,6 @@ export default function Employee() {
                   placeholder="Set initial password"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Role*
-                </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  <option value="">Select Role</option>
-                  {roles.map((role) => (
-                    <option key={role} value={role.toLowerCase()}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Department*
-                </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  <option value="">Select Department</option>
-                  {departments.map((dept) => (
-                    <option key={dept} value={dept.toLowerCase()}>
-                      {dept}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
 
             <div className="mb-6">
@@ -477,7 +440,7 @@ export default function Employee() {
 
       {/* View Employee Modal */}
       {showViewModal && selectedEmployee && (
-        <div className="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50">
+        <div className="fixed text-sm inset-0 bg-black/45 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-gray-800">
@@ -504,7 +467,7 @@ export default function Employee() {
                   <Status status={selectedEmployee.status} />
                 </div>
 
-                <div className="mt-6 w-full">
+                <div className="pt-6 flex flex-col gap-1 text-sm w-full">
                   <button className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-2">
                     <Edit size={16} />
                     <span>Edit Profile</span>
@@ -548,16 +511,6 @@ export default function Employee() {
                         <p className="text-gray-800 font-medium">
                           {selectedEmployee.id}
                         </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Department</p>
-                        <p className="text-gray-800">
-                          {selectedEmployee.department}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Role</p>
-                        <p className="text-gray-800">{selectedEmployee.role}</p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Join Date</p>

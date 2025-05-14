@@ -1,3 +1,4 @@
+import cloudinary from "../config/cloudinary";
 import prisma from "../config/db";
 
 export const createProduct = async (req: any, res: any) => {

@@ -6,6 +6,9 @@ import category from "./routes/categoryRoute";
 import brand from "./routes/brandRoutes";
 import wishlist from "./routes/wishlistRoutes";
 import cart from "./routes/cartRoutes";
+import image from "./routes/imageRoute";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -17,5 +20,6 @@ app.use("/category", category);
 app.use("/brand", brand);
 app.use("/wishlist", wishlist);
 app.use("/cart", cart);
+app.use("/image", image);
 
 app.listen(3000, () => console.log("Server is running on port 3000"));

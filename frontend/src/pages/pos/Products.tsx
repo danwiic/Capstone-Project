@@ -11,7 +11,6 @@ export default function Products() {
   const handleViewProduct = (productId: string) => {
     setSelectedProductId(productId);
     console.log("Selected Product ID:", productId);
-    
   };
 
   const handleBackToList = () => {
@@ -19,15 +18,19 @@ export default function Products() {
   };
 
   return (
-    <Layout>
-      {selectedProductId ? (
-        <ProductDetails
-          productId={selectedProductId}
-          onBack={handleBackToList}
-        />
-      ) : (
-        <ProductList onProductSelect={handleViewProduct} />
-      )}
-    </Layout>
+    <div className="w-full">
+      <Layout>
+        <div className="w-auto">
+          {selectedProductId ? (
+            <ProductDetails
+              productId={selectedProductId}
+              onBack={handleBackToList}
+            />
+          ) : (
+            <ProductList onProductSelect={handleViewProduct} />
+          )}
+        </div>
+      </Layout>
+    </div>
   );
 }

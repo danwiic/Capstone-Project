@@ -66,7 +66,7 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
   return (
     <>
       <div className="md:col-span-1 lg:col-span-2 row-span-3">
-        <div className="w-full h-fit lg:sticky lg:top-40 bg-white shadow-1 p-6 rounded flex flex-col justify-between gap-6">
+        <div className="w-full h-fit lg:sticky lg:top-30 bg-white shadow-1 p-6 rounded flex flex-col justify-between gap-6">
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold">{name}</h2>
             <hr className="text-gray-300" />
