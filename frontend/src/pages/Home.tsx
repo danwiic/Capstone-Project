@@ -64,19 +64,13 @@ function Home() {
         <Navbar>
           <div className="flex flex-col gap-10 justify-center pb-10">
             <div className="relative h-auto w-full ">
-              <img
-                title="Background Image"
-                src={bg}
-                className="h-full w-full object-cover cursor-pointer "
-              />
-              <span className="absolute top-[70%] left-8">
-                <Link to="/products"
-                  className="bg-mayormoto-pink text-white text-sm
-                  px-4 py-2 rounded cursor-pointer hover:bg-mayormoto-blue"
-                >
-                  SHOP NOW
-                </Link>
-              </span>
+              <Link to={"/products"}>
+                <img
+                  title="Background Image"
+                  src={bg}
+                  className="h-full w-full object-cover cursor-pointer "
+                />
+              </Link>
             </div>
             <div className="px-30 flex flex-col items-center ">
               <div className=" max-w-[100rem] w-full flex flex-col gap-20">

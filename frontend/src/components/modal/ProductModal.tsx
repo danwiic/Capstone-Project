@@ -86,13 +86,10 @@ export default function ProductModal({
               </p>
 
               <div className="flex gap-3 items-center">
-                <button className="bg-mayormoto-blue text-white px-6 py-2 rounded hover:bg-mayormoto-blue-hover w-full transition-colors">
-                  Add to Cart
-                </button>
-
                 <button
                   onClick={() => navigate(`/product/${product.productId}`)}
-                  className="bg-gray-200 text-gray-800 px-6 py-2 rounded w-full hover:bg-gray-300 transition-colors"
+                  className="bg-mayormoto-pink text-white px-6 py-2
+                   rounded w-full hover:bg-mayormoto-pink/85 transition-colors"
                 >
                   View Details
                 </button>
