@@ -141,7 +141,7 @@ export default function User() {
           <div className="flex gap-3 items-center">
             <button
               className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded flex items-center gap-2 hover:bg-gray-50"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <BsArchive />
               <span>Archived Users</span>
@@ -188,11 +188,10 @@ export default function User() {
             <div className="flex gap-6 px-6">
               {filters.map((filter) => (
                 <button
-                  className={`py-4 px-1 text-sm font-medium ${
-                    activeTab === filter.toLowerCase()
-                      ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
+                  className={`py-4 px-1 text-sm font-medium ${activeTab === filter.toLowerCase()
+                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
+                    : "text-gray-500 hover:text-gray-700"
+                    }`}
                   onClick={() => setActiveTab(filter.toLowerCase())}
                 >
                   {filter}
@@ -232,18 +231,7 @@ export default function User() {
           {/* Filter Options (Conditional) */}
           {showFilters && (
             <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 grid grid-cols-4 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
-                  Role
-                </label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2 text-sm">
-                  <option value="">Any Role</option>
-                  <option value="customer">Customer</option>
-                  <option value="vip">VIP Customer</option>
-                  <option value="staff">Staff</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
+
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Registration Date
@@ -484,12 +472,8 @@ export default function User() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Left Column - User Info */}
                   <div className="md:col-span-1 flex flex-col items-center">
-                    <div className="h-32 w-32 rounded-full bg-gray-200 overflow-hidden mb-4">
-                      <img
-                        src={userDetails.avatar}
-                        alt={userDetails.name}
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="h-32 w-32 flex items-center justify-center rounded-full bg-gray-200 overflow-hidden mb-4">
+                      <User2Icon size={100} />
                     </div>
                     <h4 className="text-lg font-medium">{userDetails.name}</h4>
                     <p className="text-gray-500 mb-4">{userDetails.role}</p>
@@ -545,26 +529,6 @@ export default function User() {
 
                   {/* Right Column - Tabs */}
                   <div className="md:col-span-2">
-                    <div className="border-b border-gray-200">
-                      <nav className="flex -mb-px">
-                        <button className="text-mayormoto-blue border-b-2 border-mayormoto-blue py-2 px-3 text-sm font-medium">
-                          Overview
-                        </button>
-                        <button className="text-gray-500 hover:text-gray-700 py-2 px-3 text-sm font-medium">
-                          Orders
-                        </button>
-                        <button className="text-gray-500 hover:text-gray-700 py-2 px-3 text-sm font-medium">
-                          Addresses
-                        </button>
-                        <button className="text-gray-500 hover:text-gray-700 py-2 px-3 text-sm font-medium">
-                          Activities
-                        </button>
-                        <button className="text-gray-500 hover:text-gray-700 py-2 px-3 text-sm font-medium">
-                          Notes
-                        </button>
-                      </nav>
-                    </div>
-
                     <div className="flex flex-col gap-4">
                       {/* Stats */}
                       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -581,7 +545,7 @@ export default function User() {
                             Total Spent
                           </div>
                           <div className="text-2xl font-semibold">
-                            {userDetails.totalSpent}
+                            {formatMoney(userDetails.totalSpent)}
                           </div>
                         </div>
                       </div>
@@ -613,45 +577,13 @@ export default function User() {
                                 <tbody className="bg-white divide-y divide-gray-200">
                                   <tr>
                                     <td className="px-4 py-2 text-sm">
-                                      #ORD-2304-1652
+                                      #ORD-0001
                                     </td>
                                     <td className="px-4 py-2 text-sm">
                                       May 8, 2025
                                     </td>
                                     <td className="px-4 py-2 text-sm">
-                                      $234.56
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                                        Delivered
-                                      </span>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="px-4 py-2 text-sm">
-                                      #ORD-2304-1498
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      April 30, 2025
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      $145.20
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                                        Delivered
-                                      </span>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="px-4 py-2 text-sm">
-                                      #ORD-2304-1357
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      April 22, 2025
-                                    </td>
-                                    <td className="px-4 py-2 text-sm">
-                                      $89.99
+                                      {formatMoney(1346.87)}
                                     </td>
                                     <td className="px-4 py-2 text-sm">
                                       <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
@@ -705,7 +637,7 @@ export default function User() {
                               <p className="text-sm text-gray-900">
                                 Added product to cart:{" "}
                                 <span className="font-medium">
-                                  Premium Wireless Headphones
+                                  RYO RPK-02 Elbow Guard
                                 </span>
                               </p>
                               <p className="text-xs text-gray-500">
@@ -735,7 +667,7 @@ export default function User() {
                               <p className="text-sm text-gray-900">
                                 Completed purchase:{" "}
                                 <span className="font-medium">
-                                  Order #ORD-2304-1652
+                                  Order  #ORD-0001
                                 </span>
                               </p>
                               <p className="text-xs text-gray-500">
@@ -765,7 +697,7 @@ export default function User() {
                               <p className="text-sm text-gray-900">
                                 Viewed product:{" "}
                                 <span className="font-medium">
-                                  Smart Home Security Camera
+                                  RYO RPK-01 Knee Guard
                                 </span>
                               </p>
                               <p className="text-xs text-gray-500">
@@ -773,93 +705,10 @@ export default function User() {
                               </p>
                             </div>
                           </div>
-
-                          <div className="flex items-start gap-3">
-                            <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 flex-shrink-0">
-                              <svg
-                                className="h-4 w-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-                                />
-                              </svg>
-                            </div>
-                            <div>
-                              <p className="text-sm text-gray-900">
-                                Left a review:{" "}
-                                <span className="font-medium">
-                                  5 stars for Bluetooth Speaker
-                                </span>
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                April 30, 2025 at 3:30 PM
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="mt-3 text-right">
-                          <button className="text-sm text-mayormoto-blue hover:underline">
-                            View all activity
-                          </button>
                         </div>
                       </div>
 
-                      {/* User Notes */}
-                      <div>
-                        <div className="flex justify-between items-center mb-3">
-                          <h5 className="font-medium">Staff Notes</h5>
-                          <button className="text-sm text-mayormoto-blue hover:underline">
-                            Add Note
-                          </button>
-                        </div>
 
-                        <div className="border border-gray-200 rounded p-4 mb-3">
-                          <div className="flex justify-between items-start mb-2">
-                            <span className="font-medium text-sm">
-                              Customer Service Note
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              April 25, 2025
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-700">
-                            Customer called regarding delayed shipment for order
-                            #ORD-2304-1357. Provided tracking information and
-                            estimated delivery date. Customer was satisfied with
-                            resolution.
-                          </p>
-                          <div className="mt-2 text-xs text-gray-500">
-                            Added by: Sarah Thompson
-                          </div>
-                        </div>
-
-                        <div className="border border-gray-200 rounded p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <span className="font-medium text-sm">
-                              Sales Note
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              March 12, 2025
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-700">
-                            VIP customer with consistent orders. Has expressed
-                            interest in premium audio products. Consider for
-                            beta testing program for new product line.
-                          </p>
-                          <div className="mt-2 text-xs text-gray-500">
-                            Added by: Michael Johnson
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
