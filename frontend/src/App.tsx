@@ -4,9 +4,7 @@ import { CartProvider } from "./context/cartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import Signup from "./pages/Signup";
 import Test from "./pages/Test";
 import ProductDetails from "./pages/ProductDetails";
 import Brand from "./pages/Brand";
@@ -28,6 +26,7 @@ import Checkout from "./pages/Checkout";
 import MyOrders from "./pages/MyOrders";
 import TrackOrder from "./pages/TrackOrder";
 import Address from "./pages/Address";
+import SignIn from "./pages/Signin";
 
 export default function App() {
   return (
@@ -62,13 +61,12 @@ export default function App() {
                 }
               />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/signup" element={<Signup />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/products" element={<Brand />} />
               <Route path="/orders" element={<MyOrders />} />
               <Route path="/track" element={<TrackOrder />} />
               <Route path="/address" element={<Address />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<SignIn />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/pos">
                 <Route path="dashboard" element={<Dashboard />} />
