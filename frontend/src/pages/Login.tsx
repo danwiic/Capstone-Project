@@ -5,6 +5,7 @@ import { useUserContext } from "../context/userContext";
 import axios from "axios";
 import { useReducer, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import ResetPassword from "../components/modal/ResetPassword";
 // import OTP from "../components/modal/OTP";
 
 type State = {
@@ -208,7 +209,12 @@ export default function Login() {
           </Button>
         </div>
       </form>
-      {/* {isOpen && <OTP isOpen={isOpen} onClose={closeModal} />} */}
+      {isOpen && (
+        <ResetPassword
+          isOpen={isOpen}
+          onClose={() => setIsModalOpen((prev) => !prev)}
+        />
+      )}
     </>
   );
 }
