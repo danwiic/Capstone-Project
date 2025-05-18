@@ -184,7 +184,7 @@ export default function OrderDetails({
                         </button>
                       </div>
                     </td>
-                    <td className="font-medium text-end px-2">
+                    <td className="font-medium text-end px-2 min-w-[100px]">
                       {formatMoney(
                         (prod.price || prod.ProductVariant?.[0]?.price || 0) *
                           prod.quantity

@@ -56,12 +56,12 @@ export default function SelectProduct({
 
   return (
     <div className="fixed inset-0 bg-black/45 flex items-center justify-center z-50">
-      <div className="bg-white rounded-md flex flex-col p-4 w-md max-h-[350px] ">
+      <div className="bg-white rounded-md flex flex-col p-4 w-md max-h-fit min-h-fit gap-4 ">
         <div className="flex items-center justify-between pb-4">
           <h2 className="text-lg font-semibold">{product?.name}</h2>
         </div>
         {product && (
-          <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col gap-4">
             <div
               className="flex flex-col gap-2 overflow-hidden items-center 
             justify-center h-full"
@@ -69,12 +69,12 @@ export default function SelectProduct({
               <img
                 src={product.ProductImage[0].imageUrl || "/placeholder"}
                 alt="image"
-                className="w-25 h-auto scale-80"
+                className="w-25 h-auto"
               />
             </div>
             <div className="col-span-2 flex flex-col gap-2">
               {product.ProductVariant.length > 0 && (
-                <div className="flex flex-col gap-2">
+                <div className="flex gap-1 items-center">
                   <span className="text-sm font-medium">Variants:</span>
                   <div className="flex gap-2">
                     {product.ProductVariant.map((pv, i) => (
@@ -118,7 +118,8 @@ export default function SelectProduct({
                       })
                     }
                     className="p-1 border-r-1 px-3 border-gray-300 text-xl w-fit
-              font-medium text-gray-400 hover:text-gray-700 cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300"
+              font-medium text-gray-400 hover:text-gray-700 cursor-pointer
+               disabled:cursor-not-allowed disabled:text-gray-300"
                   >
                     -
                   </button>
@@ -150,9 +151,17 @@ export default function SelectProduct({
             </div>
           </div>
         )}
-        <div className="flex items-center justify-end gap-2">
-          <button onClick={onClose}>Cancel</button>
+        <div className="flex items-center justify-end gap-2 text-sm">
           <button
+            onClick={onClose}
+            className="bg-gray-100 hover:bg-gray-200 px-3 py-2 border border-gray-300
+            rounded-sm"
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-mayormoto-pink hover:bg-mayormoto-pink/80 text-white 
+            px-3 py-2 rounded-sm"
             onClick={() => {
               console.log("Selected quantity", quantity);
               console.log("Product being added", updatedProduct);
@@ -160,7 +169,7 @@ export default function SelectProduct({
             }}
             disabled={!product}
           >
-            Add
+            Continue
           </button>
         </div>
       </div>
