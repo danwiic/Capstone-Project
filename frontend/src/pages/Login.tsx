@@ -149,14 +149,11 @@ export default function Login() {
 
           {/* Email */}
           <div className="flex flex-col w-full">
-            <label htmlFor="email" className="font-medium text-sm mb-2">
-              Email
-            </label>
             <InputBox
               type="email"
               name="email"
-              placeholder="Please enter your Email"
-              classname="w-full"
+              placeholder="Email"
+              className={`${state.emailError && "border-red-500"}`}
             />
             {state.emailError && (
               <div className="text-red-500 text-xs mt-1">
@@ -167,14 +164,11 @@ export default function Login() {
 
           {/* Password */}
           <div className="flex flex-col w-full">
-            <div className="flex justify-between items-center">
-              <label htmlFor="password" className="font-medium text-sm">
-                Password
-              </label>
+            <div className="flex justify-end items-center">
               <Link
                 to=""
                 onClick={() => setIsModalOpen(true)}
-                className="text-xs text-blue-600 hover:text-blue-800"
+                className="text-xs text-blue-600 hover:text-blue-800 self-end"
               >
                 Forgot Password?
               </Link>
@@ -185,8 +179,8 @@ export default function Login() {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
-                placeholder="Please enter your Password"
-                classname="w-full pr-10"
+                placeholder="Password"
+                className={`${state.passwordError && "border-red-500"}`}
               />
               <div
                 className="absolute inset-y-0 right-3 flex items-center cursor-pointer"

@@ -168,7 +168,7 @@ export const getTwoProducts = async (req: any, res: any) => {
             ProductImage: { select: { imageUrl: true } },
             category: true,
             ProductVariant: {
-              select: { price: true, stock: true, variantName: true },
+              select: { id: true, price: true, stock: true, variantName: true },
             },
             brand: { select: { name: true } },
           },

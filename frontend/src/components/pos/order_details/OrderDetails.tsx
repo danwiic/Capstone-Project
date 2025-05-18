@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 interface OrderDetailsProps {
   removeAllItems: () => void;
-  removeProduct: (id: string) => void;
   decreaseQuantity: (id: string) => void;
   products: {
     id: string;
@@ -18,7 +17,8 @@ interface OrderDetailsProps {
     ProductVariant?: {
       price: number;
       variantName: string;
-    }[];
+    };
+    selectedVariantIndex?: number;
   }[];
 }
 
@@ -30,6 +30,7 @@ interface Product {
   variantName?: string;
   price: number;
   ProductVariant?: {
+    id: string;
     price: number;
     variantName: string;
   }[];
@@ -37,7 +38,6 @@ interface Product {
 
 export default function OrderDetails({
   removeAllItems,
-  removeProduct,
   decreaseQuantity,
   products,
 }: OrderDetailsProps) {
@@ -54,9 +54,13 @@ export default function OrderDetails({
     (sum, product) =>
       sum +
       product.quantity *
-        (product.price || product.ProductVariant?.[0]?.price || 0),
+        (product.price ||
+          (product.ProductVariant && product.ProductVariant[0]?.price) ||
+          0),
     0
   );
+
+  console.log(selectedProducts, "selectedProducts0000");
 
   const tax = subtotal * 0.1; // Update as needed
   const discount = 0; // Update as needed
@@ -76,8 +80,6 @@ export default function OrderDetails({
     );
   };
 
-  console.log("selectedProducts", selectedProducts);
-
   const addQuantity = (id: string) => {
     setSelectedProducts((prevProducts) =>
       prevProducts.map((prod) =>
@@ -87,7 +89,6 @@ export default function OrderDetails({
   };
 
   const handleCashInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow numbers and decimal points
     const value = e.target.value.replace(/[^0-9.]/g, "");
     setCashAmount(value);
   };
@@ -127,11 +128,12 @@ export default function OrderDetails({
 
               <tbody>
                 {selectedProducts.map((prod, i) => (
-                  <tr key={i} className="text-sm">
+                  <tr key={i} className="text-sm ">
                     <td className="text-gray-600 p-1 w-fit">
                       {prod.name}{" "}
-                      {prod.ProductVariant?.length > 1 &&
-                        `- ${prod.ProductVariant?.[0]?.variantName}`}
+                      {prod.ProductVariant &&
+                        prod.ProductVariant?.length > 0 &&
+                        `- ${prod.ProductVariant[0].variantName}`}
                     </td>
                     <td className="text-left ">
                       <div
@@ -149,7 +151,6 @@ export default function OrderDetails({
                           className="w-8 text-center px-1 outline-0"
                           value={prod.quantity}
                           onChange={(e) => {
-                            // Allow empty string for better UX while typing
                             if (e.target.value === "") {
                               setSelectedProducts((prevProducts) =>
                                 prevProducts.map((p) =>
@@ -159,15 +160,13 @@ export default function OrderDetails({
                               return;
                             }
 
-                            // Only accept numeric input
                             if (/^\d+$/.test(e.target.value)) {
-                              const newQuantity = parseInt(e.target.value, 10);
+                              const newQuantity = parseInt(e.target.value);
                               changeQuantity(prod.id, newQuantity);
                             }
                           }}
                           onBlur={() => {
-                            // When input loses focus, ensure quantity is at least 1
-                            // or remove product if quantity is 0
+                        
                             if (prod.quantity === 0) {
                               setSelectedProducts((prevProducts) =>
                                 prevProducts.filter((p) => p.id !== prod.id)

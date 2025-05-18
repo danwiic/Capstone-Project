@@ -151,14 +151,11 @@ export default function Signup() {
 
           {/* Email */}
           <div className="flex flex-col w-full">
-            <label htmlFor="email" className="font-medium text-sm mb-2">
-              Email
-            </label>
             <InputBox
               type="email"
               name="email"
-              placeholder="Please enter your Email"
-              classname="w-full"
+              placeholder="Email"
+              className={`${state.emailError && "border-red-500"}`}
             />
             {state.emailError && (
               <div className="text-red-500 text-xs mt-1">
@@ -169,15 +166,12 @@ export default function Signup() {
 
           {/* Password */}
           <div className="flex flex-col w-full relative">
-            <label htmlFor="password" className="font-medium text-sm mb-2">
-              Password
-            </label>
             <div className="relative w-full">
               <InputBox
                 type={showPassword ? "text" : "password"}
                 name="password"
-                placeholder="Please enter your Password"
-                classname="w-full pr-10"
+                placeholder="Password"
+                className={`${state.passwordError && "border-red-500"}`}
               />
               <div
                 className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
@@ -195,21 +189,16 @@ export default function Signup() {
 
           {/* Confirm Password */}
           <div className="flex flex-col w-full relative">
-            <label
-              htmlFor="confirmPassword"
-              className="font-medium text-sm mb-2"
-            >
-              Confirm Password
-            </label>
             <div className="relative w-full">
               <InputBox
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
-                placeholder="Please confirm your Password"
-                classname="w-full pr-10 border-0"
+                placeholder="Confirm password"
+                className={`${state.confirmPasswordError && "border-red-500"}`}
               />
               <div
-                className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                className="absolute inset-y-0 right-3 flex items-center 
+                cursor-pointer"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
               >
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
