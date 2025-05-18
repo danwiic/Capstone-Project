@@ -1,6 +1,7 @@
 import { formatMoney } from "../../../utils/formatMoney";
 
 interface Props {
+  addProduct: () => void;
   product: {
     productImage: string;
     productName: string;
@@ -9,9 +10,12 @@ interface Props {
   };
 }
 
-export default function PosProduct({ product }: any) {
+export default function PosProduct({ addProduct, product }: Props) {
   return (
-    <div className="py-4 bg-white rounded shadow-1 w-full h-auto flex flex-col gap-2 ">
+    <div
+      onClick={addProduct}
+      className="py-4 bg-white rounded shadow-1 w-full h-auto flex flex-col justify-between gap-2 "
+    >
       <div className="w-full flex items-center justify-center">
         <div className="flex justify-center w-20 h-30">
           <img
