@@ -5,9 +5,13 @@ import { useUserContext } from "../../context/userContext.tsx";
 import LoginNav from "./LoginNav.tsx";
 import Footer from "../footer/Footer.tsx";
 import { Link, useLocation } from "react-router-dom";
+import { FaMessage } from "react-icons/fa6";
+
 export default function Navbar({ children }: { children?: React.ReactNode }) {
+  const { user } = useUserContext();
+
   return (
-    <>
+    <div className="relative flex flex-col justify-center">
       <div className="flex justify-center sticky top-0 z-50">
         <div className="flex-1 flex flex-col shadow-sm">
           <div
@@ -41,11 +45,22 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           </div> */}
         </div>
       </div>
-      <div className="flex justify-center w-full">
-        <main className="max-w-[100rem] w-full">{children}</main>
+      <div className="flex justify-center w-full ">
+        <main className="max-w-[100rem] w-full relative">{children}</main>
       </div>
+
       <Footer />
-    </>
+      {user && (
+        <div className="sticky bottom-10 left-full z-50 w-fit">
+          <div
+            className="w-fit flex items-center justify-center
+         bg-mayormoto-pink rounded-full shadow-lg"
+          >
+            <FaMessage size={50} className=" text-white p-3" />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -92,7 +107,9 @@ function NavItems() {
       {navItems.map((item, i) => (
         <Link
           to={item.path}
-          className={`py-3 text-sm font-bold uppercase ${isActiveLink(item.path)}`}
+          className={`py-3 text-sm font-bold uppercase ${isActiveLink(
+            item.path
+          )}`}
           key={i}
         >
           <span>{item.name}</span>

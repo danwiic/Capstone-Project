@@ -6,6 +6,7 @@ import { ArrowRight, Box, Search } from "lucide-react";
 export default function MyOrders() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const filters = [
     "All",
     "To Pay",

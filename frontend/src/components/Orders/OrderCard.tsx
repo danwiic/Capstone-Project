@@ -3,6 +3,7 @@ import { formatMoney } from "../../utils/formatMoney";
 import formatDate from "../../utils/formatDate";
 import { useState } from "react";
 import Refund from "../modal/Refund";
+import SubmitReview from "../modal/SubmitReview";
 
 interface OrderCardProps {
   orderId: string;
@@ -29,6 +30,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
   }
 
   const [opeRefund, setOpenRefund] = useState(false);
+  const [openReview, setOpenReview] = useState(false);
 
   function statusColor(status: string) {
     switch (status) {
@@ -115,11 +117,12 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
             >
               <div className="flex flex-col gap-1">
                 <span>Placed on: {formatDate(orders.orderDate)}</span>
-                {orders.orderStatus !== "Completed" && orders.orderStatus !== "Cancelled" && (
-                  <span>
-                    Estimated Delivery: {formatDate(orders.orderDate + 2)}
-                  </span>
-                )}
+                {orders.orderStatus !== "Completed" &&
+                  orders.orderStatus !== "Cancelled" && (
+                    <span>
+                      Estimated Delivery: {formatDate(orders.orderDate + 2)}
+                    </span>
+                  )}
                 {orders.orderStatus === "Completed" && (
                   <span>Received on: {formatDate(orders.orderDate + 1)}</span>
                 )}
@@ -141,6 +144,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
               {orders.orderStatus === "Completed" && (
                 <>
                   <button
+                    onClick={() => setOpenReview((prev) => !prev)}
                     className="py-2 px-4 text-sm font-semibold border border-gray-200 hover:bg-gray-200
             bg-gray-100 transition duration-200 ease-in-out rounded-full text-gray-500"
                   >
@@ -162,25 +166,33 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
                   >
                     Buy Again
                   </button>
-
-
                 </>
               )}
-              {orders.orderStatus !== "Completed" && orders.orderStatus !== "Cancelled" && (
-                <button
-                  className="py-2 px-4 text-sm font-semibold text-white rounded-full
+              {orders.orderStatus !== "Completed" &&
+                orders.orderStatus !== "Cancelled" && (
+                  <button
+                    className="py-2 px-4 text-sm font-semibold text-white rounded-full
            bg-mayormoto-pink hover:bg-mayormoto-pink/80 transition 
            duration-200 ease-in-out"
-                >
-                  Track Order
-                </button>
-              )}
+                  >
+                    Track Order
+                  </button>
+                )}
             </div>
           </div>
         </div>
       </div>
       {opeRefund && (
-        <Refund isOpen={opeRefund} onClose={() => setOpenRefund(prev => !prev)} />
+        <Refund
+          isOpen={opeRefund}
+          onClose={() => setOpenRefund((prev) => !prev)}
+        />
+      )}
+      {openReview && (
+        <SubmitReview
+          isOpen={openReview}
+          onClose={() => setOpenReview((prev) => !prev)}
+        />
       )}
     </>
   );

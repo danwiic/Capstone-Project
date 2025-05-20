@@ -310,37 +310,49 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
               </div>
 
               {/* Image URLs Section */}
-              <div className="col-span-2 flex flex-col gap-3">
-                <div className="mb-2">
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">
+              <div className="col-span-2 flex  gap-3">
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="attach"
+                    className="text-sm font-medium text-gray-700 mb-1 block"
+                  >
                     Upload Image Files
                   </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) => handleImageUpload(e.target.files)}
-                    className="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-md file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:bg-blue-100"
-                  />
-                </div>
-                <div className="flex gap-3 flex-wrap mt-2">
-                  {imageUrls.length > 0 &&
-                    imageUrls.map((url, i) => (
-                      <div key={i} className="relative w-16">
-                        <img src={url} className="h-auto w-full" />
-                        <X
-                          size={25}
-                          onClick={() => handleImageRemove(url)}
-                          className="absolute -top-2 -right-2
-                        bg-gray-200 rounded-full text-gray-500 p-1 cursor-pointer"
+                  <div className="flex gap-3 items-center">
+                    <div>
+                      <label htmlFor="attach" className="w-fit">
+                        <Plus
+                          size={45}
+                          className="p-3 text-white bg-mayormoto-pink
+                       rounded-full cursor-pointer hover:bg-mayormoto-pink/80"
                         />
-                      </div>
-                    ))}
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="attach"
+                        name="attach"
+                        multiple
+                        onChange={(e) => handleImageUpload(e.target.files)}
+                        className="hidden"
+                      />
+                    </div>
+                    <div className="flex gap-3 flex-wrap mt-2">
+                      {imageUrls.length > 0 &&
+                        imageUrls.map((url, i) => (
+                          <div key={i} className="relative w-16">
+                            <img src={url} className="h-auto w-full" />
+                            <X
+                              size={25}
+                              onClick={() => handleImageRemove(url)}
+                              className="absolute -top-2 -right-2
+                        bg-gray-200 rounded-full text-gray-500 p-1
+                         cursor-pointer"
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
