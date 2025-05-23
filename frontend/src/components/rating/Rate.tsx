@@ -6,6 +6,7 @@ interface ProductRatingProps {
   readOnly?: boolean; // Optional prop to determine if the rating should be read-only
   size?: "small" | "medium" | "large";
   onChangeActive?: (event: React.SyntheticEvent, newHover: number) => void;
+  precision?: number;
 }
 
 const ProductRating: React.FC<ProductRatingProps> = ({
@@ -14,9 +15,8 @@ const ProductRating: React.FC<ProductRatingProps> = ({
   readOnly = false,
   size = "small",
   onChangeActive,
+  precision = 0.5,
 }) => {
-
-
   return (
     <div className="flex flex-col items-center gap-1">
       <Rating
@@ -25,7 +25,7 @@ const ProductRating: React.FC<ProductRatingProps> = ({
         value={value}
         onChange={onChange}
         readOnly={readOnly}
-        precision={0.5}
+        precision={precision}
         onChangeActive={onChangeActive}
       />
     </div>

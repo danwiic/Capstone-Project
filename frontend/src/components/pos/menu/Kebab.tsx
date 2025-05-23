@@ -66,47 +66,49 @@ export default function KebabMenu({
   const menuItems = items.length > 0 ? items : defaultItems;
 
   return (
-    <div className="relative inline-block" ref={menuRef}>
-      <button
-        onClick={toggleMenu}
-        className={`p-0.5 rounded-full hover:bg-gray-200 focus:outline-none 
+    <div className="abosolute z-10">
+      <div className="relative inline-block " ref={menuRef}>
+        <button
+          onClick={toggleMenu}
+          className={`p-0.5 rounded-full hover:bg-gray-200 focus:outline-none 
             focus:ring-2 focus:ring-gray-300 transition-colors ${buttonClassName}`}
-        aria-label="Menu"
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-      >
-        {icon}
-      </button>
-
-      {isOpen && (
-        <div
-          className={`absolute mt-2 w-48 bg-white rounded-md border-gray-200 border 
-            z-10 shadow-1 ring-black ring-opacity-5 ${positionClasses[position]} ${menuClassName}`}
-          role="menu"
-          aria-orientation="vertical"
+          aria-label="Menu"
+          aria-expanded={isOpen}
+          aria-haspopup="true"
         >
-          <div className="py-1">
-            {menuItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  item.onClick && item.onClick();
-                  setIsOpen(false);
-                }}
-                className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
-                  item.className || ""
-                } ${itemClassName}`}
-                role="menuitem"
-              >
-                <div className="flex items-center">
-                  {item.icon && <span className="mr-2">{item.icon}</span>}
-                  {item.label}
-                </div>
-              </button>
-            ))}
+          {icon}
+        </button>
+
+        {isOpen && (
+          <div
+            className={`absolute mt-2 w-48 bg-white rounded-md border-gray-200 border 
+            z-10 shadow-1 ring-black ring-opacity-5 ${positionClasses[position]} ${menuClassName}`}
+            role="menu"
+            aria-orientation="vertical"
+          >
+            <div className="py-1">
+              {menuItems.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    item.onClick && item.onClick();
+                    setIsOpen(false);
+                  }}
+                  className={`block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
+                    item.className || ""
+                  } ${itemClassName}`}
+                  role="menuitem"
+                >
+                  <div className="flex items-center">
+                    {item.icon && <span className="mr-2">{item.icon}</span>}
+                    {item.label}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

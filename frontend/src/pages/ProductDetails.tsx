@@ -22,6 +22,8 @@ type ProductDetailsProps = {
   price?: number;
   reviews?: { user: string; comment: string; rating: number }[];
   createdAt?: string;
+  noOfReviews: number;
+  averageRating: number;
 };
 
 type FiveProducts = {
@@ -57,6 +59,8 @@ export default function ProductDetails() {
 
     fetchProduct();
   }, [id]);
+
+  console.log("products ========= ", product);
 
   useEffect(() => {
     const fetchFiveProducts = async () => {
@@ -100,7 +104,11 @@ export default function ProductDetails() {
               name={product?.name ?? ""}
               description={product?.description ?? ""}
             />
-            <ProductReviews reviews={product?.reviews} />
+            <ProductReviews
+              reviews={product?.reviews}
+              totalReviews={product.noOfReviews}
+              rating={product.averageRating}
+            />
           </div>
         </main>
 

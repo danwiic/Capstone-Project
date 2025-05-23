@@ -94,34 +94,53 @@ export const getOneProduct = async (req: any, res: any) => {
   const { id } = req.params;
 
   try {
-    const getProduct = await prisma.product.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        stock: true,
-        createdAt: true,
-        category: {
-          select: {
-            id: true,
-            name: true,
+    const getProduct = await prisma.product
+      .findUnique({
+        where: { id },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          stock: true,
+          createdAt: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
-        },
-        brand: {
-          select: {
-            name: true,
+          brand: {
+            select: {
+              name: true,
+            },
           },
-        },
-        ProductImage: {
-          select: {
-            imageUrl: true,
+          ProductImage: {
+            select: {
+              imageUrl: true,
+            },
           },
+          ProductVariant: true,
         },
-        ProductVariant: true,
-      },
-    });
+      })
+      .then(async (product) => {
+        if (!product) return null;
+        
+        const ratingStats = await prisma.review.aggregate({
+          where: { productId: product.id },
+          _sum: { rating: true },
+          _count: { rating: true },
+        });
+
+        return {
+          ...product,
+          noOfReviews: ratingStats._count.rating || 0,
+          averageRating:
+            ratingStats._count.rating > 0
+              ? (ratingStats._sum.rating ?? 0) / ratingStats._count.rating
+              : 0,
+        };
+      });
 
     if (!getProduct)
       return res.status(404).json({ error: "Product not found" });

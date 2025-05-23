@@ -95,9 +95,7 @@ function NavItems() {
   after:w-full after:bottom-0 after:left-0 after:transition-all after:duration-200 
     after:ease-in-out hover:text-mayormoto-pink after:bg-mayormoto-pink 
    after:bottom-0 after:left-0 after:rounded-full `;
-  const isNotActive = `text-gray-500 hover:text-mayormoto-pink transition-all duration-200 
-  after:w-0 relative after:absolute after:bottom-0 after:left-0 after:h-1 after:bg-mayormoto-pink
-  after:transition-all after:duration-200 after:ease-in-out after:rounded-full hover:after:w-full`;
+  const isNotActive = `text-gray-500 hover:text-mayormoto-pink transition-all duration-200 `;
 
   const isActiveLink = (path: string) => {
     return loc.pathname === path ? isActive : isNotActive;

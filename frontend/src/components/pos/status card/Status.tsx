@@ -1,6 +1,6 @@
 type StatusValue =
-  | "pending"
-  | "PENDING"
+  | "placed"
+  | "PLACED"
   | "active"
   | "ACTIVE"
   | "inactive"
@@ -35,7 +35,7 @@ export default function Status({ status }: Props) {
   return (
     <div
       className={`${
-        normalizedStatus === "pending"
+        normalizedStatus === "placed"
           ? "bg-yellow-100 text-yellow-800"
           : normalizedStatus === "processing"
           ? "bg-blue-100 text-blue-800"

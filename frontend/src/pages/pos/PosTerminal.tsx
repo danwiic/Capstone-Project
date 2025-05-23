@@ -150,32 +150,34 @@ export default function PosTerminal() {
               <Categories selectCategory={setSelectedCategory} />
             </div>
 
-            <div
-              className={`${
-                selectedProduct.length > 0 && !hideSummary
-                  ? "grid grid-cols-4"
-                  : "grid grid-cols-6"
-              } gap-2  overflow-y-auto scrollbar-thin 
-        scrollbar-thumb-rounded-xl p-1`}
-            >
-              {filteredProducts.map((pr: any) => (
-                <PosProduct
-                  addProduct={() => {
-                    setShowSelectProduct((prev) => !prev);
-                    setClickedProduct(pr);
-                  }}
-                  key={pr.id}
-                  product={{
-                    productName: pr.name || "",
-                    productCategory: pr.category?.name || "",
-                    productImage: pr.ProductImage?.[0]?.imageUrl || "",
-                    productPrice:
-                      pr.price != null
-                        ? Number(pr.price)
-                        : pr.ProductVariant?.[0]?.price || 0,
-                  }}
-                />
-              ))}
+            <div className="group relative">
+              <div
+                className={`${
+                  selectedProduct.length > 0 && !hideSummary
+                    ? "grid grid-cols-4"
+                    : "grid grid-cols-6"
+                } gap-2 overflow-y-auto scrollbar-hide scrollbar-hover p-1 
+                 max-h-[calc(100vh-150px)] transition-all duration-300 ease-in-out`}
+              >
+                {filteredProducts.map((pr: any) => (
+                  <PosProduct
+                    addProduct={() => {
+                      setShowSelectProduct((prev) => !prev);
+                      setClickedProduct(pr);
+                    }}
+                    key={pr.id}
+                    product={{
+                      productName: pr.name || "",
+                      productCategory: pr.category?.name || "",
+                      productImage: pr.ProductImage?.[0]?.imageUrl || "",
+                      productPrice:
+                        pr.price != null
+                          ? Number(pr.price)
+                          : pr.ProductVariant?.[0]?.price || 0,
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 

@@ -28,3 +28,34 @@
   margin: 0;
   font-family: Inter, sans-serif;
 }
+
+
+
+.scrollbar-hide {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;       
+  opacity: 0;           /* Safari and Chrome */
+}
+
+/* Thin scrollbar on hover */
+.group:hover .scrollbar-hover {
+  scrollbar-width: thin; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+.group:hover .scrollbar-hover::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  opacity: 100;
+}
+
+.group:hover .scrollbar-hover::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 6px;
+}
+
+

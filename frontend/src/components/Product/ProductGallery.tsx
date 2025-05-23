@@ -51,7 +51,8 @@ export default function ProductGallery({
         </div>
         {showZoom && (
           <div
-            className="w-64 h-64 border shadow-md border-gray-300 bg-white bg-no-repeat bg-contain absolute left-[110%] top-0 z-10"
+            className="w-64 h-64 border shadow-md
+             border-gray-300 bg-white bg-no-repeat bg-contain absolute left-[110%] top-0 z-10"
             style={{
               backgroundImage: `url('${images[0].imageUrl}')`,
               backgroundSize: "160%",

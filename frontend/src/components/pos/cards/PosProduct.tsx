@@ -17,7 +17,7 @@ export default function PosProduct({ addProduct, product }: Props) {
       className="py-4 bg-white rounded shadow-1 w-full h-auto flex flex-col justify-between gap-2 "
     >
       <div className="w-full flex items-center justify-center">
-        <div className="flex justify-center w-20 h-30">
+        <div className="flex justify-center w-auto h-30">
           <img
             src={product.productImage || "/placeholder"}
             alt="/"

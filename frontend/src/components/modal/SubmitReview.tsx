@@ -14,16 +14,11 @@ export default function SubmitReview({ isOpen, onClose }: SubmitReviewProps) {
   const [images, setImages] = useState<string[]>([]);
   const starDescriptions: Record<number, string> = {
     0: "Review",
-    0.5: "Very Bad",
-    1: "Bad",
-    1.5: "Poor",
-    2: "Fair",
-    2.5: "Average",
-    3: "Good",
-    3.5: "Very Good",
-    4: "Excellent",
-    4.5: "Outstanding",
-    5: "Perfect",
+    1: "Poor",
+    2: "Below Average",
+    3: "Average",
+    4: "Good",
+    5: "Excellent",
   };
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -69,6 +64,7 @@ export default function SubmitReview({ isOpen, onClose }: SubmitReviewProps) {
               </div>
             )}
             <Rate
+              precision={1}
               value={value}
               size="large"
               onChange={(event, newValue) => {
