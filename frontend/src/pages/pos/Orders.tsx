@@ -10,6 +10,15 @@ import { formatMoney } from "../../utils/formatMoney";
 import Status from "../../components/pos/status card/Status";
 import OrderDetails from "../../components/modal/OrderDetails";
 
+interface Order {
+  name: string;
+  productUrl: string;
+  quantity: number;
+  color: string;
+  variant: string;
+  price: number;
+}[]
+
 export default function Orders() {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,7 +57,7 @@ export default function Orders() {
       status: "placed",
       statusHistory: [
         { status: "placed", date: "2:25PM April 15, 2025" },
-        { status: "confirmed"},
+        { status: "confirmed" },
         { status: "packed" },
         { status: "shipped" },
         { status: "delivered" },
@@ -76,7 +85,7 @@ export default function Orders() {
       province: "Rizal",
       zipCode: "1870",
       contact: "09187654321",
-      status: "PROCESSING",
+      status: "packed",
       statusHistory: [
         { status: "placed", date: "9:10AM April 16, 2025" },
         { status: "confirmed", date: "11:10AM April 16, 2025" },
@@ -176,16 +185,7 @@ export default function Orders() {
     },
   ];
 
-  const countTotalPrice = (
-    products: {
-      name: string;
-      productUrl: string;
-      quantity: number;
-      color: string;
-      variant: string;
-      price: number;
-    }[]
-  ): number => {
+  const countTotalPrice = (products: Order): number => {
     return products.reduce((total, product) => {
       return total + product.price * product.quantity;
     }, 0);

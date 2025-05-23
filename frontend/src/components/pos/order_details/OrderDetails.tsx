@@ -66,9 +66,8 @@ export default function OrderDetails({
   const discount = 0; // Update as needed
 
   const cashValue = parseFloat(cashAmount) || 0;
-  const initialTotal = subtotal + tax - discount;
-  const change = cashValue > initialTotal ? cashValue - initialTotal : 0;
-  const total = initialTotal;
+  const grandTotal = tax + subtotal - discount;
+  const change = cashValue > grandTotal ? cashValue - grandTotal : 0;
 
   const changeQuantity = (id: string, quantity: number) => {
     if (quantity < 1) quantity = 1;
@@ -166,7 +165,6 @@ export default function OrderDetails({
                             }
                           }}
                           onBlur={() => {
-                        
                             if (prod.quantity === 0) {
                               setSelectedProducts((prevProducts) =>
                                 prevProducts.filter((p) => p.id !== prod.id)
@@ -216,7 +214,7 @@ export default function OrderDetails({
             >
               <div className="flex justify-between text-sm items-center">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">{formatMoney(initialTotal)}</span>
+                <span className="font-medium">{formatMoney(subtotal)}</span>
               </div>
 
               <div className="flex justify-between text-sm items-center ">
@@ -239,7 +237,7 @@ export default function OrderDetails({
               </div>
               <div className="flex justify-between text-lg font-medium items-center">
                 <span>Grand Total</span>
-                <span className="font-medium">{formatMoney(total)}</span>
+                <span className="font-medium">{formatMoney(grandTotal)}</span>
               </div>
             </div>
             <div className="border-b border-dashed border-gray-400 pb-3">

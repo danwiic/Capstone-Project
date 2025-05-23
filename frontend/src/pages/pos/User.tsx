@@ -185,10 +185,10 @@ export default function User() {
         <div className="bg-white border border-gray-200  rounded">
           {/* 2abs */}
           <div className="border-b border-gray-200">
-            <div className="flex gap-6 px-6">
+            <div className="flex gap-6 px-1">
               {filters.map((filter) => (
                 <button
-                  className={`py-4 px-1 text-sm font-medium ${activeTab === filter.toLowerCase()
+                  className={`py-4 px-6 text-sm font-medium ${activeTab === filter.toLowerCase()
                     ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
                     : "text-gray-500 hover:text-gray-700"
                     }`}

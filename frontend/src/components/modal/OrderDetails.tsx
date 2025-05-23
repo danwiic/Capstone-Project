@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check, Package, X } from "lucide-react";
 import { formatMoney } from "../../utils/formatMoney";
 
 interface OrderDetailsProps {
@@ -28,17 +28,20 @@ export default function OrderDetails({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
       <div
-        className="bg-body rounded-sm shadow-2xl flex flex-col 
-      min-w-sm w-fit relative animate-fade-in "
+        className="bg-body rounded-sm shadow-xl flex flex-col 
+      min-w-sm w-6xl relative animate-fade-in "
       >
         <div
           className="flex items-center justify-between
         p-3 border-b border-gray-300"
         >
-          <span className="text-lg font-medium">Order Details</span>
+          <span className="flex gap-1 items-centertext-lg font-medium">
+            <Package />
+            Order Details
+          </span>
           <X onClick={onClose} />
         </div>
-        <div className="p-3 flex flex-col gap-4 text-sm h-[32rem] w-fit overflow-auto">
+        <div className="p-3 flex flex-col gap-4 text-sm h-[32rem] w-full overflow-auto">
           <div className="grid grid-cols-4 bg-white border border-gray-300 rounded text-sm ">
             <div className="p-4 flex flex-col border-r border-gray-300">
               <span className="font-medium text-gray-500">Order No.</span>
@@ -72,18 +75,25 @@ export default function OrderDetails({
               {Array.from({ length: 5 }).map((_, index) => (
                 <>
                   <div
-                    className={`w-fit p-2 min-h-[3rem] min-w-[3rem] rounded-full
+                    className={`w-full h-0.5 border border-gray-300 not-first:hidden 
+                    ${
+                      orderDetails.statusHistory[index]?.date &&
+                      "border-mayormoto-pink"
+                    }`}
+                  ></div>
+                  <div
+                    className={`w-fit p-2 min-h-[2rem] min-w-[2rem] rounded-full
                  bg-gray-300 flex items-center justify-center ${
                    orderDetails.statusHistory[index]?.date &&
                    "bg-mayormoto-pink"
                  } `}
                   >
                     {orderDetails.statusHistory[index]?.date && (
-                      <Check className="text-white" />
+                      <Check className="text-white " size={16} />
                     )}
                   </div>
                   <div
-                    className={`w-full h-0.5 border border-gray-300 last:hidden 
+                    className={`w-full h-0.5 border border-gray-300  
                     ${
                       orderDetails.statusHistory[index]?.date &&
                       "border-mayormoto-pink"
@@ -95,10 +105,10 @@ export default function OrderDetails({
             <div className="flex justify-between ">
               {orderDetails.statusHistory.map((stsHistory: any) => (
                 <div className="flex flex-col text-xs  min-w-[7rem]">
-                  <div className="flex flex-col items-start text-xs ">
+                  <div className="flex flex-col items-center justify-center text-xs ">
                     <span
                       className={`${
-                        stsHistory.date && "text-mayormoto-pink"
+                        stsHistory.date && "text-mayormoto-pink font-semibold"
                       } w-full`}
                     >
                       {upFirstLetter(stsHistory.status)}
@@ -179,16 +189,6 @@ export default function OrderDetails({
                       </td>
                     </tr>
                   ))}
-                  <tr className="w-full">
-                    <td>
-                      <div className="w-full">
-                        <span>Total</span>
-                        <span> </span>
-                      </div>
-                    </td>
-                    <td></td>
-                    <td>1</td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -206,7 +206,7 @@ export default function OrderDetails({
             className="px-4 py-2 bg-mayormoto-pink text-white
           rounded hover:bg-mayormoto-pink/85 "
           >
-            Save
+            Update Status
           </button>
         </div>
       </div>
