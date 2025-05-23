@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { X, Plus, Trash } from "lucide-react";
+import { X, Plus, Trash, Package } from "lucide-react";
 import axios from "axios";
+import skuGenerator from "../../utils/skuGenerator";
+import { useId } from "react";
+
 interface AddProductProps {
   isOpen: boolean;
   onClose: () => void;
@@ -30,15 +33,15 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [brand, setBrand] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
   const [brands, setBrands] = useState<Brand[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [hasVariants, setHasVariants] = useState(false);
   const [variants, setVariants] = useState<Variant[]>([
     { id: "variant-1", sku: "", variantName: "", price: 0, stock: 0 },
   ]);
-
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -63,8 +66,6 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
     fetchBrands();
     fetchCategories();
   }, []);
-
-  console.log(imageUrls, "imageUrls");
 
   const addVariant = () => {
     setVariants([
@@ -105,7 +106,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
           description,
           categoryId: selectedCategory,
           brandId: brand,
-          images: imageUrls.filter((url) => url.trim() !== ""), // Filter out empty URLs
+          images: imageUrls.filter((url) => url.trim() !== ""),
           price: hasVariants ? null : parseFloat(price),
           variants: hasVariants ? variants : [],
         }
@@ -150,7 +151,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
 
     for (const file of Array.from(files)) {
       const formData = new FormData();
-      formData.append("images", file); // Change "file" to "images" to match the backend
+      formData.append("images", file);
 
       try {
         const res = await axios.post(
@@ -181,7 +182,9 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
     >
       <div className="flex flex-col bg-white w-full max-w-2xl p-6 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center pb-4 sticky top-0 bg-white">
-          <h2 className="text-xl font-bold text-gray-800">ADD NEW PRODUCT</h2>
+          <h2 className="text-lg font-bold text-gray-800 flex gap-1 items-center">
+            <Package /> New Product
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -197,9 +200,13 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
           scrollbar-thumb-gray-300 scrollbar-track-gray-50 
          "
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              className={`grid ${
+                !hasVariants ? "grid-cols-2" : "grid-cols-3"
+              } gap-4`}
+            >
               {/* Product Name Field */}
-              <div className="col-span-2">
+              <div className={` ${!hasVariants ? "col-span-2" : "col-span-3"}`}>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Product Name<span className="text-red-600">*</span>
                 </label>
@@ -208,12 +215,12 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                   value={productName}
                   placeholder="Enter product name"
                   onChange={(e) => setProductName(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded
+                   focus:outline-none  "
                   required
                 />
               </div>
 
-              {/* Price & Stock (shown only if no variants) */}
               {!hasVariants && (
                 <>
                   <div>
@@ -229,9 +236,9 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                         value={price}
                         placeholder="0"
                         onChange={(e) => setPrice(e.target.value)}
-                        className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded-md 
-                      focus:outline-none focus:ring-2 focus:ring-blue-500
-                      [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                        className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded 
+                      focus:outline-none  [appearance:textfield] 
+                      [&::-webkit-outer-spin-button]:appearance-none 
                       [&::-webkit-inner-spin-button]:appearance-none"
                         required={!hasVariants}
                         min="0"
@@ -239,42 +246,29 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                       />
                     </div>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      SKU<span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="SKU"
-                      className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none 
-                    focus:ring-2 focus:ring-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                    [&::-webkit-inner-spin-button]:appearance-none"
-                      min="0"
-                    />
-                  </div>
                 </>
               )}
 
-              {/* Category & Brand Selection */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category<span className="text-red-600">*</span>
+                  SKU<span className="text-red-600">*</span>
                 </label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  placeholder="SKU"
+                  value={skuGenerator({
+                    brand: selectedBrand,
+                    category: selectedCategoryName,
+                  })}
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded focus:outline-none 
+                    focus:ring-2 focus:ring-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                    [&::-webkit-inner-spin-button]:appearance-none"
+                  min="0"
+                  readOnly
+                />
               </div>
+
+              {/* Category & Brand Selection */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -283,20 +277,49 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                 <select
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="">Select a brand</option>
                   {brands.map((b) => (
-                    <option key={b.id} value={b.id}>
+                    <option
+                      onClick={() => setSelectedBrand(b.name)}
+                      key={b.id}
+                      value={b.id}
+                    >
                       {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category<span className="text-red-600">*</span>
+                </label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                  }}
+                  className="w-full text-sm px-3 py-2 border bg-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((cat: { name: string; id: string }) => (
+                    <option
+                      onClick={() => setSelectedCategoryName(cat.name)}
+                      key={cat.id}
+                      value={cat.id}
+                    >
+                      {cat.name}
                     </option>
                   ))}
                 </select>
               </div>
 
               {/* Description */}
-              <div className="col-span-2">
+              <div className={` ${!hasVariants ? "col-span-2" : "col-span-3"}`}>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
@@ -305,7 +328,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Write a brief description of the product..."
                   rows={4}
-                  className="w-full px-3 py-2 border text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border text-sm border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -323,8 +346,8 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                       <label htmlFor="attach" className="w-fit">
                         <Plus
                           size={45}
-                          className="p-3 text-white bg-mayormoto-pink
-                       rounded-full cursor-pointer hover:bg-mayormoto-pink/80"
+                          className="p-3 text-white bg-mayormoto-blue
+                       rounded-full cursor-pointer hover:bg-mayormoto-blue-hover"
                         />
                       </label>
                       <input
@@ -386,7 +409,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                 {variants.map((variant) => (
                   <div
                     key={variant.id}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-md relative"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded relative"
                   >
                     {variants.length > 1 && (
                       <button
@@ -414,7 +437,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                           )
                         }
                         placeholder="e.g. Small, Red, etc."
-                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                       />
                     </div>
@@ -429,7 +452,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                         onChange={(e) =>
                           updateVariant(variant.id, "sku", e.target.value)
                         }
-                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full text-sm px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                       />
                     </div>
@@ -452,7 +475,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                               parseFloat(e.target.value)
                             )
                           }
-                          className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded-md 
+                          className="w-full text-sm pl-8 px-3 py-2 border border-gray-300 rounded 
                         focus:outline-none focus:ring-2 focus:ring-blue-500
                         [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                         [&::-webkit-inner-spin-button]:appearance-none"
@@ -480,15 +503,16 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-white bg-mayormoto-blue
+               rounded hover:bg-mayormoto-blue-hover focus:outline-none focus:ring-2 "
             >
-              Save Product
+              Create Product
             </button>
           </div>
         </form>

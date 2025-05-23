@@ -9,14 +9,11 @@ import {
   ChevronRight,
   Tag,
   Box,
-  Calendar,
-  User,
 } from "lucide-react";
 import generateSKU from "../../../utils/skuGenerator";
 import AddProduct from "../../modal/AddProduct";
 import { formatMoney } from "../../../utils/formatMoney";
 import { getAllProducts } from "../../../services/products.ts";
-import formatDate from "../../../utils/formatDate.ts";
 import SpinningLoader from "../../loader/SpinningLoader.tsx";
 
 interface ProductListProps {
@@ -166,7 +163,7 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
         {/* Product Table */}
         <div className="bg-white rounded-sm border border-gray-200  overflow-hidden">
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
+            <div className="relative h-64 flex items-center justify-center bg-gray-200 animate-pulse">
               <SpinningLoader />
             </div>
           ) : productList.length === 0 ? (
@@ -228,24 +225,6 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
                       >
                         <div className="flex items-center">Stock</div>
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide"
-                      >
-                        <div className="flex items-center">
-                          <Calendar className="h-3.5 w-3.5 mr-1.5" />
-                          Created
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide"
-                      >
-                        <div className="flex items-center">
-                          <User className="h-3.5 w-3.5 mr-1.5" />
-                          Created by
-                        </div>
-                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -257,9 +236,12 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <div className="h-10 w-10 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
+                            <div
+                              className="h-10 w-10 flex-shrink-0 bg-gray-100 
+                            rounded-md overflow-hidden flex items-center justify-center"
+                            >
                               <img
-                                className="h-10 w-10"
+                                className="h-10 w-auto"
                                 src={
                                   prod?.ProductImage?.[0]?.imageUrl ||
                                   "/placeholder.png"
@@ -315,17 +297,6 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
                           `}
                           >
                             {getStockCount(prod)}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {formatDate(prod.createdAt)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <div className="h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-700">
-                              {getInitials("Dan")}
-                            </div>
-                            <span className="ml-2">Dan</span>
                           </div>
                         </td>
                       </tr>
@@ -453,14 +424,6 @@ function getStockCount(product: any): string {
   }
 
   return `${total} in stock`;
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
 }
 
 function generatePageNumbers(

@@ -54,7 +54,7 @@ export default function ProductDetails({
   );
   const [openUpdateVariant, setOpenUpdateVariant] = useState(false);
   const [openUpdateStock, setUpdateStock] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const [_, setSelectedVariant] = useState<string>("");
   const [openAddVariant, setOpenAddVariant] = useState(false);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function ProductDetails({
 
   if (loading) {
     return (
-      <div className="relative h-[40rem] flex items-center justify-center w-full">
+      <div className="relative h-[40rem] flex items-center justify-center w-full ">
         <SpinningLoader />
       </div>
     );
@@ -335,7 +335,7 @@ export default function ProductDetails({
                     <th className="px-6 py-3 text-left">Reason</th>
                     <th className="px-6 py-3 text-left">Quantity</th>
                     <th className="px-6 py-3 text-left">Updated By</th>
-                    <th className="px-6 py-3 text-left">receive on</th>
+                    <th className="px-6 py-3 text-left">received on</th>
                     <th className="px-6 py-3 text-left">expiration</th>
                     <th className="px-6 py-3 text-left">status</th>
                   </tr>
@@ -373,7 +373,6 @@ export default function ProductDetails({
                     <th className="px-6 py-3 text-left">Order #</th>
                     <th className="px-6 py-3 text-left">Quantity</th>
                     <th className="px-6 py-3 text-left">Customer</th>
-                    <th className="px-6 py-3 text-left">Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -382,7 +381,6 @@ export default function ProductDetails({
                     <td className="px-6 py-4">ORD-12345</td>
                     <td className="px-6 py-4">2</td>
                     <td className="px-6 py-4">Dan Doe</td>
-                    <td className="px-6 py-4">{formatMoney(4800)}</td>
                   </tr>
                 </tbody>
               </table>

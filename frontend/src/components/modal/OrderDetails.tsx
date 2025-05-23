@@ -179,11 +179,17 @@ export default function OrderDetails({
                       </td>
                     </tr>
                   ))}
+                  <tr className="w-full">
+                    <td>
+                      <div className="w-full">
+                        <span>Total</span>
+                        <span> </span>
+                      </div>
+                    </td>
+                    <td></td>
+                    <td>1</td>
+                  </tr>
                 </tbody>
-                <div>
-                  <span>Total</span>
-                  <span> </span>
-                </div>
               </table>
             </div>
           </div>

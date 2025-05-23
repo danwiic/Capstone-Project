@@ -81,9 +81,9 @@ export default function generateSKU({
   color,
   id,
 }: skuProps): string {
-  const brandCode = slugify(brand, 5);
+  const brandCode = slugify(brand.replace(/\s+/g, ''), 5);
   // const nameCode = slugify(name, 4);
-  const categoryCode = category ? slugify(category, 5) : null;
+  const categoryCode = category ? slugify(category.replace(/\s+/g, ''), 5) : null;
   const colorCode = getColorCode(color);
   const variantCode = getSizeCode(variant);
   const idCode = id ? id.slice(0, 4).toUpperCase() : null;
@@ -91,7 +91,7 @@ export default function generateSKU({
   const parts: string[] = [brandCode];
 
   if (categoryCode) parts.push(categoryCode);
-  if (name) parts.push(slugify(name, 4));
+  if (name) parts.push(slugify(name.replace(/\s+/g, ''), 4));
   if (colorCode) parts.push(colorCode);
   if (idCode) parts.push(idCode);
   if (variantCode) parts.push(variantCode);
