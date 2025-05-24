@@ -15,8 +15,9 @@ interface OrderCardProps {
     productName: string;
     productPrice: number;
     productQuantity: number;
-    productVariant?: string;
+    productVariant?: string | null;
   }>;
+  paymentMethod: string;
 }
 
 type OrderItemsCardProps = {
@@ -74,9 +75,9 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
           className="py-3 border-b border-gray-200 text-sm font-semibold 
       text-gray-500 flex items-center justify-between px-4"
         >
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-1">
             <Box />
-            <span>#{orders.orderId}</span>
+            <span>{orders.orderId}</span>
           </span>
           <span
             className={`${statusColor(

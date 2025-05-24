@@ -17,7 +17,7 @@ export default function MyOrders() {
 
   const orders = [
     {
-      orderId: "5342534",
+      orderId: "123456789",
       orderStatus: "To Receive",
       orderDate: "2023-10-01",
       orderItems: [
@@ -27,15 +27,13 @@ export default function MyOrders() {
           productName: "Sphinx Motorcycly Gloves",
           productPrice: 999,
           productQuantity: 1,
-          productVariant: "Variant 1",
+          productVariant: "L",
         },
       ],
-      shippingDetails: {
-        
-      },
+      paymentMethod: "Cash on Delivery",
     },
     {
-      orderId: "967764",
+      orderId: "233456789",
       orderStatus: "Completed",
       orderDate: "2023-10-01",
       orderItems: [
@@ -45,7 +43,7 @@ export default function MyOrders() {
           productName: "EVO RX-7 Yellow",
           productPrice: 2800,
           productQuantity: 1,
-          productVariant: "Variant 1",
+          productVariant: "M",
         },
         {
           productImage:
@@ -56,9 +54,10 @@ export default function MyOrders() {
           productVariant: "Variant 1",
         },
       ],
+      paymentMethod: "Gcash",
     },
     {
-      orderId: "2534534",
+      orderId: "343456789",
       orderStatus: "Cancelled",
       orderDate: "2023-10-01",
       orderItems: [
@@ -68,9 +67,10 @@ export default function MyOrders() {
           productName: "Arjhen Jet Spray CVT FI",
           productPrice: 320,
           productQuantity: 2,
-          productVariant: "Variant 1",
+          productVariant: null,
         },
       ],
+      paymentMethod: "Cash on Delivery",
     },
   ];
 
