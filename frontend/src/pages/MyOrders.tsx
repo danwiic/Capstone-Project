@@ -6,7 +6,6 @@ import { ArrowRight, Box, Search } from "lucide-react";
 export default function MyOrders() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const filters = [
     "All",
     "To Pay",
@@ -21,7 +20,6 @@ export default function MyOrders() {
       orderId: "5342534",
       orderStatus: "To Receive",
       orderDate: "2023-10-01",
-      orderTotal: 100,
       orderItems: [
         {
           productImage:
@@ -32,12 +30,14 @@ export default function MyOrders() {
           productVariant: "Variant 1",
         },
       ],
+      shippingDetails: {
+        
+      },
     },
     {
       orderId: "967764",
       orderStatus: "Completed",
       orderDate: "2023-10-01",
-      orderTotal: 100,
       orderItems: [
         {
           productImage:
@@ -61,7 +61,6 @@ export default function MyOrders() {
       orderId: "2534534",
       orderStatus: "Cancelled",
       orderDate: "2023-10-01",
-      orderTotal: 100,
       orderItems: [
         {
           productImage:

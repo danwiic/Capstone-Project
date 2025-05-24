@@ -5,8 +5,6 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
 import {
   MdHistory,
-  MdOutlineBarChart,
-  MdOutlineInventory2,
   MdOutlineReceiptLong,
   MdPeopleOutline,
   MdPointOfSale,
@@ -194,14 +192,13 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
 
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
-    { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     { name: "Sales", icon: <RiCashLine />, path: "/pos/sales" },
-
     {
       name: "Forecast",
       icon: <MdOnlinePrediction />,
       path: "/pos/forecast",
     },
+    { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
     { name: "Orders", icon: <MdOutlineReceiptLong />, path: "/pos/orders" },
     { name: "Transaction History", icon: <MdHistory />, path: "/pos/history" },

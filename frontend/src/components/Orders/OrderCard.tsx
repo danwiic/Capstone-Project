@@ -4,12 +4,12 @@ import formatDate from "../../utils/formatDate";
 import { useState } from "react";
 import Refund from "../modal/Refund";
 import SubmitReview from "../modal/SubmitReview";
+import ViewOrder from "../modal/ViewOrder";
 
 interface OrderCardProps {
   orderId: string;
   orderStatus: string;
   orderDate: string;
-  orderTotal: number;
   orderItems: Array<{
     productImage: string;
     productName: string;
@@ -31,6 +31,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
 
   const [opeRefund, setOpenRefund] = useState(false);
   const [openReview, setOpenReview] = useState(false);
+  const [openOrderDetails, setOpenOrderDetails] = useState(false);
 
   function statusColor(status: string) {
     switch (status) {
@@ -136,6 +137,7 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
             </div>
             <div className="flex items-center justify-end p-4 gap-1 pt-0">
               <button
+                onClick={() => setOpenOrderDetails((prev) => !prev)}
                 className="py-2 px-4 text-sm font-semibold border border-gray-200 hover:bg-gray-200
             bg-gray-100 transition duration-200 ease-in-out rounded-full text-gray-500"
               >
@@ -192,6 +194,14 @@ export default function OrderCard({ orders }: OrderItemsCardProps) {
         <SubmitReview
           isOpen={openReview}
           onClose={() => setOpenReview((prev) => !prev)}
+        />
+      )}
+
+      {openOrderDetails && (
+        <ViewOrder
+          isOpen={openOrderDetails}
+          orderDetails={orders}
+          onClose={() => setOpenOrderDetails((prev) => !prev)}
         />
       )}
     </>
