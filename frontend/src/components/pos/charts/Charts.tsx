@@ -15,8 +15,9 @@ import {
   Legend,
   ReferenceLine,
   ComposedChart,
+  AreaChart,
+  Area,
 } from "recharts";
-import { formatMoney } from "../../../utils/formatMoney";
 
 export const CategoryDonutChart = ({
   data,
@@ -395,7 +396,11 @@ export const TransactionComparisonLineChart = ({
         data={data}
         margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
       >
-        <CartesianGrid strokeDasharray="3 0" stroke="#e5e7eb" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
         <Tooltip content={<CustomTooltip />} />
         <Legend verticalAlign="top" height={36} />
@@ -423,7 +428,7 @@ export const TransactionComparisonLineChart = ({
 export const RevenueGrowthRateChart = ({
   data,
 }: {
-  data: { month: string; growthRate: number }[];
+  data: { month: string; growthRate: number }[] | any[];
 }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -445,10 +450,17 @@ export const RevenueGrowthRateChart = ({
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
-        <CartesianGrid strokeDasharray="3 0" stroke="#e5e7eb" vertical={false} />
+      <LineChart
+        data={data}
+        margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 0"
+          stroke="#e5e7eb"
+          vertical={false}
+        />
         <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-    
+
         <Tooltip content={<CustomTooltip />} />
         <Line
           type="monotone"
@@ -460,5 +472,58 @@ export const RevenueGrowthRateChart = ({
         />
       </LineChart>
     </ResponsiveContainer>
+  );
+};
+
+import { formatMoney } from "../../../utils/formatMoney";
+
+const data = [
+  { day: "Day 1", sales: 400 },
+  { day: "Day 10", sales: 1400 },
+  { day: "Day 20", sales: 0 },
+  { day: "Day 30", sales: 800 },
+  { day: "Day 40", sales: 200 },
+  { day: "Day 50", sales: 700 },
+  { day: "Day 60", sales: 300 },
+  { day: "Day 70", sales: 900 },
+  { day: "Day 80", sales: 100 },
+  { day: "Day 90", sales: 50 },
+];
+
+const totalSales = data.reduce((acc, cur) => acc + cur.sales, 0);
+
+export const SimpleSalesChart = () => {
+  return (
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-2">
+        <div>
+          <p className=" text-gray-500 font-medium">Sales</p>
+          <p className="text-xs text-gray-500">Last 90 Days</p>
+        </div>
+        <p className="text-xl font-semibold text-gray-600">
+          {formatMoney(totalSales)}
+        </p>
+      </div>
+      <ResponsiveContainer width="100%" height={120}>
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="day" hide />
+          <YAxis hide domain={[0, 1500]} />
+          <Tooltip formatter={(value: number) => formatMoney(value)} />
+          <Area
+            type="monotone"
+            dataKey="sales"
+            stroke="#22c55e"
+            strokeWidth={2}
+            fill="url(#colorSales)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 };

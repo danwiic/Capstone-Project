@@ -1,23 +1,14 @@
-import { useState } from "react";
-import { IoSearchSharp } from "react-icons/io5";
-import { TfiExport } from "react-icons/tfi";
-import {
-  Calendar,
-  Filter,
-  FileText,
-  ArrowUpDown,
-  FileSearch,
-} from "lucide-react";
+import { FileText, SearchIcon, ChevronRight, ChevronLeft } from "lucide-react";
 import Layout from "../../components/pos/nav/Layout";
-import Table from "../../components/pos/table";
-import KebabMenu from "../../components/pos/menu/Kebab";
 import { formatMoney } from "../../utils/formatMoney";
-import Status from "../../components/pos/status card/Status";
+import { SimpleSalesChart } from "../../components/pos/charts/Charts";
+import KebabMenu from "../../components/pos/menu/Kebab";
+import { useState } from "react";
 
-// Sample data for transactions
 const transactions = [
   {
     id: "TRX-1001",
+    name: "John Doe",
     products: "Zebra Helmet 2x, Riding Gloves 1x",
     totalPrice: 4600,
     paymentMethod: "CASH",
@@ -28,16 +19,18 @@ const transactions = [
   },
   {
     id: "TRX-1002",
+    name: "Jane Smith",
     products: "Motorcycle Oil 3x, Air Filter 1x",
     totalPrice: 2850,
     paymentMethod: "CREDIT CARD",
     status: "completed",
-    source: "STORE",
+    source: "POS",
     date: "May 10, 2025",
     processedBy: "Emma Johnson",
   },
   {
     id: "TRX-1003",
+    name: "Alice Brown",
     products: "Racing Jacket 1x",
     totalPrice: 12000,
     paymentMethod: "ONLINE TRANSFER",
@@ -48,16 +41,18 @@ const transactions = [
   },
   {
     id: "TRX-1004",
+    name: "Bob White",
     products: "Brake Pads 2x, Clutch Cable 1x",
     totalPrice: 3200,
     paymentMethod: "DEBIT CARD",
     status: "completed",
-    source: "STORE",
+    source: "POS",
     date: "May 8, 2025",
     processedBy: "Dan Pirante",
   },
   {
     id: "TRX-1005",
+    name: "Charlie Green",
     products: "Motocross Helmet 1x, Goggles 1x",
     totalPrice: 8500,
     paymentMethod: "CASH",
@@ -69,46 +64,54 @@ const transactions = [
 ];
 
 export default function History() {
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const totalStatus = () => {
+    const sumStatus: { [key: string]: { count: number; totalPrice: number } } =
+      {};
 
-  // Handle selecting all items
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedItems(transactions.map((t) => t.id));
-    } else {
-      setSelectedItems([]);
+    for (const transaction of transactions) {
+      const status = transaction.status;
+      if (!sumStatus[status]) {
+        sumStatus[status] = { count: 0, totalPrice: 0 };
+      }
+      sumStatus[status].count += 1;
+      sumStatus[status].totalPrice += transaction.totalPrice;
     }
+
+    const result = Object.entries(sumStatus).map(([status, data]) => ({
+      status,
+      count: data.count,
+      totalPrice: data.totalPrice,
+    }));
+
+    return result;
   };
 
-  // Handle selecting individual item
-  const handleSelectItem = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((item) => item !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
-    }
-  };
+  const countTotalStat = totalStatus().reduce(
+    (acc: number, item: { count: number }) => acc + item.count,
+    0
+  );
 
- 
+  const countTotalPrice = transactions.reduce(
+    (acc: number, transaction: { totalPrice: number }) =>
+      acc + transaction.totalPrice,
+    0
+  );
 
-  const filteredTransactions = transactions.filter((transaction) => {
-    const matchesSearch =
-      transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.products.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.processedBy.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesStatus =
-      selectedFilter === "all" || transaction.status === selectedFilter;
-
-    return matchesSearch && matchesStatus;
-  });
+  const filterTransactions = transactions.filter(
+    (transaction) =>
+      (selectedFilter === "all" || transaction.status === selectedFilter) &&
+      (searchTerm === "" ||
+        transaction.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.products.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.status.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <Layout>
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-4">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
@@ -121,13 +124,6 @@ export default function History() {
           </div>
           <div className="flex gap-3 text-sm">
             <button
-              className="flex items-center gap-2 px-4 py-2 
-            bg-white border border-gray-200 rounded-lg hover:bg-gray-500"
-            >
-              <FileSearch size={18} />
-              <span>View Reports</span>
-            </button>
-            <button
               className="flex items-center gap-2 px-4 py-2 bg-mayormoto-blue text-white rounded-lg
                hover:bg-mayormoto-blue-hover text-sm"
             >
@@ -136,187 +132,172 @@ export default function History() {
             </button>
           </div>
         </div>
-
-        {/* Status Tabs */}
-
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="flex flex-wrap gap-3 text-sm border-b border-gray-200">
-            {["all", "completed", "pending", "cancelled"].map(
-              (status: string) => (
-                <div
-                  key={status}
-                  onClick={() => setSelectedFilter(status)}
-                  className={`flex items-center px-6 py-4 cursor-pointer ${
-                    selectedFilter === status
-                      ? "border-b font-medium  border-mayormoto-blue text-mayormoto-blue"
-                      : ""
-                  }`}
-                >
-                  <span className="capitalize">{status}</span>
-                </div>
-              )
-            )}
-          </div>
-          <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="bg-white border border-gray-300 rounded-lg flex items-center flex-1">
-              <input
-                className="outline-none px-4 py-2.5 text-sm text-gray-600 w-full rounded-lg"
-                placeholder="Search by transaction #, product, or customer..."
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button className="px-4 py-2 text-gray-500">
-                <IoSearchSharp size={20} />
-              </button>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto text-sm">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                <Filter size={18} />
-                <span>Filters</span>
-              </button>
-              <button
-                className="flex items-center gap-2 px-4 py-2 bg-mayormoto-blue text-white rounded-lg
-               hover:bg-mayormoto-blue-hover text-sm"
-              >
-                <TfiExport size={16} />
-                <span>Export</span>
-              </button>
-            </div>
+        {/* Transaction List */}
+        <div className="flex flex-col gap-4">
+          {/* Search box */}
+          <div
+            className="bg-white border border-gray-300 rounded px-3 py-1.5 w-fit 
+          flex items-center "
+          >
+            <input
+              onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchTerm}
+              type="text"
+              className="outline-0 text-sm"
+              placeholder="Search..."
+            />
+            <button className="px-1 flex items-center justify-center text-gray-500">
+              <SearchIcon size={20} />
+            </button>
           </div>
 
-          {/* Filter Options */}
-          {showFilters && (
-            <div className="px-4 pb-4 pt-1 border-t border-gray-200">
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">Date Range:</span>
-                  <div className="flex items-center border border-gray-300 rounded-lg">
-                    <button className="flex items-center gap-1 px-3 py-1.5 text-sm">
-                      <Calendar size={14} />
-                      <span>May 1, 2025</span>
-                    </button>
-                    <span className="text-gray-400">-</span>
-                    <button className="flex items-center gap-1 px-3 py-1.5 text-sm">
-                      <Calendar size={14} />
-                      <span>May 12, 2025</span>
-                    </button>
-                  </div>
+          <div
+            className="grid grid-cols-5 gap-4 bg-white p-6 py-8 rounded border
+           border-gray-300 text-gray-600"
+          >
+            <div className="col-span-3 border-r border-gray-200 pr-4 flex flex-col gap-2">
+              <SimpleSalesChart />
+            </div>
+            <div className="col-span-2 flex flex-col justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-semibold">Amount Breakdown</h2>
+                <p className="text-xs text-gray-500">Last 90 days</p>
+              </div>
+              <div className="flex gap-6 ">
+                <div className="flex flex-col gap-2 px-2 border-r border-gray-200">
+                  <span className="font-semibold">All Transactions</span>
+                  <span className="font-semibold text-2xl">
+                    {countTotalStat}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {formatMoney(countTotalPrice)}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">Payment Method:</span>
-                  <select className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm">
-                    <option value="">All Methods</option>
-                    <option value="cash">Cash</option>
-                    <option value="credit">Credit Card</option>
-                    <option value="debit">Debit Card</option>
-                    <option value="transfer">Online Transfer</option>
-                  </select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">Source:</span>
-                  <select className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm">
-                    <option value="">All Sources</option>
-                    <option value="store">Store</option>
-                    <option value="online">Online Shop</option>
-                  </select>
-                </div>
-                <button className="text-blue-600 hover:text-blue-800 text-sm">
-                  Clear Filters
-                </button>
+                {totalStatus().map(
+                  (
+                    item: {
+                      status: string;
+                      count: number;
+                      totalPrice: number;
+                    },
+                    i: number
+                  ) => (
+                    <div className="flex flex-col gap-2 px-2" key={i}>
+                      <span className="font-semibold">
+                        {item.status.charAt(0).toUpperCase() +
+                          item.status.slice(1)}
+                      </span>
+                      <span className="font-semibold text-2xl">
+                        {item.count}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {formatMoney(item.totalPrice)}
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Table */}
-          <Table.DataTable status date>
-            <Table.TableHead>
-              <Table.TableRow>
-                <Table.Header>
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedItems.length === transactions.length &&
-                      transactions.length > 0
-                    }
-                    onChange={handleSelectAll}
-                    className="rounded"
-                  />
-                </Table.Header>
-                <Table.Header position="left">
-                  <div className="flex items-center gap-1">
-                    Transaction #
-                    <ArrowUpDown size={14} className="text-gray-400" />
-                  </div>
-                </Table.Header>
-                <Table.Header position="left">Products</Table.Header>
-                <Table.Header>Total Price</Table.Header>
-                <Table.Header>Payment Method</Table.Header>
-                <Table.Header>Status</Table.Header>
-                <Table.Header>Source</Table.Header>
-                <Table.Header>
-                  <div className="flex items-center gap-1">
-                    Processed on
-                    <ArrowUpDown size={14} className="text-gray-400" />
-                  </div>
-                </Table.Header>
-                <Table.Header>Processed By</Table.Header>
-                <Table.Header></Table.Header>
-              </Table.TableRow>
-            </Table.TableHead>
-            <Table.TableBody>
-              {filteredTransactions.map((transaction, i) => (
-                <Table.TableRow key={transaction.id}>
-                  <Table.Data>
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(transaction.id)}
-                      onChange={() => handleSelectItem(transaction.id)}
-                      className="rounded"
-                    />
-                  </Table.Data>
-                  <Table.Data>{transaction.id}</Table.Data>
-                  <Table.Data>{transaction.products}</Table.Data>
-                  <Table.Data>{formatMoney(transaction.totalPrice)}</Table.Data>
-                  <Table.Data>{transaction.paymentMethod}</Table.Data>
-                  <Table.Data>
-                    <Status status={transaction.status} />
-                  </Table.Data>
-                  <Table.Data>{transaction.source}</Table.Data>
-                  <Table.Data>{transaction.date}</Table.Data>
-                  <Table.Data>{transaction.processedBy}</Table.Data>
-                  <Table.Data>
-                    <KebabMenu
-                      items={[
-                        {
-                          label: "View Details",
-                          onClick: () =>
-                            console.log("view details", transaction.id),
-                        },
-                        {
-                          label: "Print Receipt",
-                          onClick: () =>
-                            console.log("print receipt", transaction.id),
-                        },
-                        {
-                          label: "Void Transaction",
-                          onClick: () => console.log("void", transaction.id),
-                        },
-                        {
-                          label: "Archive",
-                          onClick: () => console.log("Archive", transaction.id),
-                        },
-                      ]}
-                    />
-                  </Table.Data>
-                </Table.TableRow>
+          {/* Transaction Table */}
+          <div className="bg-white flex flex-col border border-gray-300 rounded">
+            <div className="px-4 border-b border-gray-200">
+              <button
+                onClick={() => setSelectedFilter("all")}
+                className={`px-3 py-3.5 text-sm ${
+                  selectedFilter === "all" &&
+                  "border-b-2 border-mayormoto-blue text-mayormoto-blue"
+                } transition-all ease-in duration-100`}
+              >
+                All Transaction
+              </button>
+              {totalStatus().map((stat) => (
+                <button
+                  className={`px-3 py-3.5 text-sm ${
+                    selectedFilter === stat.status &&
+                    "border-b-2 border-mayormoto-blue text-mayormoto-blue"
+                  } transition-all ease-in duration-100`}
+                  onClick={() => setSelectedFilter(stat.status)}
+                >
+                  {stat.status.charAt(0).toLocaleUpperCase() +
+                    stat.status.slice(1)}
+                </button>
               ))}
-            </Table.TableBody>
-          </Table.DataTable>
+            </div>
+            {filterTransactions.length > 0 ? (
+              <table>
+                <thead>
+                  <tr className="text-sm border-b border-gray-200 text-left">
+                    <th className="px-7 py-3 text-gray-500">Customer</th>
+                    <th className="px-7 py-3 text-gray-500">Payment Method</th>
+                    <th className="px-7 py-3 text-gray-500">Amount</th>
+                    <th className="px-7 py-3 text-gray-500">Source</th>
+                    <th className="px-7 py-3 text-gray-500">Date</th>
+                    <th className="px-7 py-3 text-gray-500">Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterTransactions.map((transaction, i) => (
+                    <tr
+                      key={i}
+                      className="text-left text-sm border-b 
+                    border-gray-200"
+                    >
+                      <td className="px-7 py-3 text-gray-500 font-medium">
+                        {transaction.name}
+                      </td>
+                      <td className="px-7 py-3 text-gray-500">
+                        {transaction.paymentMethod}
+                      </td>
+                      <td className="px-7 py-3 text-gray-500">
+                        {formatMoney(transaction.totalPrice)}
+                      </td>
+                      <td className="px-7 py-3 text-gray-500">
+                        {transaction.source}
+                      </td>
+                      <td className="px-7 py-3 text-gray-500">
+                        {transaction.date}
+                      </td>
+                      <td className="px-7 py-3 text-gray-500">
+                        {transaction.status.charAt(0).toUpperCase() +
+                          transaction.status.slice(1)}
+                      </td>
+                      <td>
+                        <KebabMenu />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="p-10 flex items-center justify-center">
+                <p className="text-sm text-gray-500">
+                  No matching transactions found.
+                </p>
+              </div>
+            )}
+            {filterTransactions.length > 0 && (
+              <div className="px-3 py-2 flex items-center justify-between ">
+                <div>
+                  <span className="text-gray-500 text-sm px-4 py-2">
+                    Showing {transactions.length} of {transactions.length}{" "}
+                    transactions
+                  </span>
+                </div>
+                <div className="flex items-center justify-end">
+                  <button>
+                    <ChevronLeft size={18} className="text-gray-500" />
+                  </button>
+                  <span className="px-3 text-gray-500">1</span>
+                  <button>
+                    <ChevronRight size={18} className="text-gray-500" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

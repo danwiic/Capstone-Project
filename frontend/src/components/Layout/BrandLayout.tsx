@@ -32,7 +32,6 @@ export default function BrandLayout({
   pagination,
   selectedCategories,
   selectedBrands,
-  sortOrder,
   onSortOrderChange,
   onCategoryChange,
   onBrandChange,
