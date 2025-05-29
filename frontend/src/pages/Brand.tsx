@@ -3,7 +3,7 @@ import ProductCart from "../components/Card/ProductCart";
 import BrandLayout from "../components/Layout/BrandLayout";
 import Navbar from "../components/Nav/Navbar";
 import { useEffect, useState } from "react";
-import Loading from "../components/loader/Loading";
+import SpinningLoader from "../components/loader/SpinningLoader";
 
 interface Product {
   id: string;
@@ -32,16 +32,14 @@ interface Product {
 
 export default function Brand() {
   const [products, setProducts] = useState<Product[] | null>(null);
-  const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
-    null
-  );
+
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [originalTotalPages, setOriginalTotalPages] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [limit, setLimit] = useState<number>(16);
+  const [limit] = useState<number>(16);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
 
   // Debug log to check data structure
   useEffect(() => {
@@ -53,61 +51,51 @@ export default function Brand() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/product/all?page=${currentPage}&limit=${limit}`
-        );
-        console.log("Response data:", response.data);
+        setLoading(true);
+
+        const categoryQuery = selectedCategories
+          .map((id) => `categoryId=${id}`)
+          .join("&");
+        const brandQuery = selectedBrands
+          .map((id) => `brandId=${id}`)
+          .join("&");
+
+        const queryParams = [
+          `page=${currentPage}`,
+          `limit=${limit}`,
+          ...(categoryQuery ? [categoryQuery] : []),
+          ...(brandQuery ? [brandQuery] : []),
+          ...(sortOrder ? [`sortPrice=${sortOrder}`] : []),
+        ].join("&");
+
+        const url = `http://localhost:3000/product/all?${queryParams}`;
+
+        const response = await axios.get(url);
+
+        // Always rely on backend to return correct paginated and filtered results
         setProducts(response.data.products);
-        setFilteredProducts(response.data.products);
         setTotalPages(response.data.totalPages);
-        setOriginalTotalPages(response.data.totalPages);
       } catch (error) {
-        console.log("Error fetching products:", error);
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProducts();
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (!products) return;
-
-    if (selectedCategories.length === 0 && selectedBrands.length === 0) {
-      setFilteredProducts(products);
-      setTotalPages(originalTotalPages);
-      return;
-    }
-
-    let filtered = [...products];
-
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((product) =>
-        selectedCategories.includes(product.category.id)
-      );
-      setLimit(products.length);
-    }
-
-    if (selectedBrands.length > 0) {
-      filtered = filtered.filter((product) =>
-        selectedBrands.includes(product.brand?.id)
-      );
-    }
-
-    setFilteredProducts(filtered);
-
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
-  }, [selectedCategories, selectedBrands, products, originalTotalPages]);
+  }, [currentPage, selectedCategories, selectedBrands, limit, sortOrder]);
 
   const handleCategoryFilterChange = (categoryIds: string[]) => {
     setSelectedCategories(categoryIds);
+    setCurrentPage(1);
   };
 
   const handleBrandFilterChange = (brandIds: string[]) => {
     setSelectedBrands(brandIds);
+    setCurrentPage(1);
   };
+
+  const productsToShow = products;
   return (
     <>
       <Navbar>
@@ -115,8 +103,11 @@ export default function Brand() {
           <BrandLayout
             selectedCategories={selectedCategories}
             selectedBrands={selectedBrands}
+            sortOrder={sortOrder}
+            onSortOrderChange={setSortOrder}
             onCategoryChange={handleCategoryFilterChange}
             onBrandChange={handleBrandFilterChange}
+            loading={loading}
             pagination={
               <Pagination
                 currentPage={currentPage}
@@ -126,12 +117,13 @@ export default function Brand() {
             }
           >
             {loading ? (
-              <Loading />
-            ) : filteredProducts && filteredProducts.length > 0 ? (
+              <div className="w-full col-span-4 flex justify-center items-center ">
+                <SpinningLoader />
+              </div>
+            ) : productsToShow && productsToShow.length > 0 ? (
               <>
-                {filteredProducts.map((product) => {
+                {productsToShow.map((product) => {
                   const variant = product.ProductVariant?.[0];
-
                   return (
                     <ProductCart
                       key={product.id}
@@ -147,7 +139,7 @@ export default function Brand() {
                             : product.stock,
                         rating: product.rating ?? 0,
                         noOfReviews: product.noOfReviews ?? 0,
-                        variantId: product.ProductVariant?.[0]?.id,
+                        variantId: variant?.id,
                       }}
                     />
                   );
@@ -179,10 +171,10 @@ function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1 || totalPages === 0}
-        className={`px-4 py-2 rounded-md text-sm ${
+        className={`px-4 py-2.5 rounded font-semibold text-sm ${
           currentPage === 1 || totalPages === 0
             ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-            : "bg-mayormoto-blue hover:bg-mayormoto-blue-hover text-white"
+            : "bg-mayormoto-pink hover:bg-mayormoto-pink/85 text-white"
         }`}
       >
         Previous
@@ -193,10 +185,10 @@ function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages || totalPages === 0}
-        className={`px-4 py-2 rounded-md text-sm ${
+        className={`px-4 py-2.5 rounded text-sm font-semibold ${
           currentPage === totalPages || totalPages === 0
             ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-            : "bg-mayormoto-blue hover:bg-mayormoto-blue-hover text-white"
+            : "bg-mayormoto-pink hover:bg-mayormoto-pink/85 text-white"
         }`}
       >
         Next

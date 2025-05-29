@@ -3,14 +3,18 @@ import React, { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import { FaChevronDown } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
+import SpinningLoader from "../loader/SpinningLoader";
 
 type BrandLayout = {
   children?: React.ReactNode;
   pagination?: React.ReactNode;
   selectedCategories: string[];
   selectedBrands: string[];
+  sortOrder: "asc" | "desc" | null;
+  onSortOrderChange: (order: "asc" | "desc" | null) => void;
   onCategoryChange: (categoryIds: string[]) => void;
   onBrandChange: (brandIds: string[]) => void;
+  loading?: boolean;
 };
 
 type Category = {
@@ -28,15 +32,21 @@ export default function BrandLayout({
   pagination,
   selectedCategories,
   selectedBrands,
+  sortOrder,
+  onSortOrderChange,
   onCategoryChange,
   onBrandChange,
+  loading = false,
 }: BrandLayout) {
   const [collapseCategories, setCollapseCategories] = useState(false);
   const [collapseBrands, setCollapseBrands] = useState(true);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [brands, setBrands] = useState<Brand[] | null>(null);
 
-  // Fetch data
+  useEffect(() => {
+    loading;
+  }, [categories, brands]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await axios.get("http://localhost:3000/category/");
@@ -294,17 +304,39 @@ export default function BrandLayout({
 
           <div className="flex items-center justify-between text-gray-500 text-sm">
             {areFiltersActive && <span>Showing filtered results</span>}
-            <select className="bg-white border border-gray-200 px-6 py-3 rounded-sm text-gray-700 font-medium">
-              <option>Relevance</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>New</option>
-              <option>Popular</option>
+            <select
+              className="bg-white border border-gray-200 px-6 py-3
+             rounded-sm text-gray-700 font-medium"
+              onChange={(e) =>
+                onSortOrderChange(
+                  e.target.value === ""
+                    ? null
+                    : (e.target.value as "asc" | "desc")
+                )
+              }
+            >
+              <option value="">Relevance</option>
+              <option value="asc">Low to High</option>
+              <option value="desc">High to Low</option>
+              <option value="new" disabled>
+                New
+              </option>
+              <option value="popular" disabled>
+                Popular
+              </option>
             </select>
           </div>
 
-          <div className="grid grid-cols-4 gap-4">{children}</div>
-          <div className="flex">{pagination}</div>
+          <div className="grid grid-cols-4 gap-4">
+            {loading ? (
+              <div className="col-span-4 flex items-center justify-center h-64">
+                <SpinningLoader />
+              </div>
+            ) : (
+              <>{children}</>
+            )}
+          </div>
+          {!loading && <div className="flex">{pagination}</div>}
         </div>
         {/* MAIN CONTENT */}
       </div>

@@ -125,7 +125,7 @@ export const getOneProduct = async (req: any, res: any) => {
       })
       .then(async (product) => {
         if (!product) return null;
-        
+
         const ratingStats = await prisma.review.aggregate({
           where: { productId: product.id },
           _sum: { rating: true },
@@ -203,30 +203,63 @@ export const getDetailedProduct = async (req: any, res: any) => {
 };
 
 export const getAllProducts = async (req: any, res: any) => {
-  const { page = 1, limit = 16 } = req.query;
+  const {
+    page = "1",
+    limit = "16",
+    categoryId,
+    brandId,
+    sortPrice,
+  } = req.query;
 
   const pageNumber = parseInt(page as string, 10);
   const limitNumber = parseInt(limit as string, 10);
 
   const offset = (pageNumber - 1) * limitNumber;
-  const take = limitNumber > 0 ? limitNumber : undefined;
-  const skip = offset > 0 ? offset : undefined;
 
-  const totalProducts = await prisma.product.count();
-  const totalPages = Math.ceil(totalProducts / limitNumber);
+  // Dynamic where filter
+  const where: any = {};
+
+  if (categoryId) {
+    where.categoryId = {
+      in: Array.isArray(categoryId) ? categoryId : [categoryId],
+    };
+  }
+
+  if (brandId) {
+    where.brandId = {
+      in: Array.isArray(brandId) ? brandId : [brandId],
+    };
+  }
+
+  const orderBy: any = {};
+
+  if (sortPrice === "asc") {
+    orderBy.price = "asc";
+  } else if (sortPrice === "desc") {
+    orderBy.price = "desc";
+  } else {
+    orderBy.createdAt = "desc"; // default ordering
+  }
+
+  const isFiltered = Object.keys(where).length > 0;
 
   try {
+    // Count total matching products
+    const totalProducts = await prisma.product.count({ where });
+    const totalPages = isFiltered ? 1 : Math.ceil(totalProducts / limitNumber);
+
     const products = await prisma.product
       .findMany({
+        where,
         include: {
           category: { select: { id: true, name: true } },
           brand: { select: { id: true, name: true } },
           ProductImage: { select: { imageUrl: true } },
           ProductVariant: { select: { id: true, price: true, stock: true } },
         },
-        take,
-        skip,
-        orderBy: { createdAt: "desc" },
+        orderBy,
+        take: isFiltered ? undefined : limitNumber,
+        skip: isFiltered ? undefined : offset,
       })
       .then(async (products) => {
         const enrichedProducts = await Promise.all(
@@ -255,8 +288,8 @@ export const getAllProducts = async (req: any, res: any) => {
       totalProducts,
       totalPages,
       currentPage: pageNumber,
-      hasNextPage: pageNumber < totalPages,
-      hasPreviousPage: pageNumber > 1,
+      hasNextPage: !isFiltered && pageNumber < totalPages,
+      hasPreviousPage: !isFiltered && pageNumber > 1,
     });
   } catch (error) {
     console.error("Error fetching products:", error);
