@@ -35,6 +35,7 @@ interface Product {
     variantName: string;
   }[];
 }
+[];
 
 export default function OrderDetails({
   removeAllItems,

@@ -161,9 +161,14 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
         </div>
 
         {/* Product Table */}
-        <div className="bg-white rounded-sm border border-gray-200  overflow-hidden">
+        <div
+          className={`${
+            !isLoading && "bg-white rounded-sm border"
+          } border-gray-200 
+         overflow-hidden`}
+        >
           {isLoading ? (
-            <div className="relative h-64 flex items-center justify-center bg-gray-200 animate-pulse">
+            <div className="relative h-64 flex items-center justify-center">
               <SpinningLoader />
             </div>
           ) : productList.length === 0 ? (

@@ -135,21 +135,6 @@ export default function History() {
         {/* Transaction List */}
         <div className="flex flex-col gap-4">
           {/* Search box */}
-          <div
-            className="bg-white border border-gray-300 rounded px-3 py-1.5 w-fit 
-          flex items-center "
-          >
-            <input
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-              type="text"
-              className="outline-0 text-sm"
-              placeholder="Search..."
-            />
-            <button className="px-1 flex items-center justify-center text-gray-500">
-              <SearchIcon size={20} />
-            </button>
-          </div>
 
           <div
             className="grid grid-cols-5 gap-4 bg-white p-6 py-8 rounded border
@@ -164,8 +149,8 @@ export default function History() {
                 <p className="text-xs text-gray-500">Last 90 days</p>
               </div>
               <div className="flex gap-6 ">
-                <div className="flex flex-col gap-2 px-2 border-r border-gray-200">
-                  <span className="font-semibold">All Transactions</span>
+                <div className="flex flex-col gap-2 px-4 border-r border-gray-200">
+                  <span className="font-semibold">All </span>
                   <span className="font-semibold text-2xl">
                     {countTotalStat}
                   </span>
@@ -202,29 +187,50 @@ export default function History() {
 
           {/* Transaction Table */}
           <div className="bg-white flex flex-col border border-gray-300 rounded">
-            <div className="px-4 border-b border-gray-200">
-              <button
-                onClick={() => setSelectedFilter("all")}
-                className={`px-3 py-3.5 text-sm ${
-                  selectedFilter === "all" &&
-                  "border-b-2 border-mayormoto-blue text-mayormoto-blue"
-                } transition-all ease-in duration-100`}
-              >
-                All Transaction
-              </button>
-              {totalStatus().map((stat) => (
+            <div
+              className="flex items-center justify-between border-b 
+            border-gray-200 pr-4"
+            >
+              <div className="px-4 border-gray-200 font-medium">
                 <button
+                  onClick={() => setSelectedFilter("all")}
                   className={`px-3 py-3.5 text-sm ${
-                    selectedFilter === stat.status &&
+                    selectedFilter === "all" &&
                     "border-b-2 border-mayormoto-blue text-mayormoto-blue"
                   } transition-all ease-in duration-100`}
-                  onClick={() => setSelectedFilter(stat.status)}
                 >
-                  {stat.status.charAt(0).toLocaleUpperCase() +
-                    stat.status.slice(1)}
+                  All Transaction
                 </button>
-              ))}
+                {totalStatus().map((stat) => (
+                  <button
+                    className={`px-3 py-3.5 text-sm ${
+                      selectedFilter === stat.status &&
+                      "border-b-2 border-mayormoto-blue text-mayormoto-blue"
+                    } transition-all ease-in duration-100`}
+                    onClick={() => setSelectedFilter(stat.status)}
+                  >
+                    {stat.status.charAt(0).toLocaleUpperCase() +
+                      stat.status.slice(1)}
+                  </button>
+                ))}
+              </div>
+              <div
+                className="bg-white border border-gray-300 rounded px-3 py-1.5 w-fit 
+          flex items-center "
+              >
+                <input
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                  type="text"
+                  className="outline-0 text-sm"
+                  placeholder="Search..."
+                />
+                <button className="px-1 flex items-center justify-center text-gray-500">
+                  <SearchIcon size={20} />
+                </button>
+              </div>
             </div>
+
             {filterTransactions.length > 0 ? (
               <table>
                 <thead>
