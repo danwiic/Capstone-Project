@@ -114,7 +114,14 @@ export default function ProductDetails({
                     (product?.price || product?.ProductVariant[0]?.price) ?? 0
                   )}
                 </p>
-                <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full w-fit">
+                <span
+                  className={`text-sm  ${
+                    product?.stock && product?.stock > 0
+                      ? "text-green-800 bg-green-100"
+                      : "text-red-800 bg-red-100"
+                  }
+                px-3 py-1 rounded-full w-fit`}
+                >
                   {(() => {
                     const baseStock = product?.stock ?? 0;
                     const variantStock =
