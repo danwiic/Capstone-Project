@@ -126,7 +126,7 @@ export default function ShippingSettings() {
 
         <button
           onClick={() => {}}
-          className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none flex items-center justify-center space-x-2"
+          className="gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none flex items-center justify-center space-x-2"
         >
           <RefreshCw className="h-4 w-4" />
           <span>Refresh</span>
@@ -135,16 +135,11 @@ export default function ShippingSettings() {
 
       {/* Create Coupon Form */}
       <div className="mb-8 bg-gray-50 p-5 rounded-lg border border-gray-200">
-        <h3 className="font-medium text-md mb-4 text-gray-700">
-          Create New Free Shipping Coupon
-        </h3>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 <div className="flex items-center gap-1">
-                  <Hash className="h-4 w-4" />
                   <span>Coupon Code</span>
                 </div>
               </label>

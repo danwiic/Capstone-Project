@@ -9,7 +9,6 @@ import Test from "./pages/Test";
 import ProductDetails from "./pages/ProductDetails";
 import Brand from "./pages/Brand";
 import Dashboard from "./pages/pos/Dashboard";
-import SalesForecast from "./pages/pos/SalesForecast";
 import PosTerminal from "./pages/pos/PosTerminal";
 import Products from "./pages/pos/Products";
 import Orders from "./pages/pos/Orders";
@@ -26,7 +25,7 @@ import Checkout from "./pages/Checkout";
 import MyOrders from "./pages/MyOrders";
 import TrackOrder from "./pages/TrackOrder";
 import Address from "./pages/Address";
-import SignIn from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 
 export default function App() {
   return (
@@ -72,7 +71,6 @@ export default function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="terminal" element={<PosTerminal />} />
                 <Route path="sales" element={<Sales />} />
-                <Route path="forecast" element={<SalesForecast />} />
                 <Route path="products" element={<Products />} />
                 <Route path="orders" element={<Orders />} />
                 <Route path="history" element={<History />} />

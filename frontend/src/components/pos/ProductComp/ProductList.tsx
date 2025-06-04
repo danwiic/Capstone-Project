@@ -31,12 +31,12 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [entriesPerPage]);
 
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const data = await getAllProducts();
+      const data = await getAllProducts(entriesPerPage);
       setProductList(data);
       console.log("Product List:", data);
     } catch (error) {

@@ -5,6 +5,7 @@ import ShippingSettings from "../../components/pos/settings/ShippingSettings";
 import CategorySettings from "../../components/pos/settings/CategorySettings";
 import BrandsSettings from "../../components/pos/settings/BrandsSettings";
 import TaxSettings from "../../components/pos/settings/TaxSettings";
+import Payments from "../../components/pos/settings/Payments";
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("discount");
@@ -15,6 +16,7 @@ export default function Settings() {
     { name: "Categories", value: "category", component: <CategorySettings /> },
     { name: "Brands", value: "brand", component: <BrandsSettings /> },
     { name: "Tax", value: "tax", component: <TaxSettings /> },
+    { name: "Payment Methods", value: "payment", component: <Payments /> },
   ];
 
   return (

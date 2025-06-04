@@ -112,7 +112,7 @@ export default function Employee() {
   return (
     <>
       <Layout>
-        <div className="flex flex-col gap-4 w-full mx-auto">
+        <div className="flex flex-col gap-6 w-full mx-auto">
           {/* Header */}
           <div className="flex justify-between items-center">
             <div>
@@ -142,6 +142,24 @@ export default function Employee() {
             </div>
           </div>
 
+          <div className=" w-1/3">
+            <div
+              className="bg-white px-4 py-1 text-sm rounded border
+               w-full border-gray-200 flex items-center justify-between"
+            >
+              <input
+                type="text"
+                value={searchTerm}
+                className="w-full outline-none "
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, email, or contact"
+              />
+              <button>
+                <Search />
+              </button>
+            </div>
+          </div>
+
           <div className="bg-white flex flex-col border border-gray-300 rounded">
             <div className="flex items-center justify-between">
               <div className="flex items-center px-4">
@@ -158,23 +176,6 @@ export default function Employee() {
                     {opt.charAt(0).toUpperCase() + opt.slice(1)}
                   </button>
                 ))}
-              </div>
-              <div className="py-3 px-4 w-1/2">
-                <div
-                  className="px-4 py-1 text-sm rounded border
-               w-full border-gray-200 flex items-center justify-between"
-                >
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    className="w-full outline-none "
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search by name, email, or contact"
-                  />
-                  <button>
-                    <Search />
-                  </button>
-                </div>
               </div>
             </div>
             {filterEmployees.length > 0 ? (

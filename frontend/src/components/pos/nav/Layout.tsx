@@ -8,7 +8,6 @@ import {
   MdOutlineReceiptLong,
   MdPeopleOutline,
   MdPointOfSale,
-  MdOnlinePrediction,
   MdSettings,
 } from "react-icons/md";
 import {
@@ -193,11 +192,6 @@ const SidebarItems = ({ collapse }: SidebarProps) => {
   const items = [
     { name: "Dashboard", icon: <LuLayoutDashboard />, path: "/pos/dashboard" },
     { name: "Sales", icon: <RiCashLine />, path: "/pos/sales" },
-    {
-      name: "Forecast",
-      icon: <MdOnlinePrediction />,
-      path: "/pos/forecast",
-    },
     { name: "POS Terminal", icon: <MdPointOfSale />, path: "/pos/terminal" },
     { name: "Products", icon: <MdOutlineSell />, path: "/pos/products" },
     { name: "Orders", icon: <MdOutlineReceiptLong />, path: "/pos/orders" },

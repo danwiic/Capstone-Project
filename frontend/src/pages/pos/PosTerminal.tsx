@@ -46,7 +46,7 @@ export default function PosTerminal() {
 
   const handleProductSelect = (product: any, quantity: number) => {
     setSelectedProduct((prevProducts) => {
-      const existingIndex = prevProducts.findIndex((p) => {
+      const existingIndex = prevProducts.findIndex((p: any) => {
         if (product.ProductVariant.length > 0) {
           return (
             p.id === product.id &&
@@ -216,7 +216,7 @@ export default function PosTerminal() {
         <SelectProduct
           isOpen={showSelectProduct}
           onClose={() => setShowSelectProduct((prev) => !prev)}
-          product={clickedProduct && clickedProduct}
+          product={clickedProduct}
           addProduct={handleProductSelect}
         />
       )}
