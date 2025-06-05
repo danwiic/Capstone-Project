@@ -9,6 +9,7 @@ import Table from "../../components/pos/table";
 import KebabMenu from "../../components/pos/menu/Kebab";
 import { formatMoney } from "../../utils/formatMoney";
 import { User2Icon } from "lucide-react";
+import Status from "../../components/pos/status card/Status";
 
 export default function User() {
   const [activeTab, setActiveTab] = useState("all");
@@ -141,7 +142,7 @@ export default function User() {
           <div className="flex gap-3 items-center">
             <button
               className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded flex items-center gap-2 hover:bg-gray-50"
-              onClick={() => { }}
+              onClick={() => {}}
             >
               <BsArchive />
               <span>Archived Users</span>
@@ -188,10 +189,11 @@ export default function User() {
             <div className="flex gap-6 px-1">
               {filters.map((filter) => (
                 <button
-                  className={`py-4 px-6 text-sm font-medium ${activeTab === filter.toLowerCase()
-                    ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
-                    : "text-gray-500 hover:text-gray-700"
-                    }`}
+                  className={`py-4 px-6 text-sm font-medium ${
+                    activeTab === filter.toLowerCase()
+                      ? "text-mayormoto-blue border-b-2 border-mayormoto-blue"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                   onClick={() => setActiveTab(filter.toLowerCase())}
                 >
                   {filter}
@@ -231,7 +233,6 @@ export default function User() {
           {/* Filter Options (Conditional) */}
           {showFilters && (
             <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 grid grid-cols-4 gap-4">
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Registration Date
@@ -359,15 +360,12 @@ export default function User() {
                         </div>
                       </Table.Data>
                       <Table.Data>
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                            user.status
-                          )}`}
-                        >
-                          {getStatusIcon(user.status)}
-                          {user.status.charAt(0).toUpperCase() +
-                            user.status.slice(1)}
-                        </span>
+                        <Status
+                          status={
+                            user.status.charAt(0).toUpperCase() +
+                            user.status.slice(1)
+                          }
+                        />
                       </Table.Data>
 
                       <Table.Data>
@@ -667,7 +665,7 @@ export default function User() {
                               <p className="text-sm text-gray-900">
                                 Completed purchase:{" "}
                                 <span className="font-medium">
-                                  Order  #ORD-0001
+                                  Order #ORD-0001
                                 </span>
                               </p>
                               <p className="text-xs text-gray-500">
@@ -707,8 +705,6 @@ export default function User() {
                           </div>
                         </div>
                       </div>
-
-
                     </div>
                   </div>
                 </div>

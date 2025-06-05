@@ -15,9 +15,9 @@ interface Order {
   productUrl: string;
   quantity: number;
   color: string;
-  variant: string;
+  variant: string | null;
   price: number;
-}[]
+}
 
 export default function Orders() {
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -62,7 +62,7 @@ export default function Orders() {
         { status: "shipped" },
         { status: "delivered" },
       ],
-      trackingNumber: "N/A",
+      trackingNumber: null,
       date: "April 16, 2025",
     },
     {
@@ -93,7 +93,7 @@ export default function Orders() {
         { status: "shipped" },
         { status: "delivered" },
       ],
-      trackingNumber: "N/A",
+      trackingNumber: null,
       date: "April 17, 2025",
     },
     {
@@ -179,14 +179,20 @@ export default function Orders() {
       zipCode: "1600",
       contact: "09556677889",
       status: "placed",
-      statusHistory: [{ status: "placed", date: "6:30PM April 17, 2025" }],
-      trackingNumber: "N/A",
+      statusHistory: [
+        { status: "placed", date: "4:32PM April 25, 2025" },
+        { status: "confirmed" },
+        { status: "packed" },
+        { status: "shipped" },
+        { status: "delivered" },
+      ],
+      trackingNumber: null,
       date: "April 18, 2025",
     },
   ];
 
-  const countTotalPrice = (products: Order): number => {
-    return products.reduce((total, product) => {
+  const countTotalPrice = (products: Order[]): number => {
+    return products.reduce((total: number, product: any) => {
       return total + product.price * product.quantity;
     }, 0);
   };

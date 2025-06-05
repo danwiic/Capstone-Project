@@ -1,62 +1,44 @@
-type StatusValue =
+type StatusType =
   | "placed"
-  | "PLACED"
-  | "active"
-  | "ACTIVE"
-  | "inactive"
-  | "INACTIVE"
   | "packed"
-  | "PACKED"
   | "shipped"
-  | "SHIPPED"
   | "completed"
-  | "COMPLETED"
+  | "default"
   | "cancelled"
-  | "CANCELLED"
-  | "Low Stock"
-  | "LOW STOCK"
-  | "Out of Stock"
-  | "OUT OF STOCK"
-  | "In Stock"
-  | "IN STOCK"
-  | "On Hold"
-  | "ON HOLD";
+  | "inactive"
+  | "active"
+  | "low stock"
+  | "out of stock"
+  | "in stock"
+  | "on leave"
+  | "blocked";
 
-type Props = {
-  status: StatusValue | string; // Allow any string value
+const statusClasses: Record<StatusType, string> = {
+  placed: "bg-yellow-100 text-yellow-800",
+  packed: "bg-blue-100 text-blue-800",
+  shipped: "bg-green-100 text-green-800",
+  completed: "bg-green-100 text-green-800",
+  default: "bg-green-100 text-green-800",
+  cancelled: "bg-red-100 text-red-800",
+  inactive: "bg-gray-100 text-gray-800",
+  active: "bg-green-100 text-green-800",
+  "low stock": "bg-yellow-100 text-yellow-800",
+  "out of stock": "bg-red-100 text-red-800",
+  "in stock": "bg-green-100 text-green-800",
+  "on leave": "bg-orange-100 text-orange-800",
+  blocked: "bg-red-100 text-red-800",
 };
 
-export default function Status({ status }: Props) {
-  // Normalize status to lowercase for comparison
-  const normalizedStatus = status.toLowerCase();
-  // Convert to uppercase for display
+export default function Status({ status }: { status: string }) {
+  const normalizedStatus = status.trim().toLowerCase();
   const displayStatus = status.toUpperCase();
+  const classes =
+    statusClasses[normalizedStatus as StatusType] ??
+    "bg-gray-100 text-gray-800";
 
   return (
     <div
-      className={`${
-        normalizedStatus === "placed"
-          ? "bg-yellow-100 text-yellow-800"
-          : normalizedStatus === "packed"
-          ? "bg-blue-100 text-blue-800"
-          : normalizedStatus === "shipped"
-          ? "bg-green-100 text-green-800"
-          : normalizedStatus === "completed"
-          ? "bg-green-100 text-green-800"
-          : normalizedStatus === "cancelled"
-          ? "bg-red-100 text-red-800"
-          : normalizedStatus === "inactive"
-          ? "bg-gray-100 text-gray-800"
-          : normalizedStatus === "active"
-          ? "bg-green-100 text-green-800"
-          : normalizedStatus === "low stock"
-          ? "bg-yellow-100 text-yellow-800"
-          : normalizedStatus === "out of stock"
-          ? "bg-red-100 text-red-800"
-          : normalizedStatus === "in stock"
-          ? "bg-green-100 text-green-800"
-          : ""
-      } py-1 px-2 rounded-md text-sm font-medium w-fit`}
+      className={`${classes} text-xs uppercase font-semibold p-1 px-2 rounded-full text-center w-fit`}
     >
       {displayStatus}
     </div>

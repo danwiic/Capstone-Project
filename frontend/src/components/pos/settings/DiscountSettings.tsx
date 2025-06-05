@@ -8,6 +8,7 @@ import {
   Search,
   RefreshCw,
 } from "lucide-react";
+import Status from "../status card/Status";
 
 interface Discount {
   id: number;
@@ -432,15 +433,7 @@ export default function DiscountSettings() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        discount.active
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {discount.active ? "Active" : "Inactive"}
-                    </span>
+                    <Status status={discount.active ? "Active" : "Inactive"} />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-3">

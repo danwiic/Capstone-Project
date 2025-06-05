@@ -9,12 +9,15 @@ interface Status {
   statuses?: Array<DeliveryStatusProps>;
 }
 
-function Test1({ statuses }: Status) {
+export default function DeliveryStatus({ statuses }: Status) {
   return (
-    <div className="flex w-full p-20">
+    <div className="flex w-full">
       {statuses &&
         statuses.map((stats, index) => (
-          <div key={index} className={`w-full`}>
+          <div
+            key={index}
+            className={`${index !== statuses.length - 1 ? "w-full" : "flex-1"}`}
+          >
             <div
               className="flex items-center justify-around w-full"
               key={index}
@@ -22,7 +25,7 @@ function Test1({ statuses }: Status) {
               {index !== statuses.length - 1 ? (
                 <Status done={stats.date ? true : false} />
               ) : (
-                <Status disableLine />
+                <Status disableLine done={stats.date ? true : false} />
               )}
             </div>
             <div className="flex flex-col">
@@ -31,7 +34,9 @@ function Test1({ statuses }: Status) {
                   stats.date ? "text-mayormoto-pink" : ""
                 }`}
               >
-                {stats.status}
+                {stats.status &&
+                  stats.status?.charAt(0).toUpperCase() +
+                    stats.status?.slice(1)}
               </span>
               {stats.date && (
                 <span className="text-xs text-gray-500">{stats.date}</span>
@@ -51,7 +56,7 @@ function Status({
   done?: boolean;
 }) {
   return (
-    <div className={`flex items-center w-full ${disableLine && "w-fit"}`}>
+    <div className={`flex items-center w-full ${disableLine ? "w-fit" : ""} `}>
       <div
         className={`p-2 min-h-10 min-w-10 rounded-full ${
           done ? "bg-mayormoto-pink" : "bg-gray-200"
@@ -60,20 +65,9 @@ function Status({
         {done ? <Check className="text-white" /> : ""}
       </div>
       <div
-        className={`border-2  min-w-full ${disableLine && "hidden"} 
+        className={`border-2  min-w-full ${disableLine ? "hidden" : ""} 
           ${done ? "border-mayormoto-pink" : "border-gray-300"} `}
       ></div>
     </div>
   );
-}
-
-const statuses = [
-  { status: "Placed", date: "2:25PM April 15, 2025" },
-  { status: "Confirmed", date: "02-21-24" },
-  { status: "Shipped" },
-  { status: "Placed" },
-];
-
-export default function Test() {
-  return <Test1 statuses={statuses} />;
 }

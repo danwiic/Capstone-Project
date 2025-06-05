@@ -104,17 +104,6 @@ export default function Sales() {
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search transactions..."
-                className="pl-10 pr-4 bg-white py-2 border rounded border-gray-300 w-full"
-              />
-              <Search
-                className="absolute left-3 top-2.5 text-gray-400"
-                size={18}
-              />
-            </div>
             <div className="flex gap-2">
               <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 bg-white rounded hover:bg-gray-50">
                 <Filter size={16} />

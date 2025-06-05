@@ -4,7 +4,6 @@ import {
   RefreshCw,
   Search,
   Calendar,
-  Hash,
   Users,
   ToggleRight,
   ToggleLeft,
@@ -12,6 +11,7 @@ import {
   Trash2,
   AlertCircle,
 } from "lucide-react";
+import Status from "../status card/Status";
 
 interface ShippingCoupon {
   id: number;
@@ -298,17 +298,13 @@ export default function ShippingSettings() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    <Status
+                      status={
                         coupon.active && !isExpired(coupon.expiryDate)
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {coupon.active && !isExpired(coupon.expiryDate)
-                        ? "Active"
-                        : "Inactive"}
-                    </span>
+                          ? "Active"
+                          : "Inactive"
+                      }
+                    />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-3">

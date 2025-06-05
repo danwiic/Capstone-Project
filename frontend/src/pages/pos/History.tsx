@@ -4,6 +4,7 @@ import { formatMoney } from "../../utils/formatMoney";
 import { SimpleSalesChart } from "../../components/pos/charts/Charts";
 import KebabMenu from "../../components/pos/menu/Kebab";
 import { useState } from "react";
+import Status from "../../components/pos/status card/Status";
 
 const transactions = [
   {
@@ -34,7 +35,7 @@ const transactions = [
     products: "Racing Jacket 1x",
     totalPrice: 12000,
     paymentMethod: "ONLINE TRANSFER",
-    status: "pending",
+    status: "placed",
     source: "ONLINE SHOP",
     date: "May 10, 2025",
     processedBy: "System",
@@ -267,8 +268,12 @@ export default function History() {
                         {transaction.date}
                       </td>
                       <td className="px-7 py-3 text-gray-500">
-                        {transaction.status.charAt(0).toUpperCase() +
-                          transaction.status.slice(1)}
+                        <Status
+                          status={
+                            transaction.status.charAt(0).toUpperCase() +
+                            transaction.status.slice(1)
+                          }
+                        />
                       </td>
                       <td>
                         <KebabMenu />

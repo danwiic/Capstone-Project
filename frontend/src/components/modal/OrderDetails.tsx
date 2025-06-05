@@ -1,5 +1,6 @@
-import { Check, Package, X } from "lucide-react";
+import { Package, X } from "lucide-react";
 import { formatMoney } from "../../utils/formatMoney";
+import DeliveryStatus from "../DeliveryStatus/DeliveryStatus";
 
 interface OrderDetailsProps {
   onClose: () => void;
@@ -14,9 +15,6 @@ export default function OrderDetails({
 }: OrderDetailsProps) {
   if (!isOpen) return null;
 
-  function upFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
   function getTotalPrice() {
     return orderDetails.products.reduce(
       (acc: number, product: any) =>
@@ -49,7 +47,11 @@ export default function OrderDetails({
             </div>
             <div className="p-4 flex flex-col border-r border-gray-300">
               <span>Tracking No.</span>
-              <span>{orderDetails.trackingNumber}</span>
+              <span>
+                {orderDetails.trackingNumber
+                  ? orderDetails.trackingNumber
+                  : "N/A"}
+              </span>
             </div>
             <div className="p-4 flex flex-col">
               <span>Payment Method</span>
@@ -68,55 +70,11 @@ export default function OrderDetails({
           </div>
 
           <div
-            className="flex flex-col justify-center gap-1 p-5 
+            className="flex flex-col justify-center gap-4 p-5 
           border border-gray-300  bg-white rounded "
           >
-            <div className="flex items-center justify-around w-full">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <>
-                  <div
-                    className={`w-full h-0.5 border border-gray-300 not-first:hidden 
-                    ${
-                      orderDetails.statusHistory[index]?.date &&
-                      "border-mayormoto-pink"
-                    }`}
-                  ></div>
-                  <div
-                    className={`w-fit p-2 min-h-[2rem] min-w-[2rem] rounded-full
-                 bg-gray-300 flex items-center justify-center ${
-                   orderDetails.statusHistory[index]?.date &&
-                   "bg-mayormoto-pink"
-                 } `}
-                  >
-                    {orderDetails.statusHistory[index]?.date && (
-                      <Check className="text-white " size={16} />
-                    )}
-                  </div>
-                  <div
-                    className={`w-full h-0.5 border border-gray-300  
-                    ${
-                      orderDetails.statusHistory[index]?.date &&
-                      "border-mayormoto-pink"
-                    }`}
-                  ></div>
-                </>
-              ))}
-            </div>
-            <div className="flex justify-between ">
-              {orderDetails.statusHistory.map((stsHistory: any) => (
-                <div className="flex flex-col text-xs  min-w-[7rem]">
-                  <div className="flex flex-col items-center justify-center text-xs ">
-                    <span
-                      className={`${
-                        stsHistory.date && "text-mayormoto-pink font-semibold"
-                      } w-full`}
-                    >
-                      {upFirstLetter(stsHistory.status)}
-                    </span>
-                  </div>
-                  <span>{stsHistory.date}</span>
-                </div>
-              ))}
+            <div className="w-full">
+              <DeliveryStatus statuses={orderDetails.statusHistory} />
             </div>
 
             <span className="font-medium text-lg">Customer Details</span>

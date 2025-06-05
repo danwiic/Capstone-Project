@@ -11,6 +11,7 @@ import KebabMenu from "../../components/pos/menu/Kebab";
 import AddEmp from "../../components/modal/AddEmp";
 import ViewEmpDetails from "../../components/modal/ViewEmpDetails";
 import formatDate from "../../utils/formatDate";
+import Status from "../../components/pos/status card/Status";
 
 // Sample employee data
 const employees = [
@@ -227,19 +228,7 @@ export default function Employee() {
                       <td className="px-7 py-3 text-gray-500">{emp.email}</td>
                       <td className="px-7 py-3 text-gray-500">{emp.contact}</td>
                       <td className="px-7 py-3 text-gray-500">
-                        <span
-                          className={`text-xs font-semibold ${
-                            emp.status === "Active"
-                              ? "uppercase text-green-600"
-                              : emp.status === "Inactive"
-                              ? "uppercase text-red-600"
-                              : emp.status === "On Leave"
-                              ? "uppercase text-yellow-600"
-                              : ""
-                          }`}
-                        >
-                          {emp.status}
-                        </span>
+                        <Status status={emp.status} />
                       </td>
                       <td className="px-7 py-3 text-gray-500">
                         {formatDate(emp.createdOn)}
@@ -253,7 +242,7 @@ export default function Employee() {
                             {
                               label: "View Profile",
                               onClick: () => {
-                                setSelectedEmployee(emp);
+                                setSelectedEmployee(emp as Employees);
                                 setShowViewModal((prev) => !prev);
                               },
                             },

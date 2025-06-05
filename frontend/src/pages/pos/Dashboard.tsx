@@ -24,31 +24,31 @@ const tableData = [
     name: "Gille Helmet Green",
     quantity: 2,
     price: 2457,
-    status: "pending",
+    status: "placed",
   },
   {
     name: "SMOK Tomahawk Side Mirror",
     quantity: 1,
     price: 1000,
-    status: "pending",
+    status: "placed",
   },
   {
     name: "BOSCH Horn Set",
     quantity: 3,
     price: 8400,
-    status: "pending",
+    status: "placed",
   },
   {
     name: "Yamaha Disc Lock",
     quantity: 1,
     price: 750,
-    status: "pending",
+    status: "placed",
   },
   {
     name: "Motowolf Gloves Black",
     quantity: 2,
     price: 1900,
-    status: "pending",
+    status: "placed",
   },
 ];
 
@@ -77,8 +77,9 @@ export default function Dashboard() {
               icon={<PiPackageThin />}
               numberValue={16}
             />
+
             <Card
-              title="Orders Shipped"
+              title="Return/Refund"
               subtitle="vs Yesterday"
               icon={<CiDeliveryTruck />}
               numberValue={12}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import KebabMenu from "../menu/Kebab";
+import Status from "../status card/Status";
 
 const paymentAvailability = ["All", "POS", "Online"];
 const paymentMethods = [
@@ -39,7 +40,6 @@ const paymentMethods = [
     availableIn: ["pos, online"],
     status: "active",
   },
-  
 ];
 
 export default function Payments() {
@@ -110,14 +110,8 @@ export default function Payments() {
                     </span>
                   ))}
                 </td>
-                <td
-                  className={`px-6 py-2 ${
-                    method.status === "active"
-                      ? "text-green-500 font-semibold uppercase text-xs"
-                      : "text-red-500 font-semibold uppercase text-xs"
-                  }`}
-                >
-                  {method.status}
+                <td className="px-6 py-2 ">
+                  <Status status={method.status} />
                 </td>
                 <td className="text-center">
                   <KebabMenu />
