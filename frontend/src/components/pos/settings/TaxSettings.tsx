@@ -196,12 +196,12 @@ export default function TaxSettings() {
 
   return (
     <div className="bg-white flex flex-col gap-4">
-      <div className="mb-6">
+      <div className="">
         <h2 className="text-xl font-semibold text-gray-800">Tax Settings</h2>
       </div>
 
       {/* Search and Add Section */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 ">
         <div className="relative flex-grow">
           <input
             type="text"
@@ -242,7 +242,7 @@ export default function TaxSettings() {
 
       {/* Add/Edit Tax Rate Form */}
       {isAddingNew && (
-        <div className="mb-6 p-5 border border-gray-200 rounded-md bg-gray-50">
+        <div className=" p-5 border border-gray-200 rounded-md bg-gray-50">
           <h3 className="text-md font-medium mb-4 text-gray-700">
             {editingId ? "Edit Tax Rate" : "Add New Tax Rate"}
           </h3>

@@ -117,7 +117,7 @@ export default function BrandsSettings() {
       </div>
 
       {/* Search and Add Section */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 ">
         <div className="relative flex-grow">
           <input
             type="text"
@@ -160,7 +160,7 @@ export default function BrandsSettings() {
 
       {/* Add New Category Input */}
       {isAdding && (
-        <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+        <div className=" p-4 border border-gray-200 rounded-md bg-gray-50">
           <h3 className="text-md font-medium mb-3 text-gray-700">
             Add New Category
           </h3>

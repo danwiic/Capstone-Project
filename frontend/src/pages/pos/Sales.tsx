@@ -96,7 +96,7 @@ export default function Sales() {
     <Layout>
       <div className=" w-full flex flex-col gap-4">
         {/* Header */}
-        <div className="text-sm flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div className="text-sm flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-xl font-bold text-gray-800">Sales Dashboard</h1>
             <p className="text-gray-500 text-sm">
@@ -121,7 +121,7 @@ export default function Sales() {
         </div>
 
         {/* Time Range Tabs */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4">
           <p className="text-sm font-medium text-gray-500">Time Range:</p>
           <div className="flex bg-gray-100 rounded-lg p-1">
             {["24h", "7d", "30d", "90d", "YTD", "All"].map((range) => (

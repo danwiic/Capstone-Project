@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { IoSearchSharp } from "react-icons/io5";
 import { TfiExport } from "react-icons/tfi";
-import { HiOutlineRefresh } from "react-icons/hi";
-import { FiFilter } from "react-icons/fi";
+import { HiOutlineRefresh, HiReceiptRefund } from "react-icons/hi";
 import KebabMenu from "../../components/pos/menu/Kebab";
 import Layout from "../../components/pos/nav/Layout";
 import { formatMoney } from "../../utils/formatMoney";
 import OrderDetails from "../../components/modal/OrderDetails";
-import { Box } from "lucide-react";
+import { Box, Search } from "lucide-react";
+import Refund from "./Refund";
 
 interface Order {
   name: string;
@@ -45,6 +44,7 @@ const mockOrders = [
       { status: "confirmed" },
       { status: "packed" },
       { status: "shipped" },
+      { status: "out for delivery" },
       { status: "delivered" },
     ],
     trackingNumber: null,
@@ -76,6 +76,7 @@ const mockOrders = [
       { status: "confirmed", date: "11:10AM April 16, 2025" },
       { status: "packed" },
       { status: "shipped" },
+      { status: "out for delivery" },
       { status: "delivered" },
     ],
     trackingNumber: null,
@@ -107,6 +108,7 @@ const mockOrders = [
       { status: "confirmed", date: "1:00PM April 14, 2025" },
       { status: "packed", date: "3:00PM April 14, 2025" },
       { status: "shipped", date: "10:00AM April 15, 2025" },
+      { status: "out for Delivery" },
       { status: "delivered" },
     ],
     trackingNumber: "123456789",
@@ -132,12 +134,13 @@ const mockOrders = [
     province: "Metro Manila",
     zipCode: "1100",
     contact: "09334455667",
-    status: "completed",
+    status: "delivered",
     statusHistory: [
       { status: "placed", date: "8:00AM April 12, 2025" },
       { status: "confirmed", date: "9:30AM April 12, 2025" },
       { status: "packed", date: "11:00AM April 12, 2025" },
       { status: "shipped", date: "2:00PM April 13, 2025" },
+      { status: "out for delivery", date: "12:00PM April 14, 2025" },
       { status: "delivered", date: "1:00PM April 14, 2025" },
     ],
     trackingNumber: "3456789012",
@@ -169,6 +172,7 @@ const mockOrders = [
       { status: "confirmed" },
       { status: "packed" },
       { status: "shipped" },
+      { status: "out for delivery" },
       { status: "delivered" },
     ],
     trackingNumber: null,
@@ -181,11 +185,13 @@ export default function Orders() {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewOrderDetails, setViewOrderDetails] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [viewRefund, setViewRefund] = useState(false);
   const orderStatuses = [
     "all",
     "placed",
     "packed",
     "shipped",
+    "out for delivery",
     "delivered",
     "cancelled",
   ];
@@ -218,145 +224,179 @@ export default function Orders() {
   return (
     <>
       <Layout>
-        <div className="flex flex-col gap-6">
-          {/* Header section */}
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="font-semibold text-xl text-gray-800">Orders</h1>
-              <p className="text-sm text-gray-500 mt-1">
-                Manage and track all customer orders
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <button className="flex items-center gap-2 text-gray-600 bg-white border border-gray-300 px-4 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors">
-                <HiOutlineRefresh className="text-lg" />
-                <span>Refresh</span>
-              </button>
-              <button className="bg-mayormoto-blue text-white px-4 py-2 rounded-md text-sm hover:bg-mayormoto-blue-hover transition-colors flex items-center gap-2">
-                <TfiExport />
-                <span>Export</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Orders table */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div className="flex h-fit border-b border-gray-300">
-              {orderStatuses.map((status) => (
-                <div
-                  onClick={() => setSelectedFilter(status)}
-                  className={`p-4 px-6 h-full cursor-pointer text-sm
-                      ${
-                        selectedFilter === status
-                          ? "border-b border-mayormoto-blue text-mayormoto-blue font-medium"
-                          : ""
-                      }`}
-                  key={status}
+        {!viewRefund ? (
+          <div className="flex flex-col gap-6">
+            {/* Header section */}
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="font-semibold text-xl text-gray-800">Orders</h1>
+                <p className="text-sm text-gray-500 mt-1">
+                  Manage and track all customer orders
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button className="flex items-center gap-2 text-gray-600 bg-white border border-gray-300 px-4 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors">
+                  <HiOutlineRefresh className="text-lg" />
+                  <span>Refresh</span>
+                </button>
+                <button
+                  onClick={() => setViewRefund((prev) => !prev)}
+                  className="flex items-center gap-2 text-gray-600 bg-white border border-gray-300 px-4 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors"
                 >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </div>
-              ))}
+                  <HiReceiptRefund className="text-lg" />
+                  <span>Return / Refund</span>
+                </button>
+                <button className="bg-mayormoto-blue text-white px-4 py-2 rounded-md text-sm hover:bg-mayormoto-blue-hover transition-colors flex items-center gap-2">
+                  <TfiExport />
+                  <span>Export</span>
+                </button>
+              </div>
             </div>
 
-            <div className="overflow-x-auto">
-              {filteredOrders.length > 0 ? (
-                <div className=" bg-white p-4 flex flex-col gap-4 ">
-                  <table
-                    className="w-full text-left text-sm text-gray-500
-        border border-gray-200 rounded"
-                  >
-                    <thead className="border-b border-gray-200 uppercase bg-gray-200">
-                      <tr>
-                        <th className="px-4 py-2">Order-ID</th>
-                        <th className="px-4 py-2">Customer</th>
-                        <th className="px-4 py-2">Total</th>
-                        <th className="px-4 py-2">Ordered On</th>
-                        <th className="px-4 py-2">Last Update</th>
-                        <th className="px-4 py-2">Status</th>
-                        <th className="px-4 py-2">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredOrders.map((filter, i) => (
-                        <tr
-                          key={i}
-                          className={`${
-                            i !== filteredOrders.length - 1
-                              ? "border-b border-gray-200"
-                              : ""
-                          }`}
-                        >
-                          <td className="p-4">{filter.id}</td>
-                          <td className="p-4">
-                            <div className="flex flex-col gap-1">
-                              <span className="font-semibold">
-                                {filter.customer}
-                              </span>
-                              <span>Contact: {filter.contact}</span>
-                            </div>
-                          </td>
-                          <td className="p-4">
-                            {formatMoney(countTotalPrice(filter.products))}
-                          </td>
-                          <td className="p-4">{filter.date}</td>
-                          <td className="p-4">{filter.date}</td>
-                          <td className="p-4">
-                            <span className={`${statusColor(filter.status)}`}>
-                              {filter.status}
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            <KebabMenu />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
-                      Showing {filteredOrders.length} of {filteredOrders.length}{" "}
-                      logs
-                    </span>
+            <div className="px-4 py-2 border border-gray-300 bg-white rounded w-1/2 flex items-center justify-between text-sm">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="outline-0 w-full"
+                placeholder="Search by order id, name..."
+              />
+              <button className="cursor-pointer">
+                <Search className="text-gray-500" size={20} />
+              </button>
+            </div>
 
-                    <div className="flex items-center gap-2 text-sm">
-                      <button
-                        className="ml-2 bg-mayormoto-blue text-white
-              hover:bg-mayormoto-blue-hover px-4 py-2 rounded
-              disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={filteredOrders.length === 10}
-                      >
-                        Previous
-                      </button>
+            {/* Orders table */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+              <div className="flex h-fit border-b border-gray-300">
+                {orderStatuses.map((status) => (
+                  <div
+                    onClick={() => setSelectedFilter(status)}
+                    className={`p-4 px-6 h-full cursor-pointer text-sm
+                     ${
+                       selectedFilter === status
+                         ? "border-b border-mayormoto-blue text-mayormoto-blue font-medium"
+                         : ""
+                     }`}
+                    key={status}
+                  >
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </div>
+                ))}
+              </div>
+
+              <div className="overflow-x-auto">
+                {filteredOrders.length > 0 ? (
+                  <div className=" bg-white p-4 flex flex-col gap-4 ">
+                    <table
+                      className="w-full text-left text-sm text-gray-500
+       border border-gray-200 rounded"
+                    >
+                      <thead className="border-b border-gray-200 uppercase bg-gray-200">
+                        <tr>
+                          <th className="px-4 py-2">Order-ID</th>
+                          <th className="px-4 py-2">Customer</th>
+                          <th className="px-4 py-2">Total</th>
+                          <th className="px-4 py-2">Ordered On</th>
+                          <th className="px-4 py-2">Last Update</th>
+                          <th className="px-4 py-2">Status</th>
+                          <th className="px-4 py-2">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredOrders.map((filter, i) => (
+                          <tr
+                            key={i}
+                            className={`${
+                              i !== filteredOrders.length - 1
+                                ? "border-b border-gray-200"
+                                : ""
+                            }`}
+                          >
+                            <td className="p-4">{filter.id}</td>
+                            <td className="p-4">
+                              <div className="flex flex-col gap-1">
+                                <span className="font-semibold">
+                                  {filter.customer}
+                                </span>
+                                <span>Contact: {filter.contact}</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              {formatMoney(countTotalPrice(filter.products))}
+                            </td>
+                            <td className="p-4">{filter.date}</td>
+                            <td className="p-4">{filter.date}</td>
+                            <td className="p-4">
+                              <span className={`${statusColor(filter.status)}`}>
+                                {filter.status}
+                              </span>
+                            </td>
+                            <td className="p-4">
+                              <KebabMenu
+                                items={[
+                                  {
+                                    label: "View Details",
+                                    onClick: () => {
+                                      setViewOrderDetails((prev) => !prev);
+                                      setSelectedIndex(i);
+                                    },
+                                  },
+                                ]}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">
-                        Page 1 of {Math.ceil(filteredOrders.length / 10)}
+                        Showing {filteredOrders.length} of{" "}
+                        {filteredOrders.length} logs
                       </span>
-                      <button
-                        className="ml-2 bg-mayormoto-blue text-white
-              hover:bg-mayormoto-blue-hover px-4 py-2 rounded  
-              disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={filteredOrders.length === 10}
-                      >
-                        Next
-                      </button>
+
+                      <div className="flex items-center gap-2 text-sm">
+                        <button
+                          className="ml-2 bg-mayormoto-blue text-white
+             hover:bg-mayormoto-blue-hover px-4 py-2 rounded
+             disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={filteredOrders.length === 10}
+                        >
+                          Previous
+                        </button>
+                        <span className="text-sm text-gray-500">
+                          Page 1 of {Math.ceil(filteredOrders.length / 10)}
+                        </span>
+                        <button
+                          className="ml-2 bg-mayormoto-blue text-white
+             hover:bg-mayormoto-blue-hover px-4 py-2 rounded  
+             disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={filteredOrders.length === 10}
+                        >
+                          Next
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="bg-white py-10 flex flex-col items-center gap-4">
-                  <Box size={60} className="text-gray-500" />
-                  <span className="font-semibold text-xl">
-                    No audit logs found
-                  </span>
-                  <p className="text-gray-500 text-sm">
-                    Try adjusting your search criteria or filters
-                  </p>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <div className="bg-white py-10 flex flex-col items-center gap-4">
+                    <Box size={60} className="text-gray-500" />
+                    <span className="font-semibold text-xl">
+                      No orders found
+                    </span>
+                    <p className="text-gray-500 text-sm">
+                      Try adjusting your search criteria or filters
+                    </p>
+                  </div>
+                )}
+              </div>
 
-            {/* Pagination */}
+              {/* Pagination */}
+            </div>
           </div>
-        </div>
+        ) : (
+          <Refund onClose={() => setViewRefund((prev) => !prev)} />
+        )}
       </Layout>
       {viewOrderDetails && (
         <OrderDetails

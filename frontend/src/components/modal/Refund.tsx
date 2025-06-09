@@ -43,7 +43,6 @@ export default function Refund({ onClose, isOpen }: RefundProps) {
     const reasonOptions: { value: RefundReason; label: string }[] = [
         { value: "defective", label: "Product is defective" },
         { value: "wrong_item", label: "Received wrong item" },
-        { value: "changed_mind", label: "Changed my mind" },
         { value: "not_as_described", label: "Item not as described" },
         { value: "arrived_late", label: "Item arrived too late" },
         { value: "other", label: "Other reason" }
@@ -161,7 +160,7 @@ export default function Refund({ onClose, isOpen }: RefundProps) {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900/45 z-50">
             <div className="w-md h-auto mx-auto p-6 bg-white rounded-lg shadow-lg flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-bold text-gray-900 mb-6">Product Refund Request</h1>
+                    <h1 className="text-xl font-bold text-gray-900">Product Refund Request</h1>
                     <X size={18} onClick={onClose} />
                 </div>
 
@@ -323,20 +322,7 @@ export default function Refund({ onClose, isOpen }: RefundProps) {
                                             Refund to original payment method
                                         </label>
                                     </div>
-                                    <div className="flex items-center">
-                                        <input
-                                            id="store_credit"
-                                            name="refundMethod"
-                                            type="radio"
-                                            value="store_credit"
-                                            checked={formData.refundMethod === "store_credit"}
-                                            onChange={handleChange}
-                                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                        />
-                                        <label htmlFor="store_credit" className="ml-3 block text-sm text-gray-700">
-                                            Store credit (10% bonus)
-                                        </label>
-                                    </div>
+                                  
                                     <div className="flex items-center">
                                         <input
                                             id="store_credit"

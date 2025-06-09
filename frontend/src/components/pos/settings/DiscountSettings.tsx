@@ -181,14 +181,14 @@ export default function DiscountSettings() {
 
   return (
     <div className="bg-white flex flex-col gap-4">
-      <div className="mb-6">
+      <div className="">
         <h2 className="text-xl font-semibold text-gray-800">
           Discount Management
         </h2>
       </div>
 
       {/* Search and Add Section */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-grow">
           <input
             type="text"
