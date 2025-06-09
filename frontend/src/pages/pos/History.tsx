@@ -190,7 +190,7 @@ export default function History() {
           <div className="bg-white flex flex-col border border-gray-300 rounded">
             <div
               className="flex items-center justify-between border-b 
-            border-gray-200 pr-4"
+            border-gray-300 pr-4"
             >
               <div className="px-4 border-gray-200 font-medium">
                 <button
@@ -235,7 +235,7 @@ export default function History() {
             {filterTransactions.length > 0 ? (
               <table>
                 <thead>
-                  <tr className="text-sm border-b border-gray-200 text-left">
+                  <tr className="text-sm border-b border-gray-200 text-left uppercase bg-gray-200">
                     <th className="px-7 py-3 text-gray-500">Customer</th>
                     <th className="px-7 py-3 text-gray-500">Payment Method</th>
                     <th className="px-7 py-3 text-gray-500">Amount</th>

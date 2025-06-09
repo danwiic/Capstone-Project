@@ -6,7 +6,6 @@ import {
   Download,
   Filter,
   SearchIcon,
-  X,
 } from "lucide-react";
 import { useState } from "react";
 
