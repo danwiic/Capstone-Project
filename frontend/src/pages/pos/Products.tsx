@@ -2,11 +2,14 @@ import { useState } from "react";
 import Layout from "../../components/pos/nav/Layout";
 import ProductList from "../../components/pos/ProductComp/ProductList";
 import ProductDetails from "../../components/pos/ProductComp/ProductDetails";
+import ProductLogs from "../../components/modal/ProductLogs";
 
 export default function Products() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(
     null
   );
+
+  const [viewLogs, setViewLogs] = useState(false);
 
   const handleViewProduct = (productId: string) => {
     setSelectedProductId(productId);
@@ -15,6 +18,10 @@ export default function Products() {
 
   const handleBackToList = () => {
     setSelectedProductId(null);
+  };
+
+  const selectLogs = () => {
+    setViewLogs((prev) => !prev);
   };
 
   return (
@@ -26,8 +33,13 @@ export default function Products() {
               productId={selectedProductId}
               onBack={handleBackToList}
             />
+          ) : viewLogs ? (
+            <ProductLogs openLogs={() => selectLogs()}/>
           ) : (
-            <ProductList onProductSelect={handleViewProduct} />
+            <ProductList
+              openLogs={() => selectLogs()}
+              onProductSelect={handleViewProduct}
+            />
           )}
         </div>
       </Layout>

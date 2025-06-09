@@ -1,7 +1,7 @@
 import { useState } from "react";
-import CheckoutNav from "../components/Nav/CheckoutNav";
-import { formatMoney } from "../utils/formatMoney";
-import Loading from "../components/loader/Loading";
+import CheckoutNav from "../../components/Nav/CheckoutNav";
+import { formatMoney } from "../../utils/formatMoney";
+import Loading from "../../components/loader/Loading";
 import { useLocation } from "react-router-dom";
 
 interface Props {

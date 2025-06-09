@@ -1,9 +1,9 @@
 import axios from "axios";
-import ProductCart from "../components/Card/ProductCart";
-import BrandLayout from "../components/Layout/BrandLayout";
-import Navbar from "../components/Nav/Navbar";
+import ProductCart from "../../components/Card/ProductCart";
+import BrandLayout from "../../components/Layout/BrandLayout";
+import Navbar from "../../components/Nav/Navbar";
 import { useEffect, useState } from "react";
-import SpinningLoader from "../components/loader/SpinningLoader";
+import SpinningLoader from "../../components/loader/SpinningLoader";
 
 interface Product {
   id: string;

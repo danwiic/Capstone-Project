@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Nav/Navbar";
-import Loading from "../components/loader/Loading";
+import Navbar from "../../components/Nav/Navbar";
+import Loading from "../../components/loader/Loading";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useWishlistContext } from "../context/WishlistContext";
-import ProductCart from "../components/Card/ProductCart";
+import { useWishlistContext } from "../../context/WishlistContext";
+import ProductCart from "../../components/Card/ProductCart";
 
 export default function Wishlist() {
   const { wishlistItems, refreshWishlist } = useWishlistContext();

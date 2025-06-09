@@ -1,26 +1,30 @@
-import Button from "../components/ui/button/Button";
-import InputBox from "../components/ui/InputBox";
-import { Link, Navigate } from "react-router-dom";
-import { useUserContext } from "../context/userContext";
+import Footer from "../../components/footer/Footer";
+import Button from "../../components/ui/button/Button";
+import InputBox from "../../components/ui/InputBox";
+import { Link, Navigate, useNavigate } from "react-router-dom"; // Add useNavigate here
+import { useUserContext } from "../../context/userContext";
 import axios from "axios";
 import { useReducer, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import ResetPassword from "../components/modal/ResetPassword";
-// import OTP from "../components/modal/OTP";
+import { Eye, EyeOff } from "lucide-react"; // 👈 added icons
+import { toast } from "react-toastify";
+import VerifyEmail from "../../components/modal/VerifyEmail";
 
 type State = {
   emailError: string;
   passwordError: string;
+  confirmPasswordError: string;
 };
 
 type Action =
   | { type: "SET_EMAIL_ERROR"; payload: string }
   | { type: "SET_PASSWORD_ERROR"; payload: string }
+  | { type: "SET_CONFIRM_PASSWORD_ERROR"; payload: string }
   | { type: "CLEAR_ERRORS" };
 
 const initialState: State = {
   emailError: "",
   passwordError: "",
+  confirmPasswordError: "",
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -29,31 +33,41 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, emailError: action.payload };
     case "SET_PASSWORD_ERROR":
       return { ...state, passwordError: action.payload };
+    case "SET_CONFIRM_PASSWORD_ERROR":
+      return { ...state, confirmPasswordError: action.payload };
     case "CLEAR_ERRORS":
-      return { emailError: "", passwordError: "" };
+      return { emailError: "", passwordError: "", confirmPasswordError: "" };
     default:
       return state;
   }
 };
 
-export default function Login() {
+export default function Signup() {
   const { user, setUser } = useUserContext();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isOpen, setIsModalOpen] = useState(false); // State for OTP modal
-  const [password, setPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState("");
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate(); // Initialize navigate
+
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch({ type: "CLEAR_ERRORS" });
 
     const emailInput = e.currentTarget.email as HTMLInputElement;
     const passwordInput = e.currentTarget.password as HTMLInputElement;
+    const confirmPasswordInput = e.currentTarget
+      .confirmPassword as HTMLInputElement;
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
-    setPassword(password);
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    setCurrentEmail(email);
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     let hasError = false;
 
@@ -71,79 +85,67 @@ export default function Login() {
     if (!password) {
       dispatch({ type: "SET_PASSWORD_ERROR", payload: "Password is required" });
       hasError = true;
+    } else if (password.length < 8) {
+      dispatch({
+        type: "SET_PASSWORD_ERROR",
+        payload: "Password must be at least 8 characters",
+      });
+      hasError = true;
+    }
+
+    if (!confirmPassword) {
+      dispatch({
+        type: "SET_CONFIRM_PASSWORD_ERROR",
+        payload: "Confirm Password is required",
+      });
+      hasError = true;
+    } else if (password !== confirmPassword) {
+      dispatch({
+        type: "SET_CONFIRM_PASSWORD_ERROR",
+        payload: "Passwords do not match",
+      });
+      hasError = true;
     }
 
     if (hasError) return;
+    return setOpen((prev) => !prev);
 
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`http://localhost:3000/user/login`, {
+      const response = await axios.post(`http://localhost:3000/user/create`, {
         email,
         password,
+        confirmPassword,
       });
+
       setUser(response.data.user);
-      console.log("Login successful:", response.data.user);
+      localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      setIsModalOpen(true);
-    } catch (error: any) {
-      if (error.response) {
-        const { status, data } = error.response;
 
-        if (status === 404) {
-          dispatch({
-            type: "SET_EMAIL_ERROR",
-            payload: data.error || "User not found. Please sign up.",
-          });
-        } else if (status === 406) {
-          const errorMsg = data.error || "Invalid credentials";
-
-          if (errorMsg.toLowerCase().includes("email")) {
-            dispatch({ type: "SET_EMAIL_ERROR", payload: errorMsg });
-          } else if (
-            errorMsg.toLowerCase().includes("password") ||
-            errorMsg.toLowerCase().includes("credentials")
-          ) {
-            dispatch({ type: "SET_PASSWORD_ERROR", payload: errorMsg });
-          } else {
-            dispatch({ type: "SET_PASSWORD_ERROR", payload: errorMsg });
-          }
-        }
-      } else if (error.request) {
-        dispatch({
-          type: "SET_PASSWORD_ERROR",
-          payload: "Network error. Please try again later.",
-        });
-      } else {
-        dispatch({
-          type: "SET_PASSWORD_ERROR",
-          payload: "An unexpected error occurred. Please try again.",
-        });
-      }
+      toast.success("Account created successfully!");
+      navigate("/login"); // Redirect here
+    } catch (error) {
+      console.error("Signup failed:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // const closeModal = () => setIsModalOpen(false);
-
-  if (user?.role === "admin") return <Navigate to="/pos/dashboard" />;
-  if (user?.role === "employee") return <Navigate to="/pos/terminal" />;
   if (user) return <Navigate to="/" />;
-
   return (
     <>
       <form
-        onSubmit={handleLogin}
-        className="w-full px-8 py-8 rounded-sm bg-white"
+        onSubmit={handleSignup}
+        className="w-full px-8 py-8 rounded-sm  bg-white"
       >
         <div className="flex flex-col gap-3 w-full">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <div className="text-xl font-bold text-center text-gray-800">
-              Sign in to your account
+              Create an account
             </div>
             <div className="text-gray-500 text-center mb-4 text-sm">
-              Enter your email below to login to your account
+              Enter your email below to create your account
             </div>
           </div>
 
@@ -163,22 +165,11 @@ export default function Login() {
           </div>
 
           {/* Password */}
-          <div className="flex flex-col w-full">
-            <div className="flex justify-end items-center">
-              <Link
-                to=""
-                onClick={() => setIsModalOpen(true)}
-                className="text-xs text-blue-600 hover:text-blue-800 self-end"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
+          <div className="flex flex-col w-full relative">
             <div className="relative w-full">
               <InputBox
                 type={showPassword ? "text" : "password"}
                 name="password"
-                id="password"
                 placeholder="Password"
                 className={`${state.passwordError && "border-red-500"}`}
               />
@@ -189,7 +180,6 @@ export default function Login() {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </div>
             </div>
-
             {state.passwordError && (
               <div className="text-red-500 text-xs mt-1">
                 {state.passwordError}
@@ -197,16 +187,40 @@ export default function Login() {
             )}
           </div>
 
-          {/* Submit */}
+          {/* Confirm Password */}
+          <div className="flex flex-col w-full relative">
+            <div className="relative w-full">
+              <InputBox
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm password"
+                className={`${state.confirmPasswordError && "border-red-500"}`}
+              />
+              <div
+                className="absolute inset-y-0 right-3 flex items-center 
+                cursor-pointer"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </div>
+            </div>
+            {state.confirmPasswordError && (
+              <div className="text-red-500 text-xs mt-1">
+                {state.confirmPasswordError}
+              </div>
+            )}
+          </div>
+
           <Button type="submit">
-            {isSubmitting ? "Logging in..." : "Login"}
+            {isSubmitting ? "Creating account..." : "Sign Up"}
           </Button>
         </div>
       </form>
-      {isOpen && (
-        <ResetPassword
-          isOpen={isOpen}
-          onClose={() => setIsModalOpen((prev) => !prev)}
+      {open && (
+        <VerifyEmail
+          email={currentEmail}
+          isOpen={open}
+          onClose={() => setOpen((prev) => !prev)}
         />
       )}
     </>

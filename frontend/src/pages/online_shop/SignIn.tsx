@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Footer from "../components/footer/Footer";
+import Footer from "../../components/footer/Footer";
 import Login from "./Login";
 import Signup from "./Signup";
 import { Link } from "react-router-dom";

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 
-import Navbar from "../components/Nav/Navbar";
-import ProductGallery from "../components/Product/ProductGallery";
-import ProductInfo from "../components/Product/ProductInfo";
-import ProductDescription from "../components/Product/ProductDescription";
-import ProductReviews from "../components/Product/ProductReviews";
-import ProductCart from "../components/Card/ProductCart";
-import Loading from "../components/loader/Loading";
+import Navbar from "../../components/Nav/Navbar";
+import ProductGallery from "../../components/Product/ProductGallery";
+import ProductInfo from "../../components/Product/ProductInfo";
+import ProductDescription from "../../components/Product/ProductDescription";
+import ProductReviews from "../../components/Product/ProductReviews";
+import ProductCart from "../../components/Card/ProductCart";
+import Loading from "../../components/loader/Loading";
 // import formatDate from "../utils/formatDate";
 
 type ProductDetailsProps = {

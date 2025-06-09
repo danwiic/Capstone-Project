@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
-import Navbar from "../components/Nav/Navbar";
-import Button from "../components/ui/button/Button";
-import AddressItem from "../components/Address/AddressItem";
+import Navbar from "../../components/Nav/Navbar";
+import Button from "../../components/ui/button/Button";
+import AddressItem from "../../components/Address/AddressItem";
 
 export default function Adress() {
   const mockAddress = [

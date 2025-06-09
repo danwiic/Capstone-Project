@@ -15,12 +15,17 @@ import AddProduct from "../../modal/AddProduct";
 import { formatMoney } from "../../../utils/formatMoney";
 import { getAllProducts } from "../../../services/products.ts";
 import SpinningLoader from "../../loader/SpinningLoader.tsx";
+import ProductLogs from "../../modal/ProductLogs.tsx";
 
 interface ProductListProps {
   onProductSelect: (productId: string) => void;
+  openLogs?: () => void;
 }
 
-export default function ProductList({ onProductSelect }: ProductListProps) {
+export default function ProductList({
+  onProductSelect,
+  openLogs,
+}: ProductListProps) {
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [productList, setProductList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +33,7 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [openProductLogs, setOpenProductLogs] = useState(false);
   useEffect(() => {
     fetchProducts();
   }, [entriesPerPage]);
@@ -143,7 +148,10 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
               </button>
 
               {/* Product logs button */}
-              <button className="flex gap-1 items-center px-4 py-2.5 border border-transparent  rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-mayormoto-blue">
+              <button
+                onClick={openLogs}
+                className="flex gap-1 items-center px-4 py-2.5 border border-transparent  rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-mayormoto-blue"
+              >
                 <FileText className="h-4 w-4 mr-2" />
                 <span>Product Logs</span>
               </button>
@@ -403,6 +411,13 @@ export default function ProductList({ onProductSelect }: ProductListProps) {
         <AddProduct
           isOpen={openAddProduct}
           onClose={() => setOpenAddProduct(false)}
+        />
+      )}
+
+      {openProductLogs && (
+        <ProductLogs
+          isOpen={openProductLogs}
+          onClose={() => setOpenProductLogs((prev) => !prev)}
         />
       )}
     </div>

@@ -3,11 +3,11 @@ import UserProvider from "./context/userContext";
 import { CartProvider } from "./context/cartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { ToastContainer } from "react-toastify";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import Test from "./pages/Test";
-import ProductDetails from "./pages/ProductDetails";
-import Brand from "./pages/Brand";
+import Home from "./pages/online_shop/Home";
+import NotFound from "./pages/online_shop/NotFound";
+import Test from "./pages/online_shop/Test";
+import ProductDetails from "./pages/online_shop/ProductDetails";
+import Brand from "./pages/online_shop/Brand";
 import Dashboard from "./pages/pos/Dashboard";
 import PosTerminal from "./pages/pos/PosTerminal";
 import Products from "./pages/pos/Products";
@@ -19,13 +19,13 @@ import User from "./pages/pos/User";
 import ScrollToTop from "./utils/scrollToTop";
 import Settings from "./pages/pos/Settings";
 import CartComponent from "./components/Cart/Cart";
-import Wishlist from "./pages/Wishlist";
+import Wishlist from "./pages/online_shop/Wishlist";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
-import Checkout from "./pages/Checkout";
-import MyOrders from "./pages/MyOrders";
-import TrackOrder from "./pages/TrackOrder";
-import Address from "./pages/Address";
-import SignIn from "./pages/SignIn";
+import Checkout from "./pages/online_shop/Checkout";
+import MyOrders from "./pages/online_shop/MyOrders";
+import TrackOrder from "./pages/online_shop/TrackOrder";
+import Address from "./pages/online_shop/Address";
+import SignIn from "./pages/online_shop/SignIn";
 
 export default function App() {
   return (

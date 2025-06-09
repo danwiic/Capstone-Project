@@ -1,11 +1,11 @@
-import Navbar from "../components/Nav/Navbar";
-import bg from "../images/bg.png";
-import ProductCard from "../components/Card/ProductCard";
+import Navbar from "../../components/Nav/Navbar";
+import bg from "../../images/bg.png";
+import ProductCard from "../../components/Card/ProductCard";
 import React from "react";
-import BrandCard from "../components/Card/BrandCard";
+import BrandCard from "../../components/Card/BrandCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loading from "../components/loader/Loading";
+import Loading from "../../components/loader/Loading";
 import { Link } from "react-router-dom";
 
 type FiveProducts = {

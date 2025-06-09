@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Navbar from "../components/Nav/Navbar";
+import Navbar from "../../components/Nav/Navbar";
 
 export default function TrackOrder() {
   const [trackingNumber, setTrackingNumber] = useState("");

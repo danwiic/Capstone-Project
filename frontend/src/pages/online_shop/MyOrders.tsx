@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Navbar from "../components/Nav/Navbar";
-import OrderCard from "../components/Orders/OrderCard";
+import Navbar from "../../components/Nav/Navbar";
+import OrderCard from "../../components/Orders/OrderCard";
 import { ArrowRight, Box, Search } from "lucide-react";
 
 export default function MyOrders() {
