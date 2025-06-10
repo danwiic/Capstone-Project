@@ -22,7 +22,7 @@ export default function Settings() {
   return (
     <Layout>
       <div className="flex flex-col gap-4 text-sm">
-        <h1 className="text-xl font-bold mb-6">Settings</h1>
+        <h1 className="text-xl font-bold">Settings</h1>
 
         <div className="bg-white rounded-lg shadow">
           {/* Tabs */}

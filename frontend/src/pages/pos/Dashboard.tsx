@@ -9,15 +9,12 @@ import { formatMoney } from "../../utils/formatMoney";
 import { CiDeliveryTruck } from "react-icons/ci";
 import {
   CategoryDonutChart,
-  RevenueGrowthRateChart,
-  SalesByCategoryBarChart,
   SalesByHourChart,
-  SalesLast7DaysChart,
-  TransactionComparisonLineChart,
 } from "../../components/pos/charts/Charts";
 import StockCard from "../../components/pos/cards/StockCard";
 import Status from "../../components/pos/status card/Status";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const tableData = [
   {
@@ -53,9 +50,30 @@ const tableData = [
 ];
 
 export default function Dashboard() {
+  const [timeRange, setTimeRange] = useState("7d");
+
   return (
     <Layout>
       <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <p className="text-sm font-medium text-gray-500">Time Range:</p>
+          <div className="flex bg-gray-100 rounded-lg p-1">
+            {["24h", "7d", "30d", "90d", "YTD", "All"].map((range) => (
+              <button
+                key={range}
+                className={`px-3 py-1 text-sm rounded-md ${
+                  timeRange === range
+                    ? "bg-white shadow text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setTimeRange(range)}
+              >
+                {range}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex flex-col gap-1">
           <div className="flex gap-4">
             <Card
@@ -183,81 +201,6 @@ export default function Dashboard() {
           </div>
         </div>
         {/* FOR ADDING NEW SECTION */}
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-6 gap-4">
-            <div className="bg-white col-span-3 px-4 py-6 rounded border border-gray-200 flex flex-col gap-2">
-              <div className="flex justify-between items-center px-4 pt-">
-                <span className="font-medium">Sales Analytics</span>
-                <div className="flex gap-3 items-center">
-                  <select
-                    className="border rounded border-gray-200 
-                text-sm p-1 text-center text-gray-600"
-                  >
-                    <option>Today</option>
-                    <option>This Week</option>
-                    <option>This Month</option>
-                    <option>This Year</option>
-                  </select>
-                </div>
-              </div>
-              <SalesLast7DaysChart data={datad} />
-            </div>
-            <div className="col-span-3 bg-white border border-gray-200 px-4 py-6">
-              <div className="flex justify-between items-center px-4">
-                <span className="font-medium">Sales per Category</span>
-                <div className="flex gap-3 items-center">
-                  <select
-                    className="border rounded border-gray-200 
-                text-sm p-1 text-center text-gray-600"
-                  >
-                    <option>Today</option>
-                    <option>This Week</option>
-                    <option>This Month</option>
-                    <option>This Year</option>
-                  </select>
-                </div>
-              </div>
-              <SalesByCategoryBarChart data={categorySalesData} />
-            </div>
-
-            <div className="col-span-3 bg-white border border-gray-200 rounded px-4 py-6">
-              <div className="flex justify-between items-center px-4">
-                <span>Transaction Comparison</span>
-                <div className="flex gap-3 items-center">
-                  <select
-                    className="border rounded border-gray-200 
-                text-sm p-1 text-center text-gray-600"
-                  >
-                    <option>Today</option>
-                    <option selected>This Week</option>
-                    <option>This Month</option>
-                    <option>This Year</option>
-                  </select>
-                </div>
-              </div>
-              <TransactionComparisonLineChart data={transacData} />
-            </div>
-
-            <div className="col-span-3 bg-white border border-gray-200 rounded px-4 py-6">
-              <div className="flex justify-between items-center px-4">
-                <span>Sales Growth</span>
-                <div className="flex gap-3 items-center">
-                  <select
-                    className="border rounded border-gray-200 
-                text-sm p-1 text-center text-gray-600"
-                    defaultValue={"This Year"}
-                  >
-                    <option>This Week</option>
-                    <option>Today</option>
-                    <option>This Month</option>
-                    <option selected>This Year</option>
-                  </select>
-                </div>
-              </div>
-              <RevenueGrowthRateChart data={revenueGrowthData} />
-            </div>
-          </div>
-        </div>
       </div>
     </Layout>
   );
@@ -286,38 +229,6 @@ const data = [
   { time: "4 PM", pos: 2800, online: 2300 },
   { time: "8 PM", pos: 3100, online: 2700 },
   { time: "12 AM", pos: 1500, online: 3600 },
-];
-
-const datad = [
-  { time: "12 AM", sales: 1200 },
-  { time: "4 AM", sales: 600 },
-  { time: "8 AM", sales: 1400 },
-  { time: "12 PM", sales: 2200 },
-  { time: "4 PM", sales: 2800 },
-  { time: "8 PM", sales: 3100 },
-  { time: "12 AM", sales: 1500 },
-];
-
-const categorySalesData = [
-  { category: "Helmets", sales: 5200 },
-  { category: "Top Box", sales: 7500 },
-  { category: "Safety Gear", sales: 3100 },
-  { category: "Accessories & Electronics", sales: 2800 },
-  { category: "Lubricants & Oils", sales: 2800 },
-  { category: "Sprays & Cleaners", sales: 2800 },
-  { category: "Motorcycle Safety", sales: 2800 },
-  { category: "External Accessories", sales: 2800 },
-  { category: "Lubricants", sales: 2800 },
-];
-
-const transacData = [
-  { date: "Apr 11", pos: 34, online: 21 },
-  { date: "Apr 12", pos: 45, online: 28 },
-  { date: "Apr 13", pos: 31, online: 34 },
-  { date: "Apr 14", pos: 50, online: 40 },
-  { date: "Apr 15", pos: 38, online: 33 },
-  { date: "Apr 16", pos: 44, online: 37 },
-  { date: "Apr 17", pos: 60, online: 48 },
 ];
 
 export const revenueGrowthData = [

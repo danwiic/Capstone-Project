@@ -30,9 +30,9 @@ export default function ModalBody({
      bg-opacity-50"
     >
       <div
-        className={`bg-white rounded-md flex flex-col gap-2 ${sizeClasses[size]} `}
+        className={`bg-white rounded-md flex flex-col max-h-[40rem] overflow-auto  ${sizeClasses[size]} `}
       >
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-4 py-2.5">
           <span className="text-lg font-bold">{title}</span>
           <span>
             <X

@@ -16,6 +16,7 @@ import { formatMoney } from "../../../utils/formatMoney";
 import { getAllProducts } from "../../../services/products.ts";
 import SpinningLoader from "../../loader/SpinningLoader.tsx";
 import ProductLogs from "../../modal/ProductLogs.tsx";
+import formatDate from "../../../utils/formatDate.ts";
 
 interface ProductListProps {
   onProductSelect: (productId: string) => void;
@@ -34,6 +35,23 @@ export default function ProductList({
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [openProductLogs, setOpenProductLogs] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
+    key: "createdAt",
+    direction: "desc",
+  });
+
+  const handleSort = (key: string) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return {
+          key,
+          direction: prev.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      return { key, direction: "asc" };
+    });
+  };
+
   useEffect(() => {
     fetchProducts();
   }, [entriesPerPage]);
@@ -78,18 +96,53 @@ export default function ProductList({
     return matchesSearch && matchesCategory;
   });
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      // trigger search/filtering
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
   // Pagination logic
   const totalProducts = filteredProducts.length;
   const totalPages = Math.ceil(totalProducts / entriesPerPage);
   const startIndex = (currentPage - 1) * entriesPerPage;
   const endIndex = Math.min(startIndex + entriesPerPage, totalProducts);
-  const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   // Get unique categories for filter dropdown
   const categories =
     productList.length > 0
       ? ["all", ...new Set(productList.map((product) => product.category.name))]
       : ["all"];
+
+  const sortByDate = (a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  };
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    const { key, direction } = sortConfig;
+    let aVal = a[key];
+    let bVal = b[key];
+
+    if (key === "price") {
+      aVal = a.price || a.ProductVariant?.[0]?.price || 0;
+      bVal = b.price || b.ProductVariant?.[0]?.price || 0;
+    }
+
+    if (key === "createdAt") {
+      aVal = new Date(a.createdAt).getTime();
+      bVal = new Date(b.createdAt).getTime();
+    }
+
+    if (typeof aVal === "string") aVal = aVal.toLowerCase();
+    if (typeof bVal === "string") bVal = bVal.toLowerCase();
+
+    if (aVal < bVal) return direction === "asc" ? -1 : 1;
+    if (aVal > bVal) return direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   return (
     <div className="w-full">
@@ -238,6 +291,15 @@ export default function ProductList({
                       >
                         <div className="flex items-center">Stock</div>
                       </th>
+                      <th
+                        onClick={() => handleSort("createdAt")}
+                        scope="col"
+                        className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer"
+                      >
+                        <div className="flex items-center">
+                          <Filter size={18}/> Created
+                        </div>
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -311,6 +373,9 @@ export default function ProductList({
                           >
                             {getStockCount(prod)}
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {formatDate(prod.createdAt)}
                         </td>
                       </tr>
                     ))}

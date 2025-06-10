@@ -1,6 +1,7 @@
 import { useState } from "react";
 import KebabMenu from "../menu/Kebab";
 import Status from "../status card/Status";
+import AddProvider from "../../modal/AddProvider";
 
 const paymentAvailability = ["All", "POS", "Online"];
 const paymentMethods = [
@@ -44,6 +45,8 @@ const paymentMethods = [
 
 export default function Payments() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [openAddProvider, setOpenAddProvider] = useState(false);
+  const [openAddPaymentMethod, setOpenAddPaymentMethod] = useState(false);
 
   const filteredMethods =
     activeFilter === "All"
@@ -53,74 +56,84 @@ export default function Payments() {
         );
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <span className="text-xl font-semibold">Payment Methods</span>
-        <div className="flex gap-2 items-center">
-          <button
-            className="px-4 text-center py-2 text-sm rounded bg-mayormoto-blue
-          text-white font-medium cursor-pointer hover:bg-mayormoto-blue-hover 
-          transition-colors"
-          >
-            Add Provider
-          </button>
-          <button
-            className="px-4 text-center py-2 text-sm rounded bg-mayormoto-blue
-          text-white font-medium cursor-pointer hover:bg-mayormoto-blue-hover 
-          transition-colors"
-          >
-            Add Payment Method
-          </button>
-        </div>
-      </div>
-      <div className="border border-gray-200 rounded ">
-        <div className="border-b border-gray-200">
-          {paymentAvailability.map((method) => (
+    <>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-semibold">Payment Methods</span>
+          <div className="flex gap-2 items-center">
             <button
-              onClick={() => setActiveFilter(method)}
-              className={`px-6 py-3 text-sm font-semibold text-gray-500 ${
-                activeFilter === method &&
-                "border-b-2 border-mayormoto-blue text-mayormoto-blue"
-              }`}
+              onClick={() => setOpenAddProvider((prev) => !prev)}
+              className="px-4 text-center py-2 text-sm rounded bg-mayormoto-blue
+          text-white font-medium cursor-pointer hover:bg-mayormoto-blue-hover 
+          transition-colors"
             >
-              {method}
+              Add Provider
             </button>
-          ))}
+            <button
+              onClick={() => setOpenAddPaymentMethod((prev) => !prev)}
+              className="px-4 text-center py-2 text-sm rounded bg-mayormoto-blue
+          text-white font-medium cursor-pointer hover:bg-mayormoto-blue-hover 
+          transition-colors"
+            >
+              Add Payment Method
+            </button>
+          </div>
         </div>
-        <table className="w-full text-left text-gray-500">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="px-6 py-2 ">Payment Method</th>
-              <th className="px-6 py-2 ">Provider</th>
-              <th className="px-6 py-2 ">Available In</th>
-              <th className="px-6 py-2 ">Status</th>
-              <th className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMethods.map((method, index) => (
-              <tr key={index} className="not-last:border-b border-gray-200">
-                <td className="px-6 py-2 ">{method.method}</td>
-                <td className="px-6 py-2 ">{method.provider}</td>
-                <td className="px-6 py-2 uppercase">
-                  {method.availableIn.map((met, index) => (
-                    <span key={met}>
-                      {met.charAt(0).toUpperCase() + met.slice(1)}
-                      {index < method.availableIn.length - 1 && ", "}
-                    </span>
-                  ))}
-                </td>
-                <td className="px-6 py-2 ">
-                  <Status status={method.status} />
-                </td>
-                <td className="text-center">
-                  <KebabMenu />
-                </td>
-              </tr>
+        <div className="border border-gray-200 rounded ">
+          <div className="border-b border-gray-200">
+            {paymentAvailability.map((method) => (
+              <button
+                onClick={() => setActiveFilter(method)}
+                className={`px-6 py-3 text-sm font-semibold text-gray-500 ${
+                  activeFilter === method &&
+                  "border-b-2 border-mayormoto-blue text-mayormoto-blue"
+                }`}
+              >
+                {method}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+          <table className="w-full text-left text-gray-500">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="px-6 py-2 ">Payment Method</th>
+                <th className="px-6 py-2 ">Provider</th>
+                <th className="px-6 py-2 ">Available In</th>
+                <th className="px-6 py-2 ">Status</th>
+                <th className="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredMethods.map((method, index) => (
+                <tr key={index} className="not-last:border-b border-gray-200">
+                  <td className="px-6 py-2 ">{method.method}</td>
+                  <td className="px-6 py-2 ">{method.provider}</td>
+                  <td className="px-6 py-2 uppercase">
+                    {method.availableIn.map((met, index) => (
+                      <span key={met}>
+                        {met.charAt(0).toUpperCase() + met.slice(1)}
+                        {index < method.availableIn.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </td>
+                  <td className="px-6 py-2 ">
+                    <Status status={method.status} />
+                  </td>
+                  <td className="text-center">
+                    <KebabMenu />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+      {openAddProvider && (
+        <AddProvider
+          isOpen={openAddProvider}
+          onClose={() => setOpenAddProvider((prev) => !prev)}
+        />
+      )}
+    </>
   );
 }

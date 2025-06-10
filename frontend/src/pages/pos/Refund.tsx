@@ -178,12 +178,6 @@ export default function Refund({ onClose }: RefundProps) {
             <ArrowLeft /> BACK
           </button>
           <div className="flex justify-end gap-2 text-sm text-gray-500">
-            <button
-              onClick={() => sortDate()}
-              className="px-4 py-2 flex items-center gap-1 bg-white border border-gray-300 rounded hover:bg-gray-100 cursor-pointer"
-            >
-              <MdSort size={20} /> <span>Sort by Request Date</span>
-            </button>
             <button className="px-4 py-2 flex items-center gap-1 bg-mayormoto-blue text-white hover:bg-mayormoto-blue-hover border border-gray-300 rounded ">
               <Download /> <span>Export</span>
             </button>
@@ -245,8 +239,8 @@ export default function Refund({ onClose }: RefundProps) {
                   <th className="px-4 py-2">Request Solution</th>
                   <th className="px-4 py-2">Request Status</th>
                   <th className="px-4 py-2" onClick={() => sortDate()}>
-                    <button className="uppercase cursor-pointer">
-                      Request Date
+                    <button className="uppercase cursor-pointer flex items-center gap-1">
+                      <Filter size={18} /> Request Date
                     </button>
                   </th>
                   <th className="px-4 py-2">Actions</th>

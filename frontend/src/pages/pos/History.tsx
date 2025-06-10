@@ -1,4 +1,4 @@
-import { FileText, SearchIcon, ChevronRight, ChevronLeft } from "lucide-react";
+import { FileText, SearchIcon, ChevronRight, ChevronLeft, Filter } from "lucide-react";
 import Layout from "../../components/pos/nav/Layout";
 import { formatMoney } from "../../utils/formatMoney";
 import { SimpleSalesChart } from "../../components/pos/charts/Charts";
@@ -67,6 +67,9 @@ const transactions = [
 export default function History() {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [transactionsData, setTransactionsData] = useState(transactions);
+  const [isSortedByDate, setIsSortedByDate] = useState(false);
+
   const totalStatus = () => {
     const sumStatus: { [key: string]: { count: number; totalPrice: number } } =
       {};
@@ -89,6 +92,19 @@ export default function History() {
     return result;
   };
 
+  const sortByDate = () => {
+    const newSort = !isSortedByDate;
+    setIsSortedByDate(newSort);
+
+    const sorted = [...transactionsData].sort((a, b) => {
+      return newSort
+        ? new Date(a.date).getTime() - new Date(b.date).getTime() // ascending
+        : new Date(b.date).getTime() - new Date(a.date).getTime(); // descending
+    });
+
+    setTransactionsData(sorted);
+  };
+
   const countTotalStat = totalStatus().reduce(
     (acc: number, item: { count: number }) => acc + item.count,
     0
@@ -100,7 +116,7 @@ export default function History() {
     0
   );
 
-  const filterTransactions = transactions.filter(
+  const filterTransactions = transactionsData.filter(
     (transaction) =>
       (selectedFilter === "all" || transaction.status === selectedFilter) &&
       (searchTerm === "" ||
@@ -109,7 +125,6 @@ export default function History() {
         transaction.products.toLowerCase().includes(searchTerm.toLowerCase()) ||
         transaction.status.toLowerCase().includes(searchTerm.toLowerCase()))
   );
-
   return (
     <Layout>
       <div className="flex flex-col gap-4">
@@ -240,7 +255,12 @@ export default function History() {
                     <th className="px-7 py-3 text-gray-500">Payment Method</th>
                     <th className="px-7 py-3 text-gray-500">Amount</th>
                     <th className="px-7 py-3 text-gray-500">Source</th>
-                    <th className="px-7 py-3 text-gray-500">Date</th>
+                    <th
+                      className="px-7 py-3 text-gray-500 flex items-center gap-1 cursor-pointer"
+                      onClick={() => sortByDate()}
+                    >
+                     <Filter size={18}/> Date
+                    </th>
                     <th className="px-7 py-3 text-gray-500">Status</th>
                     <th></th>
                   </tr>
