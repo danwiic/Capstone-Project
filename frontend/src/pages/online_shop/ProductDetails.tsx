@@ -91,6 +91,7 @@ export default function ProductDetails() {
               id={product.id}
               name={product?.name ?? ""}
               price={product?.price ?? 0}
+              images={product?.ProductImage ?? []}
               variants={
                 product?.ProductVariant?.map((variant) => ({
                   id: variant.id ?? "",

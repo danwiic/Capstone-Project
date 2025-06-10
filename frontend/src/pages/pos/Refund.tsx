@@ -20,6 +20,8 @@ const status = [
 
 const requestData = [
   {
+    requestId: "REQ-0001",
+    orderId: "ORD-1001",
     product: "Front Brake Pads",
     amount: "1200",
     reason: "Damaged Item",
@@ -30,6 +32,8 @@ const requestData = [
     requestDate: "2025-03-01",
   },
   {
+    requestId: "REQ-0002",
+    orderId: "ORD-1002",
     product: "Evo Yellow Paint Kit",
     amount: "2800",
     reason: "Scratched Surface",
@@ -40,6 +44,8 @@ const requestData = [
     requestDate: "2025-03-03",
   },
   {
+    requestId: "REQ-0003",
+    orderId: "ORD-1003",
     product: "LED Headlight",
     amount: "4500",
     reason: "Not as Described",
@@ -50,6 +56,8 @@ const requestData = [
     requestDate: "2025-03-03",
   },
   {
+    requestId: "REQ-0004",
+    orderId: "ORD-1004",
     product: "Rear Brake Disc",
     amount: "3700",
     reason: "Damaged Item",
@@ -60,6 +68,8 @@ const requestData = [
     requestDate: "2025-03-04",
   },
   {
+    requestId: "REQ-0005",
+    orderId: "ORD-1005",
     product: "Chain and Sprocket Kit",
     amount: "5200",
     reason: "Wrong Item",
@@ -70,6 +80,8 @@ const requestData = [
     requestDate: "2025-03-06",
   },
   {
+    requestId: "REQ-0006",
+    orderId: "ORD-1006",
     product: "Motorcycle Battery",
     amount: "3100",
     reason: "Dead on Arrival",
@@ -80,6 +92,8 @@ const requestData = [
     requestDate: "2025-03-11",
   },
   {
+    requestId: "REQ-0007",
+    orderId: "ORD-1007",
     product: "Handlebar Grips",
     amount: "800",
     reason: "Late Delivery",
@@ -90,6 +104,8 @@ const requestData = [
     requestDate: "2025-03-12",
   },
   {
+    requestId: "REQ-0008",
+    orderId: "ORD-1008",
     product: "Clutch Lever",
     amount: "950",
     reason: "Wrong Item",
@@ -100,6 +116,8 @@ const requestData = [
     requestDate: "2025-03-17",
   },
   {
+    requestId: "REQ-0009",
+    orderId: "ORD-1009",
     product: "Exhaust Muffler",
     amount: "6400",
     reason: "Damaged Item",
@@ -110,6 +128,8 @@ const requestData = [
     requestDate: "2025-03-19",
   },
   {
+    requestId: "REQ-0010",
+    orderId: "ORD-1010",
     product: "Fuel Tank Cap",
     amount: "600",
     reason: "Not Compatible",
@@ -158,7 +178,10 @@ export default function Refund({ onClose }: RefundProps) {
             <ArrowLeft /> BACK
           </button>
           <div className="flex justify-end gap-2 text-sm text-gray-500">
-            <button className="px-4 py-2 flex items-center gap-1 bg-white border border-gray-300 rounded hover:bg-gray-100 cursor-pointer">
+            <button
+              onClick={() => sortDate()}
+              className="px-4 py-2 flex items-center gap-1 bg-white border border-gray-300 rounded hover:bg-gray-100 cursor-pointer"
+            >
               <MdSort size={20} /> <span>Sort by Request Date</span>
             </button>
             <button className="px-4 py-2 flex items-center gap-1 bg-mayormoto-blue text-white hover:bg-mayormoto-blue-hover border border-gray-300 rounded ">
@@ -222,20 +245,19 @@ export default function Refund({ onClose }: RefundProps) {
                   <th className="px-4 py-2">Request Solution</th>
                   <th className="px-4 py-2">Request Status</th>
                   <th className="px-4 py-2" onClick={() => sortDate()}>
-                    <button className="uppercase cursor-pointer">Request Date</button>
+                    <button className="uppercase cursor-pointer">
+                      Request Date
+                    </button>
                   </th>
                   <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData.map((req, i) => {
-                  const requestId = `REQ-${String(i + 1).padStart(4, "0")}`;
-                  const orderId = `ORD-${String(i + 100).padStart(4, "0")}`;
-
                   return (
                     <tr key={i} className="not-last:border-b border-gray-200">
-                      <td className="px-4 py-2">{requestId}</td>
-                      <td className="px-4 py-2">{orderId}</td>
+                      <td className="px-4 py-2">{req.requestId}</td>
+                      <td className="px-4 py-2">{req.orderId}</td>
                       <td className="px-4 py-2">
                         <div className="flex flex-col gap-1">
                           <span className="font-semibold">{req.product}</span>

@@ -15,9 +15,18 @@ interface props {
     variantName: string;
     price: number;
   }[];
+  images?: {
+    imageUrl: string;
+  }[];
 }
 
-export default function ProductInfo({ id, name, price, variants = [] }: props) {
+export default function ProductInfo({
+  id,
+  name,
+  price,
+  variants = [],
+  images,
+}: props) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -57,11 +66,14 @@ export default function ProductInfo({ id, name, price, variants = [] }: props) {
             variantId: variants[selectedVariantIndex]?.id || "",
             quantity: quantity,
             price: variants[selectedVariantIndex]?.price || price,
+            imageUrl: images || "",
           },
         ],
       },
     });
   };
+
+  console.log("ProductInfo props:", images);
 
   return (
     <>
