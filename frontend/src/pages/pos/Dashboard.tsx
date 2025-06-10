@@ -55,8 +55,13 @@ export default function Dashboard() {
   return (
     <Layout>
       <div className="flex flex-col gap-4">
+        <div>
+          <span className="font-semibold text-xl">Dashboard</span>
+        </div>
         <div className="flex items-center gap-4">
-          <p className="text-sm font-medium text-gray-500">Time Range:</p>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Time Range:</p>
+          </div>
           <div className="flex bg-gray-100 rounded-lg p-1">
             {["24h", "7d", "30d", "90d", "YTD", "All"].map((range) => (
               <button

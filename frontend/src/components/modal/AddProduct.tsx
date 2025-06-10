@@ -448,6 +448,7 @@ export default function ProductModal({ isOpen, onClose }: AddProductProps) {
                       </label>
                       <input
                         type="text"
+                        placeholder="SKU"
                         value={variant.sku}
                         onChange={(e) =>
                           updateVariant(variant.id, "sku", e.target.value)
