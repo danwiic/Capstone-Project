@@ -10,7 +10,7 @@ export default function AddProvider({ isOpen, onClose }: AddProviderProps) {
   const [environment, setEnvironment] = useState("sandbox");
 
   return (
-    <ModalBody isOpen={isOpen} onClose={onClose} title="Add Payment Provider">
+    <ModalBody isOpen={isOpen} onClose={onClose} title="Payment Provider">
       <div className="pb-2">
         <form action="" className="flex flex-col gap-4">
 
@@ -23,20 +23,6 @@ export default function AddProvider({ isOpen, onClose }: AddProviderProps) {
               className="px-4 py-2 border border-gray-300 rounded outline-0"
               placeholder="e.g., Stripe US"
             />
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="provider_type">Provider Type</label>
-            <select
-              id="provider_type"
-              className="px-4 py-2 border border-gray-300 rounded outline-0"
-            >
-              <option value="">Select Provider</option>
-              <option value="stripe">Stripe</option>
-              <option value="paymongo">Paymongo</option>
-              <option value="paypal">PayPal</option>
-              {/* Add more as needed */}
-            </select>
           </div>
 
           <div className="flex flex-col">

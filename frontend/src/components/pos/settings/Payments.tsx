@@ -2,6 +2,7 @@ import { useState } from "react";
 import KebabMenu from "../menu/Kebab";
 import Status from "../status card/Status";
 import AddProvider from "../../modal/AddProvider";
+import AddPayment from "../../modal/AddPayment";
 
 const paymentAvailability = ["All", "POS", "Online"];
 const paymentMethods = [
@@ -132,6 +133,13 @@ export default function Payments() {
         <AddProvider
           isOpen={openAddProvider}
           onClose={() => setOpenAddProvider((prev) => !prev)}
+        />
+      )}
+
+      {openAddPaymentMethod && (
+        <AddPayment
+          isOpen={openAddPaymentMethod}
+          onClose={() => setOpenAddPaymentMethod((prev) => !prev)}
         />
       )}
     </>
